@@ -21,6 +21,7 @@
 	<add as="redo" action="redo" icon="images/redo.gif"/>
 	<add as="delete" action="delete" icon="images/delete.gif"/>
 	<br/><hr/>
+	<add as="node-0" template="node-0" icon="images/rectangle.gif"/>
 	<add as="node-1" template="node-1" icon="images/rectangle.gif"/>
 	<add as="node-2" template="node-2" icon="images/rectangle.gif"/>
 	<add as="node-3" template="node-3" icon="images/rectangle.gif"/>

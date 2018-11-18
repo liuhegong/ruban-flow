@@ -242,6 +242,14 @@
       mounted: function(){
       	this.loadFlowData();
       }
-    })   
+    }) 
+    
+    // 节点编辑处理
+    function actionDelage(graph,form,attr){
+    	if(attr.name == 'label'||attr.name == 'type'||attr.name == 'user'){
+    		return form.addText(attr.nodeName, attr.value);
+    	}
+    	console.log(arguments);
+    }
   	</script>
 </html>

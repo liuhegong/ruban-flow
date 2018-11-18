@@ -148,6 +148,21 @@ public class NodeInfo implements Serializable{
 	@XmlPath(value="property[@name='nodeannounceuser']",valueAttr="@value")
 	private String copyUsers;
 	
+	/**
+	 * 待办通知方式  0.不通知;1.消息通知;2.邮件通知;3.短信通知;4.所有方式通知
+	 */
+	private String noticeType = null;
+
+	/**
+	 * 节点级别
+	 */
+	private String nodeLevel = null;
+	
+	/**
+	 * 待办人员分配策略
+	 */
+	private String strategyBeanId = null;
+	
 	public String getNodeId() {
 		return nodeId;
 	}
@@ -307,5 +322,23 @@ public class NodeInfo implements Serializable{
 			}
 		}
 		return nodeIds;
+	}
+	public String getNoticeType() {
+		return noticeType;
+	}
+	public void setNoticeType(String noticeType) {
+		this.noticeType = noticeType;
+	}
+	public String getNodeLevel() {
+		return nodeLevel;
+	}
+	public void setNodeLevel(String nodeLevel) {
+		this.nodeLevel = nodeLevel;
+	}
+	public String getStrategyBeanId() {
+		return strategyBeanId;
+	}
+	public void setStrategyBeanId(String strategyBeanId) {
+		this.strategyBeanId = strategyBeanId;
 	}
 }

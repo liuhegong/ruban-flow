@@ -11,4 +11,8 @@ public class ComputeType {
 	 */
 	public final static String NOTALL = "1";
 	
+	/**
+	 * 原始配置,不做处理
+	 */
+	public final static String NODEAL = "3";	
 }

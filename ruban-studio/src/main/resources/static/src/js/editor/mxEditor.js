@@ -2531,15 +2531,17 @@ mxEditor.prototype.createProperties = function (cell)
 		// Creates textareas for each attribute of the
 		// user object within the cell
 		var attrs = value.attributes;
+		var _action = value.getAttribute('action');
 		var texts = [];
 		
-		for (var i = 0; i < attrs.length; i++)
+		for (var i = 0; i < attrs.length && attrs[i].name!='action'; i++)
 		{
 			// Creates a textarea with more lines for
 			// the cell label
-			var val = attrs[i].value;
-			texts[i] = form.addTextarea(attrs[i].nodeName, val,
-				(attrs[i].nodeName == 'label') ? 4 : 2);
+			var val = attrs[i].value; // modify wangyf10 节点属性配置扩展
+			texts[i] =_action ? 
+					window[_action].call(null,this.graph,form,attrs[i])
+					: form.addTextarea(attrs[i].nodeName, val, (attrs[i].nodeName == 'label') ? 4 : 2);
 		}
 		
 		// Adds an OK and Cancel button to the dialog

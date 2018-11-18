@@ -7,7 +7,7 @@
 	<add as="onInit">
 		function ()
 		{
-			this.showTasks();
+			// this.showTasks();
 		}
 	</add>
 	<Array as="cycleAttributeValues">
@@ -52,7 +52,7 @@
 			</Subprocess>
 		</add>
 		<add as="node-0">
-			<node label="普通节点" type="0">
+			<node label="普通节点" type="0"  user="45" return="" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>

@@ -9,8 +9,8 @@
 		{
 			// Disables removing cells from parents
 			this.graph.graphHandler.setRemoveCellsFromParent(false);
-			this.showTasks();
-			this.showHelp();
+			// this.showTasks();
+			// this.showHelp();
 		}
 	]]></add>
 	<ui>
@@ -61,7 +61,7 @@
 			</Subprocess>
 		</add>
 		<add as="node-0">
-			<node label="普通节点" type="0">
+			<node label="普通节点" type="0" user="45" return="" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
@@ -350,7 +350,7 @@
 				}
 			]]></add>
 			<root>
-				<Workflow label="MyWorkflow" id="0"/>
+				<Workflow label="工作流" id="0"/>
 				<Layer label="Default Layer">
 					<mxCell parent="0"/>
 				</Layer>

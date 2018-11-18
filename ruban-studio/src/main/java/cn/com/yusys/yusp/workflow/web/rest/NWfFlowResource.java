@@ -1,9 +1,12 @@
 package cn.com.yusys.yusp.workflow.web.rest;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +22,16 @@ import cn.com.yusys.yusp.workflow.domain.NWfFlowHis;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.service.NWfFlowHisService;
 import cn.com.yusys.yusp.workflow.service.NWfFlowService;
+import cn.com.yusys.yusp.workflow.util.FileUtil;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 
 @RestController
 @RequestMapping("/api/nwfflow")
 public class NWfFlowResource {
+	
+	@Value("${flow.path}")
+	private String flowPath = null;
+	
     @Autowired
     private NWfFlowService nWfFlowService;
     
@@ -64,9 +72,10 @@ public class NWfFlowResource {
 
     @PostMapping("/update")
     @Transactional
-    protected ResultDto<Integer> update(@RequestBody NWfFlow nWfFlow) {
+    protected ResultDto<Integer> update(@RequestBody NWfFlow nWfFlow) throws IOException {
         
     	NWfFlow currentFlow = nWfFlowService.selectByPrimaryKey(nWfFlow.getFlowId());
+    	    	
     	nWfFlowService.deleteByPrimaryKey(nWfFlow.getFlowId());
     	nWfFlow.setStartTime(TimeUtil.getDateyyyyMMddHHmmss());
     	nWfFlow.setFlowState(FlowState.RUN); 
@@ -79,6 +88,8 @@ public class NWfFlowResource {
     	BeanUtils.copyProperties(currentFlow, record);
 		nWfFlowHisService.insert(record);
     	
+		FileUtil.writeNewContentToFile(flowPath+File.separator+record.getFlowId()+".xml", record.getFlowContent());
+		
         return new ResultDto<Integer>(0);
     }
 
