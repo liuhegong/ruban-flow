@@ -1,0 +1,46 @@
+<mxDefaultToolbar>
+	<add as="save" action="save" icon="images/save.gif"/>
+	<add as="show" action="showXml" icon="images/preview.gif"/>
+	<add as="readonly" action="readOnly" icon="images/bold.gif"/>
+	<add as="editable" action="editable" icon="images/block_end.gif"/>
+	<add as="exportImage" action="exportImage" icon="images/image.gif"/>
+	<br/><hr/>
+	<add as="select" mode="select" icon="images/select.gif"/>
+	<add as="pan" mode="pan" icon="images/pan.gif"/>
+	<add as="connect" mode="connect" icon="images/connect.gif"><![CDATA[
+		function (editor)
+		{
+			if (editor.defaultEdge != null)
+			{
+				editor.defaultEdge.style = null;
+			}
+		}
+	]]></add>
+	<br/><hr/>
+	<add as="undo" action="undo" icon="images/undo.gif"/>
+	<add as="redo" action="redo" icon="images/redo.gif"/>
+	<add as="delete" action="delete" icon="images/delete.gif"/>
+	<br/><hr/>
+	<add as="node-1" template="node-1" icon="images/rectangle.gif"/>
+	<add as="node-2" template="node-2" icon="images/rectangle.gif"/>
+	<add as="node-3" template="node-3" icon="images/rectangle.gif"/>
+	<add as="node-4" template="node-4" icon="images/rectangle.gif"/>
+	<add as="node-5" template="node-5" icon="images/rectangle.gif"/>
+	<add as="node-6" template="node-6" icon="images/rectangle.gif"/>
+	<add as="node-7" template="node-7" icon="images/rectangle.gif"/>
+	<add as="node-8" template="node-8" icon="images/rectangle.gif"/>
+	<br/><hr/>
+	<add as="Event" template="symbol" style="symbol;image=images/symbols/event.png" icon="images/symbols/small_event.gif"/>
+	<add as="Event (Intermediate)" template="symbol" style="symbol;image=images/symbols/event_intermediate.png" icon="images/symbols/small_event_intermediate.gif"/>
+	<add as="Event (End)" template="symbol" style="symbol;image=images/symbols/event_end.png" icon="images/symbols/small_event_end.gif"/>
+	<add as="Timer" template="symbol" style="symbol;image=images/symbols/timer.png" icon="images/symbols/small_timer.gif"/>
+	<br/><hr/>
+	<add as="zoomIn" action="zoomIn" icon="images/zoomin.gif"/>
+	<add as="zoomOut" action="zoomOut" icon="images/zoomout.gif"/>
+	<add as="actualSize" action="actualSize" icon="images/zoomactual.gif"/>
+	<br/><hr/>
+	<add as="outline" action="toggleOutline" icon="images/outline.gif"/>
+	<add as="tasks" action="toggleTasks" icon="images/tasks.gif"/>
+	<add as="help" action="toggleHelp" icon="images/help.gif"/>
+	<add as="console" action="toggleConsole" icon="images/console.gif"/>
+</mxDefaultToolbar>

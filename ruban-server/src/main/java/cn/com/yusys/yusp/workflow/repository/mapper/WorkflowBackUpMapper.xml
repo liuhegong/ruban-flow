@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.WorkflowBackUpMapper">
+   <insert id="backUpUserTodo" parameterType="java.util.List">
+    insert into N_WF_USER_DONE (INSTANCE_ID, NODE_ID, USER_ID, 
+      START_TIME, USER_NAME, LAST_USER_ID, 
+      LAST_USER_NAME, END_TIME) values
+      <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.instanceId,jdbcType=VARCHAR}, #{item.nodeId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR}, 
+              #{item.startTime,jdbcType=VARCHAR}, #{item.userName,jdbcType=VARCHAR}, #{item.lastUserId,jdbcType=VARCHAR}, 
+              #{item.lastUserName,jdbcType=VARCHAR}, #{item.endTime,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+  
+  <delete id="deleteUserTodo" parameterType="string">
+  	delete from N_WF_USER_TODO t where t.instance_id = #{instanceId,jdbcType=VARCHAR} and t.node_id = #{nodeId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insertUserTodoBatch" parameterType="java.util.List">
+    insert into N_WF_USER_TODO (INSTANCE_ID, NODE_ID, USER_ID, 
+      START_TIME, USER_NAME, LAST_USER_ID, 
+      LAST_USER_NAME) values
+      <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.instanceId,jdbcType=VARCHAR}, #{item.nodeId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR}, 
+              #{item.startTime,jdbcType=VARCHAR}, #{item.userName,jdbcType=VARCHAR}, #{item.lastUserId,jdbcType=VARCHAR}, 
+              #{item.lastUserName,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+</mapper>

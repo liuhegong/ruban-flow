@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.NWfUserTodoMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="INSTANCE_ID" jdbcType="VARCHAR" property="instanceId" />
+    <id column="NODE_ID" jdbcType="VARCHAR" property="nodeId" />
+    <id column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="LAST_USER_ID" jdbcType="VARCHAR" property="lastUserId" />
+    <result column="LAST_USER_NAME" jdbcType="VARCHAR" property="lastUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    INSTANCE_ID, NODE_ID, USER_ID, START_TIME, USER_NAME, LAST_USER_ID, LAST_USER_NAME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from N_WF_USER_TODO
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from N_WF_USER_TODO
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_USER_TODO (INSTANCE_ID, NODE_ID, USER_ID, 
+      START_TIME, USER_NAME, LAST_USER_ID, 
+      LAST_USER_NAME)
+    values (#{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{lastUserId,jdbcType=VARCHAR}, 
+      #{lastUserName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_USER_TODO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="instanceId != null">
+        INSTANCE_ID,
+      </if>
+      <if test="nodeId != null">
+        NODE_ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="lastUserId != null">
+        LAST_USER_ID,
+      </if>
+      <if test="lastUserName != null">
+        LAST_USER_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="instanceId != null">
+        #{instanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUserId != null">
+        #{lastUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUserName != null">
+        #{lastUserName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_USER_TODO
+    <set>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUserId != null">
+        LAST_USER_ID = #{lastUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUserName != null">
+        LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_USER_TODO
+    set START_TIME = #{startTime,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      LAST_USER_ID = #{lastUserId,jdbcType=VARCHAR},
+      LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR}
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+      and USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
+    SELECT * FROM N_WF_USER_TODO
+    <where>
+      <if test="condition.instanceId !=null and condition.instanceId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
+             AND INSTANCE_ID LIKE #{condition.instanceId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND INSTANCE_ID = #{condition.instanceId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeId !=null and condition.nodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeId)">
+             AND NODE_ID LIKE #{condition.nodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NODE_ID = #{condition.nodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userId !=null and condition.userId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userId)">
+             AND USER_ID LIKE #{condition.userId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND USER_ID = #{condition.userId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userName !=null and condition.userName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userName)">
+             AND USER_NAME LIKE #{condition.userName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND USER_NAME = #{condition.userName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserId !=null and condition.lastUserId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserId)">
+             AND LAST_USER_ID LIKE #{condition.lastUserId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND LAST_USER_ID = #{condition.lastUserId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserName !=null and condition.lastUserName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserName)">
+             AND LAST_USER_NAME LIKE #{condition.lastUserName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND LAST_USER_NAME = #{condition.lastUserName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+  </select>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM N_WF_USER_TODO WHERE INSTANCE_ID IN
+    <foreach close=")" collection="@cn.com.yusys.yusp.workflow.util.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+</mapper>

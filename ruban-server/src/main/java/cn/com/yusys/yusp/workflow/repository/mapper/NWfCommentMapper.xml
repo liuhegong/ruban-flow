@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.NWfCommentMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.workflow.domain.NWfComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="COMMENT_ID" jdbcType="VARCHAR" property="commentId" />
+    <result column="INSTANCE_ID" jdbcType="VARCHAR" property="instanceId" />
+    <result column="NODE_ID" jdbcType="VARCHAR" property="nodeId" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="COMMENT_SIGN" jdbcType="VARCHAR" property="commentSign" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.yusys.yusp.workflow.domain.NWfComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="USER_COMMENT" jdbcType="CLOB" property="userComment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    COMMENT_ID, INSTANCE_ID, NODE_ID, USER_ID, COMMENT_SIGN, START_TIME
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    USER_COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from N_WF_COMMENT
+    where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from N_WF_COMMENT
+    where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_COMMENT (COMMENT_ID, INSTANCE_ID, NODE_ID, 
+      USER_ID, COMMENT_SIGN, START_TIME, 
+      USER_COMMENT)
+    values (#{commentId,jdbcType=VARCHAR}, #{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{commentSign,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
+      #{userComment,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_COMMENT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        COMMENT_ID,
+      </if>
+      <if test="instanceId != null">
+        INSTANCE_ID,
+      </if>
+      <if test="nodeId != null">
+        NODE_ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="commentSign != null">
+        COMMENT_SIGN,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="userComment != null">
+        USER_COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        #{commentId,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceId != null">
+        #{instanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="commentSign != null">
+        #{commentSign,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userComment != null">
+        #{userComment,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_COMMENT
+    <set>
+      <if test="instanceId != null">
+        INSTANCE_ID = #{instanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="commentSign != null">
+        COMMENT_SIGN = #{commentSign,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userComment != null">
+        USER_COMMENT = #{userComment,jdbcType=CLOB},
+      </if>
+    </set>
+    where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_COMMENT
+    set INSTANCE_ID = #{instanceId,jdbcType=VARCHAR},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      COMMENT_SIGN = #{commentSign,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=VARCHAR},
+      USER_COMMENT = #{userComment,jdbcType=CLOB}
+    where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_COMMENT
+    set INSTANCE_ID = #{instanceId,jdbcType=VARCHAR},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      COMMENT_SIGN = #{commentSign,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=VARCHAR}
+    where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
+    SELECT * FROM N_WF_COMMENT
+    <where>
+      <if test="condition.commentId !=null and condition.commentId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.commentId)">
+             AND COMMENT_ID LIKE #{condition.commentId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND COMMENT_ID = #{condition.commentId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.instanceId !=null and condition.instanceId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
+             AND INSTANCE_ID LIKE #{condition.instanceId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND INSTANCE_ID = #{condition.instanceId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeId !=null and condition.nodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeId)">
+             AND NODE_ID LIKE #{condition.nodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NODE_ID = #{condition.nodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userId !=null and condition.userId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userId)">
+             AND USER_ID LIKE #{condition.userId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND USER_ID = #{condition.userId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.commentSign !=null and condition.commentSign !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.commentSign)">
+             AND COMMENT_SIGN LIKE #{condition.commentSign,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND COMMENT_SIGN = #{condition.commentSign,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userComment !=null and condition.userComment !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userComment)">
+             AND USER_COMMENT LIKE #{condition.userComment,jdbcType=CLOB}
+          </when>
+          <otherwise>
+            AND USER_COMMENT = #{condition.userComment,jdbcType=CLOB}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+  </select>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM N_WF_COMMENT WHERE COMMENT_ID IN
+    <foreach close=")" collection="@cn.com.yusys.yusp.workflow.util.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+</mapper>

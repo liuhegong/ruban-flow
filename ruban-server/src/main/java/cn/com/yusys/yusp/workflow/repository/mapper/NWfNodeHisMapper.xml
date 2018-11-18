@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.NWfNodeHisMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.workflow.domain.NWfNodeHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="INSTANCE_ID" jdbcType="VARCHAR" property="instanceId" />
+    <id column="NODE_ID" jdbcType="VARCHAR" property="nodeId" />
+    <result column="NODE_SIGN" jdbcType="VARCHAR" property="nodeSign" />
+    <result column="NODE_NAME" jdbcType="VARCHAR" property="nodeName" />
+    <result column="NODE_STATE" jdbcType="VARCHAR" property="nodeState" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="LAST_NODE_ID" jdbcType="VARCHAR" property="lastNodeId" />
+    <result column="LAST_NODE_NAME" jdbcType="VARCHAR" property="lastNodeName" />
+    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    INSTANCE_ID, NODE_ID, NODE_SIGN, NODE_NAME, NODE_STATE, START_TIME, ORG_ID, LAST_NODE_ID, 
+    LAST_NODE_NAME, END_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from N_WF_NODE_HIS
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from N_WF_NODE_HIS
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.yusys.yusp.workflow.domain.NWfNodeHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_NODE_HIS (INSTANCE_ID, NODE_ID, NODE_SIGN, 
+      NODE_NAME, NODE_STATE, START_TIME, 
+      ORG_ID, LAST_NODE_ID, LAST_NODE_NAME, 
+      END_TIME)
+    values (#{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{nodeSign,jdbcType=VARCHAR}, 
+      #{nodeName,jdbcType=VARCHAR}, #{nodeState,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=VARCHAR}, #{lastNodeId,jdbcType=VARCHAR}, #{lastNodeName,jdbcType=VARCHAR}, 
+      #{endTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfNodeHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_NODE_HIS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="instanceId != null">
+        INSTANCE_ID,
+      </if>
+      <if test="nodeId != null">
+        NODE_ID,
+      </if>
+      <if test="nodeSign != null">
+        NODE_SIGN,
+      </if>
+      <if test="nodeName != null">
+        NODE_NAME,
+      </if>
+      <if test="nodeState != null">
+        NODE_STATE,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="lastNodeId != null">
+        LAST_NODE_ID,
+      </if>
+      <if test="lastNodeName != null">
+        LAST_NODE_NAME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="instanceId != null">
+        #{instanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeSign != null">
+        #{nodeSign,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null">
+        #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeState != null">
+        #{nodeState,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastNodeId != null">
+        #{lastNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastNodeName != null">
+        #{lastNodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfNodeHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_NODE_HIS
+    <set>
+      <if test="nodeSign != null">
+        NODE_SIGN = #{nodeSign,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null">
+        NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeState != null">
+        NODE_STATE = #{nodeState,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastNodeId != null">
+        LAST_NODE_ID = #{lastNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastNodeName != null">
+        LAST_NODE_NAME = #{lastNodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfNodeHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_NODE_HIS
+    set NODE_SIGN = #{nodeSign,jdbcType=VARCHAR},
+      NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      NODE_STATE = #{nodeState,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      LAST_NODE_ID = #{lastNodeId,jdbcType=VARCHAR},
+      LAST_NODE_NAME = #{lastNodeName,jdbcType=VARCHAR},
+      END_TIME = #{endTime,jdbcType=VARCHAR}
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+      and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
+    SELECT * FROM N_WF_NODE_HIS
+    <where>
+      <if test="condition.instanceId !=null and condition.instanceId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
+             AND INSTANCE_ID LIKE #{condition.instanceId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND INSTANCE_ID = #{condition.instanceId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeId !=null and condition.nodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeId)">
+             AND NODE_ID LIKE #{condition.nodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NODE_ID = #{condition.nodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeSign !=null and condition.nodeSign !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeSign)">
+             AND NODE_SIGN LIKE #{condition.nodeSign,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NODE_SIGN = #{condition.nodeSign,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeName !=null and condition.nodeName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeName)">
+             AND NODE_NAME LIKE #{condition.nodeName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NODE_NAME = #{condition.nodeName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeState !=null and condition.nodeState !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeState)">
+             AND NODE_STATE LIKE #{condition.nodeState,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NODE_STATE = #{condition.nodeState,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.orgId !=null and condition.orgId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.orgId)">
+             AND ORG_ID LIKE #{condition.orgId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND ORG_ID = #{condition.orgId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastNodeId !=null and condition.lastNodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastNodeId)">
+             AND LAST_NODE_ID LIKE #{condition.lastNodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND LAST_NODE_ID = #{condition.lastNodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastNodeName !=null and condition.lastNodeName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastNodeName)">
+             AND LAST_NODE_NAME LIKE #{condition.lastNodeName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND LAST_NODE_NAME = #{condition.lastNodeName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.endTime !=null and condition.endTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.endTime)">
+             AND END_TIME LIKE #{condition.endTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND END_TIME = #{condition.endTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+  </select>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM N_WF_NODE_HIS WHERE INSTANCE_ID IN
+    <foreach close=")" collection="@cn.com.yusys.yusp.workflow.util.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+</mapper>

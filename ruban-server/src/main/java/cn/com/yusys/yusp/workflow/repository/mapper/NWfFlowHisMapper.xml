@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.NWfFlowHisMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.workflow.domain.NWfFlowHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="FLOW_ID" jdbcType="NUMERIC" property="flowId" />
+    <result column="SYSTEM_ID" jdbcType="VARCHAR" property="systemId" />
+    <result column="FLOW_STATE" jdbcType="VARCHAR" property="flowState" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="FLOW_VERSION" jdbcType="NUMERIC" property="flowVersion" />
+    <result column="FLOW_NAME" jdbcType="VARCHAR" property="flowName" />
+    <result column="FLOW_ADMIN" jdbcType="VARCHAR" property="flowAdmin" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.yusys.yusp.workflow.domain.NWfFlowHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="FLOW_CONTENT" jdbcType="CLOB" property="flowContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    FLOW_ID, SYSTEM_ID, FLOW_STATE, START_TIME, FLOW_VERSION, FLOW_NAME, FLOW_ADMIN
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    FLOW_CONTENT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from N_WF_FLOW_HIS
+    where FLOW_ID = #{flowId,jdbcType=NUMERIC}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from N_WF_FLOW_HIS
+    where FLOW_ID = #{flowId,jdbcType=NUMERIC}
+  </delete>
+  <insert id="insert" parameterType="cn.com.yusys.yusp.workflow.domain.NWfFlowHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_FLOW_HIS (FLOW_ID, SYSTEM_ID, FLOW_STATE, 
+      START_TIME, FLOW_VERSION, FLOW_NAME, 
+      FLOW_ADMIN, FLOW_CONTENT)
+    values (#{flowId,jdbcType=NUMERIC}, #{systemId,jdbcType=VARCHAR}, #{flowState,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR}, #{flowVersion,jdbcType=NUMERIC}, #{flowName,jdbcType=VARCHAR}, 
+      #{flowAdmin,jdbcType=VARCHAR}, #{flowContent,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfFlowHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_FLOW_HIS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowId != null">
+        FLOW_ID,
+      </if>
+      <if test="systemId != null">
+        SYSTEM_ID,
+      </if>
+      <if test="flowState != null">
+        FLOW_STATE,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="flowVersion != null">
+        FLOW_VERSION,
+      </if>
+      <if test="flowName != null">
+        FLOW_NAME,
+      </if>
+      <if test="flowAdmin != null">
+        FLOW_ADMIN,
+      </if>
+      <if test="flowContent != null">
+        FLOW_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowId != null">
+        #{flowId,jdbcType=NUMERIC},
+      </if>
+      <if test="systemId != null">
+        #{systemId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowState != null">
+        #{flowState,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="flowVersion != null">
+        #{flowVersion,jdbcType=NUMERIC},
+      </if>
+      <if test="flowName != null">
+        #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="flowAdmin != null">
+        #{flowAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="flowContent != null">
+        #{flowContent,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfFlowHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_FLOW_HIS
+    <set>
+      <if test="systemId != null">
+        SYSTEM_ID = #{systemId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowState != null">
+        FLOW_STATE = #{flowState,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="flowVersion != null">
+        FLOW_VERSION = #{flowVersion,jdbcType=NUMERIC},
+      </if>
+      <if test="flowName != null">
+        FLOW_NAME = #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="flowAdmin != null">
+        FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="flowContent != null">
+        FLOW_CONTENT = #{flowContent,jdbcType=CLOB},
+      </if>
+    </set>
+    where FLOW_ID = #{flowId,jdbcType=NUMERIC}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.yusys.yusp.workflow.domain.NWfFlowHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_FLOW_HIS
+    set SYSTEM_ID = #{systemId,jdbcType=VARCHAR},
+      FLOW_STATE = #{flowState,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=VARCHAR},
+      FLOW_VERSION = #{flowVersion,jdbcType=NUMERIC},
+      FLOW_NAME = #{flowName,jdbcType=VARCHAR},
+      FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
+      FLOW_CONTENT = #{flowContent,jdbcType=CLOB}
+    where FLOW_ID = #{flowId,jdbcType=NUMERIC}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfFlowHis">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_FLOW_HIS
+    set SYSTEM_ID = #{systemId,jdbcType=VARCHAR},
+      FLOW_STATE = #{flowState,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=VARCHAR},
+      FLOW_VERSION = #{flowVersion,jdbcType=NUMERIC},
+      FLOW_NAME = #{flowName,jdbcType=VARCHAR},
+      FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR}
+    where FLOW_ID = #{flowId,jdbcType=NUMERIC}
+  </update>
+  <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
+    SELECT * FROM N_WF_FLOW_HIS
+    <where>
+      <if test="condition.flowId !=null and condition.flowId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowId)">
+             AND FLOW_ID LIKE #{condition.flowId,jdbcType=NUMERIC}
+          </when>
+          <otherwise>
+            AND FLOW_ID = #{condition.flowId,jdbcType=NUMERIC}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.systemId !=null and condition.systemId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.systemId)">
+             AND SYSTEM_ID LIKE #{condition.systemId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND SYSTEM_ID = #{condition.systemId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowState !=null and condition.flowState !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowState)">
+             AND FLOW_STATE LIKE #{condition.flowState,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_STATE = #{condition.flowState,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowVersion !=null and condition.flowVersion !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowVersion)">
+             AND FLOW_VERSION LIKE #{condition.flowVersion,jdbcType=NUMERIC}
+          </when>
+          <otherwise>
+            AND FLOW_VERSION = #{condition.flowVersion,jdbcType=NUMERIC}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowName !=null and condition.flowName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowName)">
+             AND FLOW_NAME LIKE #{condition.flowName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_NAME = #{condition.flowName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowAdmin !=null and condition.flowAdmin !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowAdmin)">
+             AND FLOW_ADMIN LIKE #{condition.flowAdmin,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_ADMIN = #{condition.flowAdmin,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowContent !=null and condition.flowContent !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowContent)">
+             AND FLOW_CONTENT LIKE #{condition.flowContent,jdbcType=CLOB}
+          </when>
+          <otherwise>
+            AND FLOW_CONTENT = #{condition.flowContent,jdbcType=CLOB}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+  </select>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM N_WF_FLOW_HIS WHERE FLOW_ID IN
+    <foreach close=")" collection="@cn.com.yusys.yusp.workflow.util.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+</mapper>

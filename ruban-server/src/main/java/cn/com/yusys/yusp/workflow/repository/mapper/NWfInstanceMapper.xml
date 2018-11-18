@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.NWfInstanceMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="INSTANCE_ID" jdbcType="VARCHAR" property="instanceId" />
+    <result column="FLOW_NAME" jdbcType="VARCHAR" property="flowName" />
+    <result column="FLOW_ID" jdbcType="VARCHAR" property="flowId" />
+    <result column="FLOW_ADMIN" jdbcType="VARCHAR" property="flowAdmin" />
+    <result column="FLOW_STARTER" jdbcType="VARCHAR" property="flowStarter" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="SYSTEM_ID" jdbcType="VARCHAR" property="systemId" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="FLOW_STATE" jdbcType="VARCHAR" property="flowState" />
+    <result column="BIZ_ID" jdbcType="VARCHAR" property="bizId" />
+    <result column="BIZ_USER_NAME" jdbcType="VARCHAR" property="bizUserName" />
+    <result column="BIZ_USER_ID" jdbcType="VARCHAR" property="bizUserId" />
+    <result column="FLOW_PARAM" jdbcType="VARCHAR" property="flowParam" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    INSTANCE_ID, FLOW_NAME, FLOW_ID, FLOW_ADMIN, FLOW_STARTER, START_TIME, SYSTEM_ID, 
+    ORG_ID, FLOW_STATE, BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, FLOW_PARAM
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from N_WF_INSTANCE
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from N_WF_INSTANCE
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_INSTANCE (INSTANCE_ID, FLOW_NAME, FLOW_ID, 
+      FLOW_ADMIN, FLOW_STARTER, START_TIME, 
+      SYSTEM_ID, ORG_ID, FLOW_STATE, 
+      BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, 
+      FLOW_PARAM)
+    values (#{instanceId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, 
+      #{flowAdmin,jdbcType=VARCHAR}, #{flowStarter,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
+      #{systemId,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{flowState,jdbcType=VARCHAR}, 
+      #{bizId,jdbcType=VARCHAR}, #{bizUserName,jdbcType=VARCHAR}, #{bizUserId,jdbcType=VARCHAR}, 
+      #{flowParam,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    insert into N_WF_INSTANCE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="instanceId != null">
+        INSTANCE_ID,
+      </if>
+      <if test="flowName != null">
+        FLOW_NAME,
+      </if>
+      <if test="flowId != null">
+        FLOW_ID,
+      </if>
+      <if test="flowAdmin != null">
+        FLOW_ADMIN,
+      </if>
+      <if test="flowStarter != null">
+        FLOW_STARTER,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="systemId != null">
+        SYSTEM_ID,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="flowState != null">
+        FLOW_STATE,
+      </if>
+      <if test="bizId != null">
+        BIZ_ID,
+      </if>
+      <if test="bizUserName != null">
+        BIZ_USER_NAME,
+      </if>
+      <if test="bizUserId != null">
+        BIZ_USER_ID,
+      </if>
+      <if test="flowParam != null">
+        FLOW_PARAM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="instanceId != null">
+        #{instanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowName != null">
+        #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="flowId != null">
+        #{flowId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowAdmin != null">
+        #{flowAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="flowStarter != null">
+        #{flowStarter,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="systemId != null">
+        #{systemId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowState != null">
+        #{flowState,jdbcType=VARCHAR},
+      </if>
+      <if test="bizId != null">
+        #{bizId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUserName != null">
+        #{bizUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUserId != null">
+        #{bizUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowParam != null">
+        #{flowParam,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_INSTANCE
+    <set>
+      <if test="flowName != null">
+        FLOW_NAME = #{flowName,jdbcType=VARCHAR},
+      </if>
+      <if test="flowId != null">
+        FLOW_ID = #{flowId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowAdmin != null">
+        FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="flowStarter != null">
+        FLOW_STARTER = #{flowStarter,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="systemId != null">
+        SYSTEM_ID = #{systemId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowState != null">
+        FLOW_STATE = #{flowState,jdbcType=VARCHAR},
+      </if>
+      <if test="bizId != null">
+        BIZ_ID = #{bizId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUserName != null">
+        BIZ_USER_NAME = #{bizUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bizUserId != null">
+        BIZ_USER_ID = #{bizUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="flowParam != null">
+        FLOW_PARAM = #{flowParam,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update N_WF_INSTANCE
+    set FLOW_NAME = #{flowName,jdbcType=VARCHAR},
+      FLOW_ID = #{flowId,jdbcType=VARCHAR},
+      FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
+      FLOW_STARTER = #{flowStarter,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=VARCHAR},
+      SYSTEM_ID = #{systemId,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      FLOW_STATE = #{flowState,jdbcType=VARCHAR},
+      BIZ_ID = #{bizId,jdbcType=VARCHAR},
+      BIZ_USER_NAME = #{bizUserName,jdbcType=VARCHAR},
+      BIZ_USER_ID = #{bizUserId,jdbcType=VARCHAR},
+      FLOW_PARAM = #{flowParam,jdbcType=VARCHAR}
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
+    SELECT * FROM N_WF_INSTANCE
+    <where>
+      <if test="condition.instanceId !=null and condition.instanceId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
+             AND INSTANCE_ID LIKE #{condition.instanceId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND INSTANCE_ID = #{condition.instanceId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowName !=null and condition.flowName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowName)">
+             AND FLOW_NAME LIKE #{condition.flowName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_NAME = #{condition.flowName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowId !=null and condition.flowId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowId)">
+             AND FLOW_ID LIKE #{condition.flowId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_ID = #{condition.flowId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowAdmin !=null and condition.flowAdmin !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowAdmin)">
+             AND FLOW_ADMIN LIKE #{condition.flowAdmin,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_ADMIN = #{condition.flowAdmin,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowStarter !=null and condition.flowStarter !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowStarter)">
+             AND FLOW_STARTER LIKE #{condition.flowStarter,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_STARTER = #{condition.flowStarter,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.systemId !=null and condition.systemId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.systemId)">
+             AND SYSTEM_ID LIKE #{condition.systemId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND SYSTEM_ID = #{condition.systemId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.orgId !=null and condition.orgId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.orgId)">
+             AND ORG_ID LIKE #{condition.orgId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND ORG_ID = #{condition.orgId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowState !=null and condition.flowState !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowState)">
+             AND FLOW_STATE LIKE #{condition.flowState,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_STATE = #{condition.flowState,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.bizId !=null and condition.bizId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.bizId)">
+             AND BIZ_ID LIKE #{condition.bizId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND BIZ_ID = #{condition.bizId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.bizUserName !=null and condition.bizUserName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.bizUserName)">
+             AND BIZ_USER_NAME LIKE #{condition.bizUserName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND BIZ_USER_NAME = #{condition.bizUserName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.bizUserId !=null and condition.bizUserId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.bizUserId)">
+             AND BIZ_USER_ID LIKE #{condition.bizUserId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND BIZ_USER_ID = #{condition.bizUserId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowParam !=null and condition.flowParam !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowParam)">
+             AND FLOW_PARAM LIKE #{condition.flowParam,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_PARAM = #{condition.flowParam,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+  </select>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM N_WF_INSTANCE WHERE INSTANCE_ID IN
+    <foreach close=")" collection="@cn.com.yusys.yusp.workflow.util.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
+      #{id,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+</mapper>
