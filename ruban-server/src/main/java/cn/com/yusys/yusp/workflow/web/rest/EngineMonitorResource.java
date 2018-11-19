@@ -14,7 +14,7 @@ import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
  */
 @RestController
 @RequestMapping("/ruban")
-public class EngineResource {
+public class EngineMonitorResource {
 	/**
 	 * 获取所有流程信息
 	 * @return
