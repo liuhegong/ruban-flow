@@ -99,6 +99,7 @@
   	</script>
 	<script type="text/javascript" src="./src/js/mxClient.js"></script>
 	<script type="text/javascript" src="./js/app.js"></script>
+	<script type="text/javascript" src="./js/studio.js"></script>
 	<script type="text/javascript">
 	var editor;
 	mxGraph.prototype.htmlLabels = true;
@@ -127,6 +128,7 @@
         return { 
             systemId:'cmis',
             userId:'admin',
+            orgId:'0000',
         	head:{
                 color:'#409eff'
             },
@@ -168,12 +170,13 @@
           			data.systemId = _self.systemId;
           			data.flowAdmin = _self.userId;
           			data.flowName = _self.form.flowName;
+          			data.orgId = _self.orgId;
           			this.dialogFormVisible = false;
           			$.ajax({ url:'/api/nwfflow/',headers:{'Content-Type': 'application/json;charset=UTF-8'},data:JSON.stringify(data), type:'POST', async:false, timeout:5000,success:function(data,textStatus,jqXHR){
           				_self.loadFlowData();
           				_self.$message('新增成功');
                 	},error:function(xhr,textStatus){
-                		
+                		this.$message({  type: 'warn', message: '新增失败' });	
                 	}});
           		} else {
             		return false;
@@ -182,14 +185,24 @@
         },
         deleteFlow: function(){
         	var _self = this;
-        	debugger
-          	if (_self.selectedFlowId !== '') {
-          		$.ajax({ url:'/api/nwfflow/delete/'+_self.selectedFlowId,headers:{'Content-Type': 'application/json;charset=UTF-8'}, type:'POST', async:false, timeout:5000,success:function(data,textStatus,jqXHR){
-          			_self.$message('删除成功');	
-          			_self.loadFlowData();
-                },error:function(xhr,textStatus){
-                		
-                }});
+        	if (_self.selectedFlowId !== '') {
+        		this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  }).then(() => {
+                	  $.ajax({ url:'/api/nwfflow/delete/'+_self.selectedFlowId,headers:{'Content-Type': 'application/json;charset=UTF-8'}, type:'POST', async:false, timeout:5000,success:function(data,textStatus,jqXHR){
+                			_self.$message('删除成功');	
+                			_self.loadFlowData();
+                      },error:function(xhr,textStatus){
+                    	  this.$message({  type: 'warn', message: '删除失败' });
+                      }});
+                  }).catch(() => {
+                    this.$message({
+                      type: 'info',
+                      message: '已取消删除'
+                    });          
+               });
           	} else {
           		_self.$message('选择一条流程图');
           	}
@@ -207,12 +220,21 @@
       			data.flowAdmin = _self.userId;
       			data.flowId = _self.selectedFlowId;
       			data.flowContent = contentStr;
-          		$.ajax({ url:'/api/nwfflow/update/',headers:{'Content-Type': 'application/json;charset=UTF-8'}, data:JSON.stringify(data),type:'POST', async:false, timeout:5000,success:function(data,textStatus,jqXHR){
-          			_self.$message('更新成功');	
-          			_self.loadFlowData();
-                },error:function(xhr,textStatus){
-                		
-                }});
+      			this.$confirm('此操作将永久更新运行中的此流程, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  }).then(() => {
+                	  $.ajax({ url:'/api/nwfflow/update/',headers:{'Content-Type': 'application/json;charset=UTF-8'}, data:JSON.stringify(data),type:'POST', async:false, timeout:5000,success:function(data,textStatus,jqXHR){
+                			_self.$message('更新成功');	
+                			_self.loadFlowData();
+                      },error:function(xhr,textStatus){
+                    	  this.$message({  type: 'warn', message: '更新失败' });	
+                      }});
+                  }).catch(() => {
+                    this.$message({  type: 'info', message: '已取消删除' });          
+               });
+      			
           	} else {
           		_self.$message('选择一条流程图');
           	}
@@ -225,7 +247,7 @@
           			_self.currentFlowContent = data.data.flowContent;
           			_self.loadXml(_self.currentFlowContent);
             },error:function(xhr,textStatus){
-                		
+            	this.$message({  type: 'warn', message: '获取流程图失败' });	 		
             }});
           	
         },
@@ -246,10 +268,31 @@
     
     // 节点编辑处理
     function actionDelage(graph,form,attr){
-    	if(attr.name == 'label'||attr.name == 'type'||attr.name == 'user'){
-    		return form.addText(attr.nodeName, attr.value);
-    	}
+    	console.info(studio);
     	console.log(arguments);
+    	debugger
+    	if(studio[attr.name]){
+    		var node = null;
+    		if(studio[attr.name].type == "select"){
+    			node = form.addCombo(studio[attr.name].name,false,false);
+    			for(var key in studio[attr.name].value) {
+    				if(key==attr.value){
+        				opt = form.addOption(node,studio[attr.name].value[key],key,true);
+    				}else{
+        				opt = form.addOption(node,studio[attr.name].value[key],key,false);
+    				}
+    			}
+    			if(studio[attr.name].readOnly){
+    				node.setAttribute("disabled", "disabled");
+	    		}
+    		}else{
+    			node = form.addText(studio[attr.name].name, attr.value,studio[attr.name].type);
+    			if(studio[attr.name].readOnly){
+        			node.setAttribute("readonly", "true");
+        		}
+    		}   		
+    		return node;
+    	}
     }
   	</script>
 </html>

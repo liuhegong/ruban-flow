@@ -45,7 +45,7 @@ public class OrgCache{
 		 */
 		List<WFSystem> systems = new ArrayList<WFSystem>(); 
 		orgCache.setSystems(systems);
-		File orgFloder = new File(path);
+		File orgFloder = new File(path+File.separator+"org");
 		if(orgFloder.isDirectory()&&orgFloder.exists()){
 			for(File file:orgFloder.listFiles()){
 				if(!file.getName().endsWith(".xml")){

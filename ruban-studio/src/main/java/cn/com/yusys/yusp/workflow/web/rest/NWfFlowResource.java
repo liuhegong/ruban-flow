@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.com.yusys.yusp.workflow.core.node.type.FlowState;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.FlowState;
 import cn.com.yusys.yusp.workflow.core.util.TimeUtil;
 import cn.com.yusys.yusp.workflow.domain.NWfFlow;
 import cn.com.yusys.yusp.workflow.domain.NWfFlowHis;
@@ -66,6 +66,12 @@ public class NWfFlowResource {
     @GetMapping("/{flowId}")
     public ResultDto<NWfFlow> show(@PathVariable Long flowId) {
         NWfFlow nWfFlow = nWfFlowService.selectByPrimaryKey(flowId);
+        if(null==nWfFlow.getFlowContent()||"".equals(nWfFlow.getFlowContent())){// 流程图内容为空，则根据流程id读文件
+        	String content = FileUtil.getFileContent(flowPath+File.separator+"dev"+File.separator+nWfFlow.getFlowId()+".xml");
+        	if(null!=content){
+        		nWfFlow.setFlowContent(content);
+        	}
+        }
         return new ResultDto<NWfFlow>(nWfFlow);
     }
 
@@ -84,11 +90,11 @@ public class NWfFlowResource {
     	nWfFlow.setFlowVersion(version+1l);
     	nWfFlowService.insert(nWfFlow);
     	   	
-    	NWfFlowHis record = new NWfFlowHis();
-    	BeanUtils.copyProperties(currentFlow, record);
-		nWfFlowHisService.insert(record);
+    	NWfFlowHis recordHis = new NWfFlowHis();
+    	BeanUtils.copyProperties(currentFlow, recordHis);
+		nWfFlowHisService.insert(recordHis);
     	
-		FileUtil.writeNewContentToFile(flowPath+File.separator+record.getFlowId()+".xml", record.getFlowContent());
+		FileUtil.writeNewContentToFile(flowPath+File.separator+"dev"+File.separator+nWfFlow.getFlowId()+".xml", nWfFlow.getFlowContent());
 		
         return new ResultDto<Integer>(0);
     }

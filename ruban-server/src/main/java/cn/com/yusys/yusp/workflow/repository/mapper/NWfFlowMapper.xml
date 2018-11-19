@@ -12,6 +12,7 @@
     <result column="FLOW_VERSION" jdbcType="NUMERIC" property="flowVersion" />
     <result column="FLOW_NAME" jdbcType="VARCHAR" property="flowName" />
     <result column="FLOW_ADMIN" jdbcType="VARCHAR" property="flowAdmin" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.yusys.yusp.workflow.domain.NWfFlow">
     <!--
@@ -23,7 +24,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    FLOW_ID, SYSTEM_ID, FLOW_STATE, START_TIME, FLOW_VERSION, FLOW_NAME, FLOW_ADMIN
+    FLOW_ID, SYSTEM_ID, FLOW_STATE, START_TIME, FLOW_VERSION, FLOW_NAME, FLOW_ADMIN, 
+    ORG_ID
   </sql>
   <sql id="Blob_Column_List">
     <!--
@@ -55,10 +57,12 @@
     -->
     insert into N_WF_FLOW (FLOW_ID, SYSTEM_ID, FLOW_STATE, 
       START_TIME, FLOW_VERSION, FLOW_NAME, 
-      FLOW_ADMIN, FLOW_CONTENT)
+      FLOW_ADMIN, ORG_ID, FLOW_CONTENT
+      )
     values (#{flowId,jdbcType=NUMERIC}, #{systemId,jdbcType=VARCHAR}, #{flowState,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=VARCHAR}, #{flowVersion,jdbcType=NUMERIC}, #{flowName,jdbcType=VARCHAR}, 
-      #{flowAdmin,jdbcType=VARCHAR}, #{flowContent,jdbcType=CLOB})
+      #{flowAdmin,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{flowContent,jdbcType=CLOB}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfFlow">
     <!--
@@ -87,6 +91,9 @@
       <if test="flowAdmin != null">
         FLOW_ADMIN,
       </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
       <if test="flowContent != null">
         FLOW_CONTENT,
       </if>
@@ -112,6 +119,9 @@
       </if>
       <if test="flowAdmin != null">
         #{flowAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
       </if>
       <if test="flowContent != null">
         #{flowContent,jdbcType=CLOB},
@@ -142,6 +152,9 @@
       <if test="flowAdmin != null">
         FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
       </if>
+      <if test="orgId != null">
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
       <if test="flowContent != null">
         FLOW_CONTENT = #{flowContent,jdbcType=CLOB},
       </if>
@@ -159,6 +172,7 @@
       FLOW_VERSION = #{flowVersion,jdbcType=NUMERIC},
       FLOW_NAME = #{flowName,jdbcType=VARCHAR},
       FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
       FLOW_CONTENT = #{flowContent,jdbcType=CLOB}
     where FLOW_ID = #{flowId,jdbcType=NUMERIC}
   </update>
@@ -172,7 +186,8 @@
       START_TIME = #{startTime,jdbcType=VARCHAR},
       FLOW_VERSION = #{flowVersion,jdbcType=NUMERIC},
       FLOW_NAME = #{flowName,jdbcType=VARCHAR},
-      FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR}
+      FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR}
     where FLOW_ID = #{flowId,jdbcType=NUMERIC}
   </update>
   <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
@@ -245,6 +260,16 @@
           </when>
           <otherwise>
             AND FLOW_ADMIN = #{condition.flowAdmin,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.orgId !=null and condition.orgId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.orgId)">
+             AND ORG_ID LIKE #{condition.orgId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND ORG_ID = #{condition.orgId,jdbcType=VARCHAR}
           </otherwise>
         </choose>
       </if>

@@ -3,7 +3,8 @@ package cn.com.yusys.yusp.workflow.core.engine;
 import java.io.Serializable;
 import java.util.List;
 
-import cn.com.yusys.yusp.workflow.core.flow.FlowInfo;
+import cn.com.yusys.yusp.workflow.core.engine.flow.FlowInfo;
+
 /**
  * 引擎下有多个flow
  * @author figue

@@ -2,8 +2,10 @@ package cn.com.yusys.yusp.workflow.util;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
 
@@ -44,5 +46,39 @@ public class FileUtil {
 				writer.close();
 				write.close();
 			}	
+	}
+    
+    /**
+     * 读取文件内容
+     * @param filePath
+     * @return
+     * @throws Exception
+     */
+	public static String getFileContent(String filePath) {
+		String xmlString = null;
+		byte[] strBuffer = null;
+		int flen = 0;
+		File xmlfile = new File(filePath);
+		if(!xmlfile.exists()){
+			return null;
+		}
+		InputStream in = null;
+		try {
+			in = new FileInputStream(xmlfile);
+			flen = (int) xmlfile.length();
+			strBuffer = new byte[flen];
+			in.read(strBuffer, 0, flen);
+			xmlString = new String(strBuffer,"UTF-8");
+			System.out.println("【成功读到文件内容】【" + filePath + "】"+"/n"+xmlString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
+		return xmlString;
 	}
 }

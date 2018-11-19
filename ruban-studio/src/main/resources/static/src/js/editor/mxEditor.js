@@ -2518,16 +2518,20 @@ mxEditor.prototype.createProperties = function (cell)
 			if (geo != null)
 			{
 				yField = form.addText('top', geo.y);
+				yField.setAttribute('readonly', 'true');
 				xField = form.addText('left', geo.x);
+				xField.setAttribute('readonly', 'true');
 				widthField = form.addText('width', geo.width);
+				widthField.setAttribute('readonly', 'true');
 				heightField = form.addText('height', geo.height);
+				heightField.setAttribute('readonly', 'true');
 			}
 		}
 		
 		// Adds a field for the cell style			
 		var tmp = model.getStyle(cell);
 		var style = form.addText('Style', tmp || '');
-		
+		style.setAttribute('readonly', 'true');
 		// Creates textareas for each attribute of the
 		// user object within the cell
 		var attrs = value.attributes;
@@ -2541,7 +2545,7 @@ mxEditor.prototype.createProperties = function (cell)
 			var val = attrs[i].value; // modify wangyf10 节点属性配置扩展
 			texts[i] =_action ? 
 					window[_action].call(null,this.graph,form,attrs[i])
-					: form.addTextarea(attrs[i].nodeName, val, (attrs[i].nodeName == 'label') ? 4 : 2);
+					: form.addText(attrs[i].nodeName, val, (attrs[i].nodeName == 'label') ? 4 : 2);
 		}
 		
 		// Adds an OK and Cancel button to the dialog

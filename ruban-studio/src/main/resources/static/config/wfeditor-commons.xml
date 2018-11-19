@@ -24,11 +24,11 @@
 			</Group>
 		</add>
 		<add as="edge">
-			<Edge label="" description="">
+			<route label="" isContinueBeanId="" action="actionDelage">
 				<mxCell edge="1">
-					<mxGeometry as="geometry" relative="1"/>
+					<mxGeometry as="geometry" isRelative="1"/>
 				</mxCell>
-			</Edge>
+			</route>
 		</add>
 		<add as="swimlane">
 			<Swimlane label="Swimlane" description="" href="">
@@ -52,65 +52,65 @@
 			</Subprocess>
 		</add>
 		<add as="node-0">
-			<node label="普通节点" type="0"  user="45" return="" action="actionDelage">
+			<node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-1">
-			<node label="单选节点" type="1">
+			<node label="单选节点" nodeType="1" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-2">
-			<node label="多选节点" type="2">
+			<node label="多选节点" nodeType="2" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-3">
-			<node label="条件单选节点" type="3">
+			<node label="条件单选节点" nodeType="3" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-4">
-			<node label="条件多选节点" type="4">
+			<node label="条件多选节点" nodeType="4" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-5">
-			<node label="自动运行节点" type="5">
+			<node label="自动运行节点" nodeType="5" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-6">
-			<node label="汇总节点" type="C">
+			<node label="汇总节点" nodeType="C"  action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-7">
-			<node label="开始节点" type="S">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+			<node label="开始节点" nodeType="S"  action="actionDelage">
+				<mxCell vertex="1" style="symbol;image=images/symbols/event.png">		
+					<mxGeometry as="geometry" width="32" height="32"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-8">
-			<node label="结束节点" type="E">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+			<node label="结束节点" nodeType="E"  action="actionDelage">
+				<mxCell vertex="1" style="symbol;image=images/symbols/event_end.png">		
+					<mxGeometry as="geometry" width="32" height="32"/>
 				</mxCell>
 			</node>
 		</add>

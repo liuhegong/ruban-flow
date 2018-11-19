@@ -1,4 +1,4 @@
-package cn.com.yusys.yusp.workflow.core.node.type;
+package cn.com.yusys.yusp.workflow.core.engine.node.type;
 
 public class NodeState {
 		

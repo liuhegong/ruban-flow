@@ -16,22 +16,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.com.yusys.yusp.workflow.core.Cons;
+import cn.com.yusys.yusp.workflow.core.engine.flow.FlowInfo;
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
+import cn.com.yusys.yusp.workflow.core.engine.node.NodeInfo;
+import cn.com.yusys.yusp.workflow.core.engine.node.RouteInfo;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.FlowState;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeState;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeType;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.OpUsersType;
 import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
-import cn.com.yusys.yusp.workflow.core.flow.FlowInfo;
-import cn.com.yusys.yusp.workflow.core.node.NodeInfo;
-import cn.com.yusys.yusp.workflow.core.node.RouteInfo;
-import cn.com.yusys.yusp.workflow.core.node.type.FlowState;
-import cn.com.yusys.yusp.workflow.core.node.type.NodeState;
-import cn.com.yusys.yusp.workflow.core.node.type.NodeType;
-import cn.com.yusys.yusp.workflow.core.node.type.OpUsersType;
 import cn.com.yusys.yusp.workflow.core.util.TimeUtil;
 import cn.com.yusys.yusp.workflow.core.util.UUIDUtil;
 import cn.com.yusys.yusp.workflow.domain.NWfComment;
 import cn.com.yusys.yusp.workflow.domain.NWfInstance;
 import cn.com.yusys.yusp.workflow.domain.NWfNode;
 import cn.com.yusys.yusp.workflow.domain.NWfNodeHis;
-import cn.com.yusys.yusp.workflow.domain.NWfUserDone;
 import cn.com.yusys.yusp.workflow.domain.NWfUserTodo;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.dto.NextNodeInfoDto;
@@ -540,14 +539,18 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		
 		// 新增节点信息
 		NWfNode nodeInfo = new NWfNode();
-		NodeInfo nextNodeInfo =  EngineCache.getInstance().getNodeInfo(nextNodeId);
-		BeanUtils.copyProperties(nextNodeInfo,nodeInfo);
+		NodeInfo nextNodeInfo = EngineCache.getInstance().getNodeInfo(nextNodeId);
+		BeanUtils.copyProperties(nextNodeInfo, nodeInfo);
 		nodeInfo.setInstanceId(instanceId);
 		nodeInfo.setNodeState(NodeState.RUN);
 		nodeInfo.setOrgId(orgId);
 		nodeInfo.setLastNodeId(currentNodeInfo.getNodeId());
 		nodeInfo.setLastNodeName(currentNodeInfo.getNodeName());
 		nodeInfo.setStartTime(completeTime);
+		NWfNode nextNodeInfoT = nodeService.selectByPrimaryKey(instanceId, nextNodeId);
+		if (null != nextNodeInfoT) {// 节点还有未处理的实例时，先删除
+			nodeService.deleteByPrimaryKey(instanceId, nextNodeId);
+		}
 		nodeService.insertSelective(nodeInfo);
 		
 		// 用户待办信息迁移为已办
@@ -572,6 +575,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			userTodeNew.add(userTodo);
 		}
 		// 新增用户待办信息
+		workflowBackUpService.deleteUserTodo(instanceId,nextNodeId);// 删除下一节点存在的待办【如打回后重新回到的未处理的节点】
 		workflowBackUpService.insertUserTodoBatch(userTodeNew);
 		
 		re.setTip(Cons.SUCCESS_MSG5);

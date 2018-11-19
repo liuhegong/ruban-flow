@@ -6,10 +6,5 @@
     <Layer label="Default Layer" id="1">
       <mxCell parent="0"/>
     </Layer>
-    <node label="多选节点" type="2" id="4">
-      <mxCell style="rounded" vertex="1" parent="1">
-        <mxGeometry x="330" y="100" width="80" height="30" as="geometry"/>
-      </mxCell>
-    </node>
   </root>
 </mxGraphModel>

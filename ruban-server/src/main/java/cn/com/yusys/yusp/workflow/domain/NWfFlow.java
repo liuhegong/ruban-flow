@@ -52,6 +52,12 @@ public class NWfFlow implements Serializable {
     private String flowAdmin;
 
     /**
+     * 管理员机构id
+     */
+    @Column(name = "ORG_ID")
+    private String orgId;
+
+    /**
      * 流程图内容
      */
     @Column(name = "FLOW_CONTENT")
@@ -186,6 +192,24 @@ public class NWfFlow implements Serializable {
     }
 
     /**
+     * 获取管理员机构id
+     *
+     * @return ORG_ID - 管理员机构id
+     */
+    public String getOrgId() {
+        return orgId;
+    }
+
+    /**
+     * 设置管理员机构id
+     *
+     * @param orgId 管理员机构id
+     */
+    public void setOrgId(String orgId) {
+        this.orgId = orgId == null ? null : orgId.trim();
+    }
+
+    /**
      * 获取流程图内容
      *
      * @return FLOW_CONTENT - 流程图内容
@@ -222,6 +246,7 @@ public class NWfFlow implements Serializable {
             && (this.getFlowVersion() == null ? other.getFlowVersion() == null : this.getFlowVersion().equals(other.getFlowVersion()))
             && (this.getFlowName() == null ? other.getFlowName() == null : this.getFlowName().equals(other.getFlowName()))
             && (this.getFlowAdmin() == null ? other.getFlowAdmin() == null : this.getFlowAdmin().equals(other.getFlowAdmin()))
+            && (this.getOrgId() == null ? other.getOrgId() == null : this.getOrgId().equals(other.getOrgId()))
             && (this.getFlowContent() == null ? other.getFlowContent() == null : this.getFlowContent().equals(other.getFlowContent()));
     }
 
@@ -236,6 +261,7 @@ public class NWfFlow implements Serializable {
         result = prime * result + ((getFlowVersion() == null) ? 0 : getFlowVersion().hashCode());
         result = prime * result + ((getFlowName() == null) ? 0 : getFlowName().hashCode());
         result = prime * result + ((getFlowAdmin() == null) ? 0 : getFlowAdmin().hashCode());
+        result = prime * result + ((getOrgId() == null) ? 0 : getOrgId().hashCode());
         result = prime * result + ((getFlowContent() == null) ? 0 : getFlowContent().hashCode());
         return result;
     }
@@ -253,6 +279,7 @@ public class NWfFlow implements Serializable {
         sb.append(", flowVersion=").append(flowVersion);
         sb.append(", flowName=").append(flowName);
         sb.append(", flowAdmin=").append(flowAdmin);
+        sb.append(", orgId=").append(orgId);
         sb.append(", flowContent=").append(flowContent);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

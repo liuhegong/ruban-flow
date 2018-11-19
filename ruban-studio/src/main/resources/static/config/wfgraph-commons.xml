@@ -70,7 +70,7 @@
 			}
 		]]></add>
 		<root>
-			<Workflow label="工作流" description="" href="" id="0"/>
+			<!-- <wf label="工作流" id="0"/> -->
 			<Layer label="Default Layer">
 				<mxCell parent="0"/>
 			</Layer>

@@ -1,4 +1,4 @@
-package cn.com.yusys.yusp.workflow.core.node;
+package cn.com.yusys.yusp.workflow.core.engine.node;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package cn.com.yusys.yusp.workflow.core.flow;
+package cn.com.yusys.yusp.workflow.core.engine.flow;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,8 +9,9 @@ import org.apache.commons.logging.LogFactory;
 import com.figue.channel.transform.annotation.parse.BeanClass;
 import com.figue.channel.transform.annotation.parse.xml.XmlPath;
 
-import cn.com.yusys.yusp.workflow.core.node.NodeInfo;
-import cn.com.yusys.yusp.workflow.core.node.type.NodeType;
+import cn.com.yusys.yusp.workflow.core.engine.node.NodeInfo;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeType;
+
 /**
  * 流程基本信息，流程由多个节点组成
  * @author figue

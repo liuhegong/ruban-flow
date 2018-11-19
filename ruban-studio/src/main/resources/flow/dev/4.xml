@@ -1,0 +1,35 @@
+<mxGraphModel>
+  <root>
+    <Workflow label="MyWorkflow" description="" href="" id="0">
+      <mxCell/>
+    </Workflow>
+    <Layer label="Default Layer" id="1">
+      <mxCell parent="0"/>
+    </Layer>
+    <node label="单选节点2" nodeType="1" nodeSign="a" opUsersType="0" nodeUser="xxxx" computeType="2" handleType="0" isEndBeanId="b" bizBeanId="c" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="d" nodeLevel="0" action="actionDelage" id="111">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="330" y="150" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="开始节点" nodeType="S" action="actionDelage" id="112">
+      <mxCell style="symbol;image=images/symbols/event.png" vertex="1" parent="1">
+        <mxGeometry x="160" y="160" width="32" height="32" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="结束节点" nodeType="E" action="actionDelage" id="113">
+      <mxCell style="symbol;image=images/symbols/event_end.png" vertex="1" parent="1">
+        <mxGeometry x="570" y="160" width="32" height="32" as="geometry"/>
+      </mxCell>
+    </node>
+    <route label="" isContinueBeanId="" action="actionDelage" id="114">
+      <mxCell edge="1" parent="1" source="112" target="111">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="116">
+      <mxCell edge="1" parent="1" source="111" target="113">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+  </root>
+</mxGraphModel>

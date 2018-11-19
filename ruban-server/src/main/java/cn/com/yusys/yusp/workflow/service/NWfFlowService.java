@@ -56,6 +56,5 @@ public class NWfFlowService {
     
     public Integer maxFlowId(){
     	return nWfFlowMapper.maxFlowId();
-    }  
-    
+    } 
 }

@@ -10,10 +10,10 @@ import org.apache.commons.logging.LogFactory;
 import com.figue.channel.transform.transform.xml.XmlTransform;
 
 import cn.com.yusys.yusp.workflow.core.engine.EngineInfo;
+import cn.com.yusys.yusp.workflow.core.engine.flow.FlowInfo;
+import cn.com.yusys.yusp.workflow.core.engine.node.NodeInfo;
 import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
-import cn.com.yusys.yusp.workflow.core.flow.FlowInfo;
-import cn.com.yusys.yusp.workflow.core.node.NodeInfo;
-import cn.com.yusys.yusp.workflow.core.org.WFSystem;
+
 
 /**
  * 获取流程信息到缓存
@@ -41,7 +41,7 @@ public class EngineCache{
 		List<FlowInfo> flows = new ArrayList<FlowInfo>();
 		engineInfo.setFlows(flows);
 		
-		File floder = new File(path);
+		File floder = new File(path+File.separator+"prod");
 		if(floder.isDirectory()&&floder.exists()){
 			for(File file:floder.listFiles()){
 				if(!file.getName().endsWith(".xml")){

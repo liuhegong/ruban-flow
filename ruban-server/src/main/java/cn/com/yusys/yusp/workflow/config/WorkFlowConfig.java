@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
+import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
 import cn.com.yusys.yusp.workflow.core.org.OrgCache;
 import cn.com.yusys.yusp.workflow.service.impl.WorkflowUserServiceImpl;
 
@@ -14,20 +15,22 @@ public class WorkFlowConfig {
 	@Value("${flow.path}")
 	private String flowPath = null;
 	
-	@Value("${org.path}")
-	private String orgPath = null;
-	
 	@Bean
 	public EngineCache initWorkFlowEngine(){
 		EngineCache engineCache = EngineCache.getInstance();
-		engineCache.init(flowPath);
+		try {
+			engineCache.init(flowPath);
+		} catch (WorkflowException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return engineCache;
 	}
 	
 	@Bean
 	public OrgCache initWorkFlowOrgCache(){
 		OrgCache engineCache = OrgCache.getInstance();
-		engineCache.init(orgPath);
+		engineCache.init(flowPath);
 		
 		WorkflowUserServiceImpl hh = new WorkflowUserServiceImpl();
 		hh.getUsersByOrgId("cmis", "2-1");
