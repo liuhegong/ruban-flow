@@ -24,55 +24,56 @@ public class NodeInfo implements Serializable{
 	/**
 	 * 节点类型
 	 */
-	@XmlPath(valueAttr="@type")
+	@XmlPath(valueAttr="@nodeType")
 	private String nodeType;
 	
 	/**
 	 * 节点标识
 	 */
-	@XmlPath(value="property[@name='nodesign']",valueAttr="@value")
+	@XmlPath(valueAttr="@nodeSign")
 	private String nodeSign;
 
 	
 	/**
 	 * 办理类型
 	 */
-	@XmlPath(value="property[@name='nodetransacttype']",valueAttr="@value")
+	@XmlPath(valueAttr="@handleType")
 	private String handleType;
 	
 	/**
 	 * 节点类型为【多人顺序办理可条件结束】时才生效
 	 */
+	@XmlPath(valueAttr="@isEndBeanId")
 	private String isEndBeanId;
 
 	/**
 	 *  运行到此节点业务后处理
 	 */
-	@XmlPath(value="property[@name='noderunscript']",valueAttr="@value")
+	@XmlPath(valueAttr="@bizBeanId")
 	private String bizBeanId;
 	
 	/**
 	 * 节点处理人
 	 */
-	@XmlPath(value="property[@name='nodeuserslist']",valueAttr="@value")
+	@XmlPath(valueAttr="@nodeUser")
 	private String nodeUser;
 	
 	/**
 	 * 办理人员如何指定
 	 */
-	@XmlPath(value="property[@name='nodeusersassign']",valueAttr="@value")
+	@XmlPath(valueAttr="@opUsersType")
 	private String opUsersType;
 	
 	/**
 	 * 人员如何计算
 	 */
-	@XmlPath(value="property[@name='nodeuserscompute']",valueAttr="@value")
+	@XmlPath(valueAttr="@computeType")
 	private String computeType;
 	
 	/**
 	 * 重办人员选择
 	 */
-	@XmlPath(value="property[@name='repeatersign']",valueAttr="@value")
+	@XmlPath(valueAttr="@reDoUserSelect")
 	private String reDoUserSelect;
 	
 	/**
@@ -84,83 +85,86 @@ public class NodeInfo implements Serializable{
 	/**
 	 * 拿回
 	 */
-	@XmlPath(value="property[@name='noderecallset']",valueAttr="@value")
+	@XmlPath(valueAttr="@tackBack")
 	private String tackBack;
 	/**
 	 * 打回
 	 */
-	@XmlPath(value="property[@name='nodecallbackset']",valueAttr="@value")
+	@XmlPath(valueAttr="@callBack")
 	private String callBack ;
 	/**
 	 * 退回
 	 */
-	@XmlPath(value="property[@name='nodereturnbackset']",valueAttr="@value")
+	@XmlPath(valueAttr="@returnBack")
 	private String returnBack ;
 	
 	
 	/**
 	 * 催办
 	 */
-	@XmlPath(value="property[@name='nodeurgeset']",valueAttr="@value")
+	@XmlPath(valueAttr="@urged")
 	private String urged ;
 	/**
 	 * 转办
 	 */
-	@XmlPath(value="property[@name='nodechangeset']",valueAttr="@value")
+	@XmlPath(valueAttr="@change")
 	private String change ;
 	/**
 	 * 协办
 	 */
-	@XmlPath(value="property[@name='nodeassist']",valueAttr="@value")
+	@XmlPath(valueAttr="@assist")
 	private String assist ;
 	/**
 	 * 否决
 	 */
-	@XmlPath(value="property[@name='$ext_canexe20']",valueAttr="@value")
+	@XmlPath(valueAttr="@refuse")
 	private String refuse ;
 	/**
 	 * 跳转
 	 */
-	@XmlPath(value="property[@name='nodejumpset']",valueAttr="@value")
+	@XmlPath(valueAttr="@jump")
 	private String jump  ;
 	
 	/**
 	 * 委托
 	 */
-	//@XmlPath(value="property[@name='entrust']",valueAttr="@value")
+	@XmlPath(valueAttr="@entrust")
 	private String entrust ;
 	
 	/**
 	 * 委托人员
 	 */
-	//@XmlPath(value="property[@name='entrustusers']",valueAttr="@value")
+	@XmlPath(valueAttr="@entrustUsers")
 	private String entrustUsers;
 	
 	/**
 	 * 抄送
 	 */
-	@XmlPath(value="property[@name='nodeannounceset']",valueAttr="@value")
+	@XmlPath(valueAttr="@copy")
 	private String copy ;
 	
 	/**
 	 * 抄送人员，允许【抄送】时才生效
 	 */
-	@XmlPath(value="property[@name='nodeannounceuser']",valueAttr="@value")
+	@XmlPath(valueAttr="@copyUsers")
 	private String copyUsers;
 	
 	/**
 	 * 待办通知方式  0.不通知;1.消息通知;2.邮件通知;3.短信通知;4.所有方式通知
 	 */
+	@XmlPath(valueAttr="@noticeType")
 	private String noticeType = null;
 
 	/**
 	 * 节点级别
 	 */
+	@XmlPath(valueAttr="@nodeLevel")
 	private String nodeLevel = null;
 	
 	/**
 	 * 待办人员分配策略
 	 */
+	@XmlPath(valueAttr="@strategyBeanId")
 	private String strategyBeanId = null;
 	
 	public String getNodeId() {
@@ -341,4 +345,16 @@ public class NodeInfo implements Serializable{
 	public void setStrategyBeanId(String strategyBeanId) {
 		this.strategyBeanId = strategyBeanId;
 	}
+	@Override
+	public String toString() {
+		return "NodeInfo [nodeId=" + nodeId + ", nodeName=" + nodeName + ", nodeType=" + nodeType + ", nodeSign="
+				+ nodeSign + ", handleType=" + handleType + ", isEndBeanId=" + isEndBeanId + ", bizBeanId=" + bizBeanId
+				+ ", nodeUser=" + nodeUser + ", opUsersType=" + opUsersType + ", computeType=" + computeType
+				+ ", reDoUserSelect=" + reDoUserSelect + ", routeInfos=" + routeInfos + ", tackBack=" + tackBack
+				+ ", callBack=" + callBack + ", returnBack=" + returnBack + ", urged=" + urged + ", change=" + change
+				+ ", assist=" + assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust
+				+ ", entrustUsers=" + entrustUsers + ", copy=" + copy + ", copyUsers=" + copyUsers + ", noticeType="
+				+ noticeType + ", nodeLevel=" + nodeLevel + ", strategyBeanId=" + strategyBeanId + "]";
+	}
+	
 }

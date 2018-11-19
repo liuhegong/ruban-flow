@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.FlowState;
+import cn.com.yusys.yusp.workflow.core.studio.Flow;
 import cn.com.yusys.yusp.workflow.core.util.TimeUtil;
 import cn.com.yusys.yusp.workflow.domain.NWfFlow;
 import cn.com.yusys.yusp.workflow.domain.NWfFlowHis;
@@ -94,8 +96,17 @@ public class NWfFlowResource {
     	BeanUtils.copyProperties(currentFlow, recordHis);
 		nWfFlowHisService.insert(recordHis);
     	
+		// 写入流程图绘制文件
 		FileUtil.writeNewContentToFile(flowPath+File.separator+"dev"+File.separator+nWfFlow.getFlowId()+".xml", nWfFlow.getFlowContent());
 		
+		// 生成新的流程图可以识别的文件
+		Flow flow = new Flow();
+		flow.setAdmin(currentFlow.getFlowAdmin());
+		flow.setFlowId(currentFlow.getFlowId()+"");
+		flow.setFlowName(currentFlow.getFlowName());
+		flow.setOrgId(currentFlow.getOrgId());
+		flow.setSystemId(currentFlow.getSystemId());
+		EngineCache.generateFlowXml(flow);
         return new ResultDto<Integer>(0);
     }
 
@@ -104,4 +115,5 @@ public class NWfFlowResource {
         int result = nWfFlowService.deleteByPrimaryKey(flowId);
         return new ResultDto<Integer>(result);
     }
+    
 }

@@ -32,6 +32,6 @@ public class FlowParser {
 	}
 	
 	public static void main(String[] args) {
-		FlowParser.parseXml("F:\\workspacecmis4cmismaven4.6-springboot2.0-ruban\\ruban-flow\\ruban-studio\\src\\main\\resources\\flow\\dev\\4.xml");
+		FlowParser.parseXml("F:\\workspacecmis4cmismaven4.6-springboot2.0-ruban\\ruban-flow\\ruban-studio\\src\\main\\resources\\flow\\dev\\2.xml");
 	}
 }

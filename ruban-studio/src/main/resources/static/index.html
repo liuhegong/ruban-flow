@@ -156,7 +156,7 @@
         	$.ajax({ url:'/api/nwfflow/?systemId='+_self.systemId+'&userId='+_self.userId, type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
         		_self.flows=data.data;
         	},error:function(xhr,textStatus){
-        		
+        		_self.$message({  type: 'warn', message: '获取流程信息失败' });
         	}});
         },
         createFlow:function(){
@@ -176,7 +176,7 @@
           				_self.loadFlowData();
           				_self.$message('新增成功');
                 	},error:function(xhr,textStatus){
-                		this.$message({  type: 'warn', message: '新增失败' });	
+                		_self.$message({  type: 'warn', message: '新增失败' });	
                 	}});
           		} else {
             		return false;
@@ -220,6 +220,7 @@
       			data.flowAdmin = _self.userId;
       			data.flowId = _self.selectedFlowId;
       			data.flowContent = contentStr;
+      			data.orgId = _self.orgId;
       			this.$confirm('此操作将永久更新运行中的此流程, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -229,10 +230,10 @@
                 			_self.$message('更新成功');	
                 			_self.loadFlowData();
                       },error:function(xhr,textStatus){
-                    	  this.$message({  type: 'warn', message: '更新失败' });	
+                    	  _self.$message({  type: 'warn', message: '更新失败' });	
                       }});
                   }).catch(() => {
-                    this.$message({  type: 'info', message: '已取消删除' });          
+                	  _self.$message({  type: 'info', message: '已取消删除' });          
                });
       			
           	} else {
@@ -241,13 +242,12 @@
         },
         getFlow: function(flowId){
         	var _self = this;
-          	        		
           	$.ajax({ url:'/api/nwfflow/'+flowId,headers:{'Content-Type': 'application/json;charset=UTF-8'},type:'GET', async:false, timeout:5000,success:function(data,textStatus,jqXHR){
           			console.info(data.data.flowContent);
           			_self.currentFlowContent = data.data.flowContent;
           			_self.loadXml(_self.currentFlowContent);
             },error:function(xhr,textStatus){
-            	this.$message({  type: 'warn', message: '获取流程图失败' });	 		
+            	_self.$message({  type: 'warn', message: '获取流程图失败' });	 		
             }});
           	
         },

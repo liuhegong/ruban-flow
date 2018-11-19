@@ -17,7 +17,7 @@ import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeType;
  * @author figue
  *
  */
-@XmlPath("wfs/wf")
+@XmlPath("wf")
 public class FlowInfo implements Serializable{
 	
 	private static final long serialVersionUID = -6070493386935907542L;
@@ -33,32 +33,21 @@ public class FlowInfo implements Serializable{
 	/**
 	 * 所属系统id
 	 */
-	@XmlPath(valueAttr="@sysid")
+	@XmlPath(valueAttr="@systemId")
 	private String systemId;
 	
 	/**
 	 * 所属机构id
 	 */
-	@XmlPath(valueAttr="@orgid")
+	@XmlPath(valueAttr="@orgId")
 	private String orgId;
 	
 	/**
 	 * 管理员
 	 */
-	@XmlPath(value="property[@name='author']",valueAttr="@value")
+	@XmlPath(valueAttr="@admin")
 	private String admin;
 	
-	/**
-	 * 挂起
-	 */
-	@XmlPath(value="property[@name='wfhangup']",valueAttr="@value")
-	private String hangUp ;
-	
-	/**
-	 * 唤醒
-	 */
-	@XmlPath(value="property[@name='wfwake']",valueAttr="@value")
-	private String wackUp ;
 	
 	@BeanClass(NodeInfo.class)
 	private List<NodeInfo> nodes;
@@ -133,21 +122,5 @@ public class FlowInfo implements Serializable{
 		}
 		log.error(flowName+"未找到节点["+nodeId+"]");
 		return null;
-	}
-
-	public String getHangUp() {
-		return hangUp;
-	}
-
-	public void setHangUp(String hangUp) {
-		this.hangUp = hangUp;
-	}
-
-	public String getWackUp() {
-		return wackUp;
-	}
-
-	public void setWackUp(String wackUp) {
-		this.wackUp = wackUp;
 	}
 }

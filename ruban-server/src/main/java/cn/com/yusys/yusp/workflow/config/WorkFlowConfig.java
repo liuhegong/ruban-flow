@@ -17,9 +17,9 @@ public class WorkFlowConfig {
 	
 	@Bean
 	public EngineCache initWorkFlowEngine(){
-		EngineCache engineCache = EngineCache.getInstance();
+		EngineCache engineCache = EngineCache.getInstance(flowPath);
 		try {
-			engineCache.init(flowPath);
+			engineCache.init();
 		} catch (WorkflowException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

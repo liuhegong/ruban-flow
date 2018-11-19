@@ -12,23 +12,28 @@ import com.figue.channel.transform.annotation.parse.xml.XmlPath;
 public class RouteInfo implements Serializable{
 	
 	private static final long serialVersionUID = 100138765172147978L;
+	
+	@XmlPath(valueAttr="@routeId")
 	private String routeId;
+	
+	@XmlPath(valueAttr="@routeName")
 	private String routeName;
 	
 	/**
 	 * 当前节点
 	 */
-	@XmlPath(value="property[@name='nodeid']",valueAttr="@value")
+	@XmlPath(valueAttr="@nodeId")
 	private String nodeId;
 	
 	/**
 	 * 下一节点
 	 */
-	@XmlPath(value="property[@name='noderouternodeid']",valueAttr="@value")
+	@XmlPath(valueAttr="@nextNodeId")
 	private String nextNodeId;
 	/**
 	 * 是否往下获取节点
 	 */
+	@XmlPath(valueAttr="@isContinueBeanId")
 	private String isContinueBeanId;
 	public String getRouteId() {
 		return routeId;
@@ -42,12 +47,6 @@ public class RouteInfo implements Serializable{
 	public void setRouteName(String routeName) {
 		this.routeName = routeName;
 	}
-	public String getIsContinueBeanId() {
-		return isContinueBeanId;
-	}
-	public void setIsContinueBeanId(String isContinueBeanId) {
-		this.isContinueBeanId = isContinueBeanId;
-	}
 	public String getNodeId() {
 		return nodeId;
 	}
@@ -60,4 +59,15 @@ public class RouteInfo implements Serializable{
 	public void setNextNodeId(String nextNodeId) {
 		this.nextNodeId = nextNodeId;
 	}
+	public String getIsContinueBeanId() {
+		return isContinueBeanId;
+	}
+	public void setIsContinueBeanId(String isContinueBeanId) {
+		this.isContinueBeanId = isContinueBeanId;
+	}
+	@Override
+	public String toString() {
+		return "RouteInfo [routeId=" + routeId + ", routeName=" + routeName + ", nodeId=" + nodeId + ", nextNodeId="
+				+ nextNodeId + ", isContinueBeanId=" + isContinueBeanId + "]";
+	}	
 }
