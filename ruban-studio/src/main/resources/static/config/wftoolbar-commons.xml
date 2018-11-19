@@ -1,7 +1,8 @@
 <mxDefaultToolbar>
 	<add as="show" action="showXml" icon="images/preview.gif"/>
-	<add as="readonly" action="readOnly" icon="images/bold.gif"/>
-	<add as="editable" action="editable" icon="images/block_end.gif"/>
+	<add as="save" action="save" icon="images/save.gif"/>
+	<!-- <add as="readonly" action="readOnly" icon="images/bold.gif"/>
+	<add as="editable" action="editable" icon="images/block_end.gif"/> -->
 	<add as="exportImage" action="exportImage" icon="images/image.gif"/>
 	<br/><hr/>
 	<add as="select" mode="select" icon="images/select.gif"/>

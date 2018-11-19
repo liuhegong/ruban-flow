@@ -151,5 +151,18 @@ var studio = {
         key:"isContinueBeanId",
         type:"text",
         readOnly:false
+    },
+    strategyBeanId:{
+        name:"分配策略",
+        key:"strategyBeanId",
+        type:"text",
+        readOnly:false
+    },
+    noticeType:{
+        name:"待办通知",
+        key:"noticeType",
+        type:"select",
+        value:{0:"不通知",1:"消息通知",2:"邮件通知",3:"短信通知",4:"所有方式通知"},
+        readOnly:false
     }
 }

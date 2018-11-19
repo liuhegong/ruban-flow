@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.figue.channel.transform.transform.xml.XmlTransform;
 
+import cn.com.yusys.yusp.workflow.core.Cons;
 import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
 
 /**
@@ -20,6 +21,8 @@ public class OrgCache{
 
 	private static final Log log = LogFactory.getLog(OrgCache.class);
 	
+	private static String PATH = null;
+	
 	private static OrgCache orgCache = new OrgCache();//唯一实例
 	
 	static List<WFSystem> systems = new ArrayList<WFSystem>();
@@ -28,6 +31,11 @@ public class OrgCache{
 	}
 	public void setSystems(List<WFSystem> systems) {
 		this.systems = systems;
+	}
+	
+	public static OrgCache getInstance(String path){
+		PATH=path;
+		return orgCache;
 	}
 	
 	public static OrgCache getInstance(){
@@ -39,13 +47,13 @@ public class OrgCache{
 	 * @param path
 	 * @throws WorkflowException
 	 */
-	public static void init(String path) throws WorkflowException{
+	public static void init() throws WorkflowException{
 		/**
 		 * 初始化组织机构信息
 		 */
 		List<WFSystem> systems = new ArrayList<WFSystem>(); 
 		orgCache.setSystems(systems);
-		File orgFloder = new File(path+File.separator+"org");
+		File orgFloder = new File(PATH+File.separator+Cons.ORG);
 		if(orgFloder.isDirectory()&&orgFloder.exists()){
 			for(File file:orgFloder.listFiles()){
 				if(!file.getName().endsWith(".xml")){

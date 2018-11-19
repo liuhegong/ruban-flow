@@ -45,7 +45,7 @@
 			<el-button type="primary" size="small" @click="loadFlowData()">刷新</el-button>
 			<el-button type="success" size="small" @click="createFlow()">新增</el-button>
 			<el-button type="danger" size="small" @click="deleteFlow">删除</el-button>
-			<el-button type="warning" size="small" @click="updateFlow">保存</el-button>
+			<el-button type="warning" size="small" @click="updateFlow">发布</el-button>
 	    </div>
         <el-container>
           <el-aside class="menu">
@@ -155,6 +155,7 @@
         	var _self = this;
         	$.ajax({ url:'/api/nwfflow/?systemId='+_self.systemId+'&userId='+_self.userId, type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
         		_self.flows=data.data;
+        		//_self.selectedFlowId = '';
         	},error:function(xhr,textStatus){
         		_self.$message({  type: 'warn', message: '获取流程信息失败' });
         	}});

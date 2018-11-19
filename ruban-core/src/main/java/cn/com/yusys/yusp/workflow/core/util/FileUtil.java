@@ -22,7 +22,14 @@ public class FileUtil {
             }
         }
         return dir.delete();
-    }    
+    }  
+    
+    public static boolean deleteFile(File file) {
+        if (file.exists()) {
+        	file.delete();
+        }
+        return true;
+    }  
 
     public static void writeNewContentToFile(String filePathAndName, String newContent) throws IOException {
 

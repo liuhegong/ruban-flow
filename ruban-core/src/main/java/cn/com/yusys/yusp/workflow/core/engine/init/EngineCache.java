@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.figue.channel.transform.transform.xml.XmlTransform;
 
+import cn.com.yusys.yusp.workflow.core.Cons;
 import cn.com.yusys.yusp.workflow.core.engine.EngineInfo;
 import cn.com.yusys.yusp.workflow.core.engine.flow.FlowInfo;
 import cn.com.yusys.yusp.workflow.core.engine.node.NodeInfo;
@@ -32,11 +33,7 @@ import cn.com.yusys.yusp.workflow.core.util.FileUtil;
  */
 public class EngineCache{
 
-	public static String  PATH = null;
-	
-	public static String  DEV = "dev";
-	
-	public static String  PROD = "prod";
+	private static String  PATH = null;
 	
 	private static final Log log = LogFactory.getLog(EngineCache.class);
 	
@@ -63,7 +60,7 @@ public class EngineCache{
 		List<FlowInfo> flows = new ArrayList<FlowInfo>();
 		engineInfo.setFlows(flows);
 		
-		File floder = new File(EngineCache.PATH+File.separator+EngineCache.PROD);
+		File floder = new File(EngineCache.PATH+File.separator+Cons.PROD);
 		if(floder.isDirectory()&&floder.exists()){// 遍历解析流程图文件
 			for(File file:floder.listFiles()){
 				if(!file.getName().endsWith(".xml")){
@@ -138,8 +135,8 @@ public class EngineCache{
 	 * @throws IOException
 	 */
 	public static void generateFlowXml(Flow flow) throws IOException{
-		log.debug("开始生成流程引擎使用的xml文件："+EngineCache.PATH+File.separator+EngineCache.DEV+File.separator+flow.getFlowId()+".xml");
-		Flow flowT = FlowParser.parseXml(EngineCache.PATH+File.separator+EngineCache.DEV+File.separator+flow.getFlowId()+".xml");
+		log.debug("开始生成流程引擎使用的xml文件："+EngineCache.PATH+File.separator+Cons.DEV+File.separator+flow.getFlowId()+".xml");
+		Flow flowT = FlowParser.parseXml(EngineCache.PATH+File.separator+Cons.DEV+File.separator+flow.getFlowId()+".xml");
 		flowT.setFlowId(flow.getFlowId());
 		flowT.setFlowName(flow.getFlowName());
 		flowT.setOrgId(flow.getOrgId());
@@ -187,7 +184,7 @@ public class EngineCache{
 		XmlTransform<FlowInfo> transForm = new XmlTransform<FlowInfo>();
 		String content = transForm.trans2String(flowInfo);		
 		log.debug("得到xml文件内容："+content);
-		FileUtil.writeNewContentToFile(EngineCache.PATH+File.separator+EngineCache.PROD+File.separator+flow.getFlowId()+".xml", content);
+		FileUtil.writeNewContentToFile(EngineCache.PATH+File.separator+Cons.PROD+File.separator+flow.getFlowId()+".xml", content);
 	}
 
 	public static EngineInfo getEngineInfo() {

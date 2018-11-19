@@ -15,16 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.com.yusys.yusp.workflow.core.Cons;
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.FlowState;
 import cn.com.yusys.yusp.workflow.core.studio.Flow;
+import cn.com.yusys.yusp.workflow.core.util.FileUtil;
 import cn.com.yusys.yusp.workflow.core.util.TimeUtil;
 import cn.com.yusys.yusp.workflow.domain.NWfFlow;
 import cn.com.yusys.yusp.workflow.domain.NWfFlowHis;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.service.NWfFlowHisService;
 import cn.com.yusys.yusp.workflow.service.NWfFlowService;
-import cn.com.yusys.yusp.workflow.util.FileUtil;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 
 @RestController
@@ -69,7 +70,7 @@ public class NWfFlowResource {
     public ResultDto<NWfFlow> show(@PathVariable Long flowId) {
         NWfFlow nWfFlow = nWfFlowService.selectByPrimaryKey(flowId);
         if(null==nWfFlow.getFlowContent()||"".equals(nWfFlow.getFlowContent())){// 流程图内容为空，则根据流程id读文件
-        	String content = FileUtil.getFileContent(flowPath+File.separator+"dev"+File.separator+nWfFlow.getFlowId()+".xml");
+        	String content = FileUtil.getFileContent(flowPath+File.separator+Cons.DEV+File.separator+nWfFlow.getFlowId()+".xml");
         	if(null!=content){
         		nWfFlow.setFlowContent(content);
         	}
@@ -97,7 +98,7 @@ public class NWfFlowResource {
 		nWfFlowHisService.insert(recordHis);
     	
 		// 写入流程图绘制文件
-		FileUtil.writeNewContentToFile(flowPath+File.separator+"dev"+File.separator+nWfFlow.getFlowId()+".xml", nWfFlow.getFlowContent());
+		FileUtil.writeNewContentToFile(flowPath+File.separator+Cons.DEV+File.separator+nWfFlow.getFlowId()+".xml", nWfFlow.getFlowContent());
 		
 		// 生成新的流程图可以识别的文件
 		Flow flow = new Flow();
@@ -113,6 +114,8 @@ public class NWfFlowResource {
     @PostMapping("/delete/{flowId}")
     protected ResultDto<Integer> delete(@PathVariable Long flowId) {
         int result = nWfFlowService.deleteByPrimaryKey(flowId);
+        FileUtil.deleteFile(new File(flowPath+File.separator+Cons.DEV+File.separator+flowId+".xml"));
+        FileUtil.deleteFile(new File(flowPath+File.separator+Cons.PROD+File.separator+flowId+".xml"));
         return new ResultDto<Integer>(result);
     }
     

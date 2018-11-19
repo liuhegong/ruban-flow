@@ -2517,21 +2517,21 @@ mxEditor.prototype.createProperties = function (cell)
 			
 			if (geo != null)
 			{
-				yField = form.addText('top', geo.y);
+				/*yField = form.addText('top', geo.y);
 				yField.setAttribute('readonly', 'true');
 				xField = form.addText('left', geo.x);
 				xField.setAttribute('readonly', 'true');
 				widthField = form.addText('width', geo.width);
 				widthField.setAttribute('readonly', 'true');
 				heightField = form.addText('height', geo.height);
-				heightField.setAttribute('readonly', 'true');
+				heightField.setAttribute('readonly', 'true');*/
 			}
 		}
 		
 		// Adds a field for the cell style			
 		var tmp = model.getStyle(cell);
-		var style = form.addText('Style', tmp || '');
-		style.setAttribute('readonly', 'true');
+		/*var style = form.addText('Style', tmp || '');
+		style.setAttribute('readonly', 'true');*/
 		// Creates textareas for each attribute of the
 		// user object within the cell
 		var attrs = value.attributes;
@@ -2564,7 +2564,7 @@ mxEditor.prototype.createProperties = function (cell)
 			model.beginUpdate();
 			try
 			{
-				if (geo != null)
+				/*if (geo != null)
 				{
 					geo = geo.clone();
 					
@@ -2574,17 +2574,17 @@ mxEditor.prototype.createProperties = function (cell)
 					geo.height = parseFloat(heightField.value);
 					
 					model.setGeometry(cell, geo);
-				}
+				}*/
 				
 				// Applies the style
-				if (style.value.length > 0)
+				/*if (style.value.length > 0)
 				{
 					model.setStyle(cell, style.value);
 				}
 				else
 				{
 					model.setStyle(cell, null);
-				}
+				}*/
 				
 				// Creates an undoable change for each
 				// attribute and executes it using the
