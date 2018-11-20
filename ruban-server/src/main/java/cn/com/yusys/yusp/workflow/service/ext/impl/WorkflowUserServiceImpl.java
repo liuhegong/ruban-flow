@@ -1,4 +1,4 @@
-package cn.com.yusys.yusp.workflow.service.impl;
+package cn.com.yusys.yusp.workflow.service.ext.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import cn.com.yusys.yusp.workflow.core.Cons;
 import cn.com.yusys.yusp.workflow.core.org.OrgCache;
 import cn.com.yusys.yusp.workflow.core.org.WFDept;
 import cn.com.yusys.yusp.workflow.core.org.WFDuty;
@@ -15,7 +16,7 @@ import cn.com.yusys.yusp.workflow.core.org.WFOrg;
 import cn.com.yusys.yusp.workflow.core.org.WFRole;
 import cn.com.yusys.yusp.workflow.core.org.WFUser;
 import cn.com.yusys.yusp.workflow.dto.WFUserDto;
-import cn.com.yusys.yusp.workflow.service.WorkflowUserInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserInterface;
 
 /**
  * 节点用户获取
@@ -27,37 +28,43 @@ public class WorkflowUserServiceImpl implements WorkflowUserInterface {
 
 	private static final Log log = LogFactory.getLog(WorkflowUserServiceImpl.class);
 	@Override
-	public String getUserName(String systemId, String orgId, String userId) {
-		WFOrg orgT = getOrgById( systemId, orgId);	
-		List<WFUser> usersT = orgT.getUsers();
-		String userName = "系统指定";
-		if(null!=usersT){
-			for(WFUser wFUser:usersT){
-				if(wFUser.getUserId().equals(userId)){
-					return wFUser.getUserName();
-				}
-			}
+	public WFUserDto getUserInfo(String systemId,String userId) {
+		if(Cons.SYSTEM_USER_ID.equalsIgnoreCase(userId)){// 系统指定用户
+			WFUserDto wFUserDto = new WFUserDto();
+			wFUserDto.setUserId(Cons.SYSTEM_USER_ID);
+			wFUserDto.setUserName(Cons.SYSTEM_USER_NAME);
+			return wFUserDto;
 		}
+		
 		if(log.isDebugEnabled()){
-			log.debug("获取用户名[systemId="+systemId+",orgId="+orgId+"] "+userName);
+			log.debug("获取用户[systemId="+systemId+",userId="+userId+"] ");
 		}
-		return userName;
+		WFUser user = OrgCache.getUserInfo(systemId,userId);	
+		if(log.isDebugEnabled()){
+			log.debug("获取用户[systemId="+systemId+",userId="+userId+"] "+user);
+		}
+		WFUserDto wFUserDto = new WFUserDto();
+		BeanUtils.copyProperties(user, wFUserDto);
+		return wFUserDto;
 	}
 	
 	@Override
 	public List<WFUserDto> getUsersByOrgId(String systemId, String orgId) {
 		WFOrg orgT = getOrgById( systemId, orgId);	
-		List<WFUser> usersT = orgT.getUsers();
 		List<WFUserDto> users = new ArrayList<WFUserDto>();
-		if(null!=usersT){
-			for(WFUser wFUser:usersT){
-				WFUserDto wFUserDto = new WFUserDto();
-				BeanUtils.copyProperties(wFUser, wFUserDto);
-				users.add(wFUserDto);
+		if(null!=orgT.getUsers()){
+			List<WFUser> usersT = orgT.getUsers();
+			
+			if(null!=usersT){
+				for(WFUser wFUser:usersT){
+					WFUserDto wFUserDto = new WFUserDto();
+					BeanUtils.copyProperties(wFUser, wFUserDto);
+					users.add(wFUserDto);
+				}
 			}
-		}
-		if(log.isDebugEnabled()){
-			log.debug("获取用户[systemId="+systemId+",orgId="+orgId+"] "+users);
+			if(log.isDebugEnabled()){
+				log.debug("获取用户[systemId="+systemId+",orgId="+orgId+"] "+users);
+			}
 		}
 		return users;
 	}

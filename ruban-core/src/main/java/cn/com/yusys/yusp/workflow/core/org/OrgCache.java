@@ -2,7 +2,9 @@ package cn.com.yusys.yusp.workflow.core.org;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +28,9 @@ public class OrgCache{
 	private static OrgCache orgCache = new OrgCache();//唯一实例
 	
 	static List<WFSystem> systems = new ArrayList<WFSystem>();
+	
+	static Map<String,Map<String,WFUser>> userCaches = new HashMap();
+	
 	public List<WFSystem> getSystems() {
 		return systems;
 	}
@@ -68,6 +73,13 @@ public class OrgCache{
 				}
 			}
 		}
+		
+		// 将用户信息放入缓存，便于高效获取
+		for(WFSystem sys:systems){
+			Map<String,WFUser> userCache = new HashMap();
+			sys.getUserInfos(userCache);
+			userCaches.put(sys.getSystemId(), userCache);
+		}
 	}	
 	
 	public static WFSystem getSystemInfo(String systemId){
@@ -77,5 +89,9 @@ public class OrgCache{
 			}
 		}
 		return null;
+	}
+	
+	public static WFUser getUserInfo(String systemId,String userId){
+		return userCaches.get(systemId).get(userId);
 	}
 }

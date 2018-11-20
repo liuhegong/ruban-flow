@@ -1,6 +1,7 @@
 package cn.com.yusys.yusp.workflow.core.org;
 
 import java.util.List;
+import java.util.Map;
 
 import com.figue.channel.transform.annotation.parse.BeanClass;
 import com.figue.channel.transform.annotation.parse.xml.XmlPath;
@@ -87,4 +88,32 @@ public class WFSystem {
 	public void setDutys(List<WFDuty> dutys) {
 		this.dutys = dutys;
 	} 	
+	
+	public void getUserInfos(Map<String, WFUser> users) {
+		if (null != getUsers()) {
+			for (WFUser user : getUsers()) {
+				users.put(user.getUserId(), user);
+			}
+		}
+		if (null != getDepts()) {
+			for (WFDept dept : getDepts()) {// 遍历部门下人员
+				dept.getUserInfos(users);
+			}
+		}
+		if (null != getRoles()) {
+			for (WFRole dept : getRoles()) {// 遍历角色下人员
+				dept.getUserInfos(users);
+			}
+		}
+		if (null != getDutys()) {
+			for (WFDuty dept : getDutys()) {// 遍历岗位下人员
+				dept.getUserInfos(users);
+			}
+		}
+		if (null != getOrgs()) {
+			for (WFOrg dept : getOrgs()) {// 遍历机构下人员
+				dept.getUserInfos(users);
+			}
+		}
+	}
 }

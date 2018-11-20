@@ -19,7 +19,7 @@ import cn.com.yusys.yusp.workflow.dto.WFUserDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
-import cn.com.yusys.yusp.workflow.service.WorkflowCoreServiceInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreServiceInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 import cn.com.yusys.yusp.workflow.web.fillter.session.CurrentUser;
 
@@ -68,8 +68,82 @@ public class WorkflowTestResource {
 		return resultDto;
 	}
 	
-	@GetMapping("/2")
+	@GetMapping("/1-1")
 	public ResultDto submit() throws WorkflowException{	
+		ResultDto resultDto = new ResultDto();
+		List<ResultWFMessageDto> data1 = new ArrayList();
+		for(String nodeId:nodeIdsTTT){
+			List<ResultNodeDto> data = WorkflowCoreServicee.getNextNodeInfos(instanceIdTTT,nodeId);
+			for(ResultNodeDto node:data){
+				WFSubmitDto sb = new WFSubmitDto();
+				WFCommentDto comment = new WFCommentDto();
+				comment.setCommentSign("1");
+				comment.setInstanceId(instanceIdTTT);
+				comment.setNodeId(nodeId);
+				comment.setOrgId(CurrentUser.info.get().getOrgId());
+				comment.setUserComment("userComment");
+				comment.setUserId(CurrentUser.info.get().getUserId());
+				sb.setComment(comment);
+				List<NextNodeInfoDto> nextNodeInfos = new ArrayList<NextNodeInfoDto>();
+				NextNodeInfoDto nextNodeInfoDto = new NextNodeInfoDto();
+				
+				nextNodeInfoDto.setNextNodeId(node.getNodeId());
+				
+				List<String> userIds = new ArrayList();
+				for(WFUserDto sto:node.getUsers()){
+					userIds.add(sto.getUserId());
+				}
+				nextNodeInfoDto.setNextNodeUserIds(userIds);
+				nextNodeInfos.add(nextNodeInfoDto);
+				sb.setNextNodeInfos(nextNodeInfos);
+				
+				Map<String, Object> param = new HashMap();
+				param.put(System.currentTimeMillis()+"X", System.currentTimeMillis());
+				sb.setParam(param );
+				
+				data1.addAll(WorkflowCoreServicee.submit(sb));
+				
+				nodeIdsTTT.clear();
+				userIdsTTT.clear();
+				nodeIdsTTT.add(node.getNodeId());
+				userIdsTTT.put(node.getNodeId(),userIds);
+			}
+		}	
+		resultDto.setData(data1);
+		return resultDto;
+	}
+	
+	@GetMapping("/2")
+	public ResultDto WorkflowCoreService2() throws WorkflowException{
+		WFStratDto stratDto = new WFStratDto();
+		stratDto.setBizType("bizType");
+		stratDto.setBizId("bizId");
+		stratDto.setBizUserId("客户id");
+		stratDto.setBizUserName("客户名称");
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put(System.currentTimeMillis()+"x", System.currentTimeMillis()+"cc");
+		stratDto.setParam(param );
+		
+		stratDto.setFlowId("2");
+		stratDto.setOrgId(CurrentUser.info.get().getOrgId());
+		stratDto.setSystemId(CurrentUser.info.get().getSystemId());
+		stratDto.setUserId(CurrentUser.info.get().getUserId());
+		stratDto.setUserName(CurrentUser.info.get().getUserName());
+		ResultInstanceDto data = WorkflowCoreServicee.start(stratDto);
+		ResultDto resultDto = new ResultDto();
+		resultDto.setData(data);
+		
+		nodeIdsTTT.clear();
+		userIdsTTT.clear();
+		nodeIdsTTT.add(data.getNodeId());		
+		userIdsTTT.put(data.getNodeId(),Arrays.asList(data.getFlowStarter()));
+		
+		instanceIdTTT = data.getInstanceId();
+		return resultDto;
+	}
+	
+	@GetMapping("/2-1")
+	public ResultDto submit2() throws WorkflowException{	
 		ResultDto resultDto = new ResultDto();
 		List<ResultWFMessageDto> data1 = new ArrayList();
 		for(String nodeId:nodeIdsTTT){

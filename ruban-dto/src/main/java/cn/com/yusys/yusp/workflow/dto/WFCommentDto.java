@@ -160,8 +160,9 @@ public class WFCommentDto implements Serializable {
 	@Override
 	public String toString() {
 		return "WFCommentDto [commentId=" + commentId + ", instanceId=" + instanceId + ", nodeId=" + nodeId
-				+ ", userId=" + userId + ", orgId=" + orgId + ", commentSign=" + commentSign + ", userComment="
-				+ userComment + "]";
+				+ ", userId=" + userId + ", orgId=" + orgId + ", commentSign=" + commentSign
+				+ ", userComment=" + userComment + "]";
 	}
+
 
 }

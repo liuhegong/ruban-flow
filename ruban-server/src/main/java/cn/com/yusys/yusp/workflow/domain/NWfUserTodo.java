@@ -53,17 +53,19 @@ public class NWfUserTodo implements Serializable {
     @Column(name = "LAST_USER_NAME")
     private String lastUserName;
 
-    private String endTime;
-    
-    public String getEndTime() {
-		return endTime;
-	}
+    /**
+     * 1-已签收，0-未签收
+     */
+    @Column(name = "SIGN_IN")
+    private String signIn;
 
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
-	}
+    /**
+     * 用户顺序，越小越靠前
+     */
+    @Column(name = "USER_LEVEL")
+    private Integer userLevel;
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 获取实例id
@@ -191,6 +193,42 @@ public class NWfUserTodo implements Serializable {
         this.lastUserName = lastUserName == null ? null : lastUserName.trim();
     }
 
+    /**
+     * 获取1-已签收，0-未签收
+     *
+     * @return SIGN_IN - 1-已签收，0-未签收
+     */
+    public String getSignIn() {
+        return signIn;
+    }
+
+    /**
+     * 设置1-已签收，0-未签收
+     *
+     * @param signIn 1-已签收，0-未签收
+     */
+    public void setSignIn(String signIn) {
+        this.signIn = signIn == null ? null : signIn.trim();
+    }
+
+    /**
+     * 获取用户顺序，越小越靠前
+     *
+     * @return USER_LEVEL - 用户顺序，越小越靠前
+     */
+    public Integer getUserLevel() {
+        return userLevel;
+    }
+
+    /**
+     * 设置用户顺序，越小越靠前
+     *
+     * @param userLevel 用户顺序，越小越靠前
+     */
+    public void setUserLevel(Integer userLevel) {
+        this.userLevel = userLevel;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -209,7 +247,9 @@ public class NWfUserTodo implements Serializable {
             && (this.getStartTime() == null ? other.getStartTime() == null : this.getStartTime().equals(other.getStartTime()))
             && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
             && (this.getLastUserId() == null ? other.getLastUserId() == null : this.getLastUserId().equals(other.getLastUserId()))
-            && (this.getLastUserName() == null ? other.getLastUserName() == null : this.getLastUserName().equals(other.getLastUserName()));
+            && (this.getLastUserName() == null ? other.getLastUserName() == null : this.getLastUserName().equals(other.getLastUserName()))
+            && (this.getSignIn() == null ? other.getSignIn() == null : this.getSignIn().equals(other.getSignIn()))
+            && (this.getUserLevel() == null ? other.getUserLevel() == null : this.getUserLevel().equals(other.getUserLevel()));
     }
 
     @Override
@@ -223,6 +263,8 @@ public class NWfUserTodo implements Serializable {
         result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
         result = prime * result + ((getLastUserId() == null) ? 0 : getLastUserId().hashCode());
         result = prime * result + ((getLastUserName() == null) ? 0 : getLastUserName().hashCode());
+        result = prime * result + ((getSignIn() == null) ? 0 : getSignIn().hashCode());
+        result = prime * result + ((getUserLevel() == null) ? 0 : getUserLevel().hashCode());
         return result;
     }
 
@@ -239,6 +281,8 @@ public class NWfUserTodo implements Serializable {
         sb.append(", userName=").append(userName);
         sb.append(", lastUserId=").append(lastUserId);
         sb.append(", lastUserName=").append(lastUserName);
+        sb.append(", signIn=").append(signIn);
+        sb.append(", userLevel=").append(userLevel);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

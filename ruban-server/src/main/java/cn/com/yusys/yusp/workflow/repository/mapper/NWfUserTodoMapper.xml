@@ -12,12 +12,15 @@
     <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
     <result column="LAST_USER_ID" jdbcType="VARCHAR" property="lastUserId" />
     <result column="LAST_USER_NAME" jdbcType="VARCHAR" property="lastUserName" />
+    <result column="SIGN_IN" jdbcType="VARCHAR" property="signIn" />
+    <result column="USER_LEVEL" jdbcType="NUMERIC" property="userLevel" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    INSTANCE_ID, NODE_ID, USER_ID, START_TIME, USER_NAME, LAST_USER_ID, LAST_USER_NAME
+    INSTANCE_ID, NODE_ID, USER_ID, START_TIME, USER_NAME, LAST_USER_ID, LAST_USER_NAME, 
+    SIGN_IN, USER_LEVEL
   </sql>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -45,10 +48,12 @@
     -->
     insert into N_WF_USER_TODO (INSTANCE_ID, NODE_ID, USER_ID, 
       START_TIME, USER_NAME, LAST_USER_ID, 
-      LAST_USER_NAME)
+      LAST_USER_NAME, SIGN_IN, USER_LEVEL
+      )
     values (#{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{lastUserId,jdbcType=VARCHAR}, 
-      #{lastUserName,jdbcType=VARCHAR})
+      #{lastUserName,jdbcType=VARCHAR}, #{signIn,jdbcType=VARCHAR}, #{userLevel,jdbcType=NUMERIC}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
     <!--
@@ -77,6 +82,12 @@
       <if test="lastUserName != null">
         LAST_USER_NAME,
       </if>
+      <if test="signIn != null">
+        SIGN_IN,
+      </if>
+      <if test="userLevel != null">
+        USER_LEVEL,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="instanceId != null">
@@ -100,6 +111,12 @@
       <if test="lastUserName != null">
         #{lastUserName,jdbcType=VARCHAR},
       </if>
+      <if test="signIn != null">
+        #{signIn,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=NUMERIC},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
@@ -120,6 +137,12 @@
       <if test="lastUserName != null">
         LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR},
       </if>
+      <if test="signIn != null">
+        SIGN_IN = #{signIn,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        USER_LEVEL = #{userLevel,jdbcType=NUMERIC},
+      </if>
     </set>
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
       and NODE_ID = #{nodeId,jdbcType=VARCHAR}
@@ -133,7 +156,9 @@
     set START_TIME = #{startTime,jdbcType=VARCHAR},
       USER_NAME = #{userName,jdbcType=VARCHAR},
       LAST_USER_ID = #{lastUserId,jdbcType=VARCHAR},
-      LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR}
+      LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR},
+      SIGN_IN = #{signIn,jdbcType=VARCHAR},
+      USER_LEVEL = #{userLevel,jdbcType=NUMERIC}
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
       and NODE_ID = #{nodeId,jdbcType=VARCHAR}
       and USER_ID = #{userId,jdbcType=VARCHAR}
@@ -208,6 +233,26 @@
           </when>
           <otherwise>
             AND LAST_USER_NAME = #{condition.lastUserName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.signIn !=null and condition.signIn !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.signIn)">
+             AND SIGN_IN LIKE #{condition.signIn,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND SIGN_IN = #{condition.signIn,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userLevel !=null and condition.userLevel !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userLevel)">
+             AND USER_LEVEL LIKE #{condition.userLevel,jdbcType=NUMERIC}
+          </when>
+          <otherwise>
+            AND USER_LEVEL = #{condition.userLevel,jdbcType=NUMERIC}
           </otherwise>
         </choose>
       </if>

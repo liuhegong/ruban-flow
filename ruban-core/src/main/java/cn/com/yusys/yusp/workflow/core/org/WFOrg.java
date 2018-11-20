@@ -128,5 +128,17 @@ public class WFOrg implements Serializable{
 		this.level = level;
 	}
 	
+	public void getUserInfos(Map<String,WFUser> users){		
+		if(null!=getUsers()){
+			for(WFUser user:getUsers()){
+				users.put(user.getUserId(), user);
+			}
+		}		
+		if(null!=getOrgs()){
+			for(WFOrg dept:getOrgs()){
+				dept.getUserInfos(users);
+			}
+		}
+	}
 	
 }

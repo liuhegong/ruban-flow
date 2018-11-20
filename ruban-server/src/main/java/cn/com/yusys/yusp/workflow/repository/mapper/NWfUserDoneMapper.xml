@@ -9,17 +9,19 @@
     <id column="NODE_ID" jdbcType="VARCHAR" property="nodeId" />
     <id column="USER_ID" jdbcType="VARCHAR" property="userId" />
     <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
     <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
     <result column="LAST_USER_ID" jdbcType="VARCHAR" property="lastUserId" />
     <result column="LAST_USER_NAME" jdbcType="VARCHAR" property="lastUserName" />
-    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
+    <result column="SIGN_IN" jdbcType="VARCHAR" property="signIn" />
+    <result column="USER_LEVEL" jdbcType="NUMERIC" property="userLevel" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    INSTANCE_ID, NODE_ID, USER_ID, START_TIME, USER_NAME, LAST_USER_ID, LAST_USER_NAME, 
-    END_TIME
+    INSTANCE_ID, NODE_ID, USER_ID, START_TIME, END_TIME, USER_NAME, LAST_USER_ID, LAST_USER_NAME, 
+    SIGN_IN, USER_LEVEL
   </sql>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -46,11 +48,13 @@
       WARNING - @mbg.generated
     -->
     insert into N_WF_USER_DONE (INSTANCE_ID, NODE_ID, USER_ID, 
-      START_TIME, USER_NAME, LAST_USER_ID, 
-      LAST_USER_NAME, END_TIME)
+      START_TIME, END_TIME, USER_NAME, 
+      LAST_USER_ID, LAST_USER_NAME, SIGN_IN, 
+      USER_LEVEL)
     values (#{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
-      #{startTime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{lastUserId,jdbcType=VARCHAR}, 
-      #{lastUserName,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR})
+      #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{lastUserId,jdbcType=VARCHAR}, #{lastUserName,jdbcType=VARCHAR}, #{signIn,jdbcType=VARCHAR}, 
+      #{userLevel,jdbcType=NUMERIC})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserDone">
     <!--
@@ -70,6 +74,9 @@
       <if test="startTime != null">
         START_TIME,
       </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
       <if test="userName != null">
         USER_NAME,
       </if>
@@ -79,8 +86,11 @@
       <if test="lastUserName != null">
         LAST_USER_NAME,
       </if>
-      <if test="endTime != null">
-        END_TIME,
+      <if test="signIn != null">
+        SIGN_IN,
+      </if>
+      <if test="userLevel != null">
+        USER_LEVEL,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -96,6 +106,9 @@
       <if test="startTime != null">
         #{startTime,jdbcType=VARCHAR},
       </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
       </if>
@@ -105,8 +118,11 @@
       <if test="lastUserName != null">
         #{lastUserName,jdbcType=VARCHAR},
       </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=VARCHAR},
+      <if test="signIn != null">
+        #{signIn,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=NUMERIC},
       </if>
     </trim>
   </insert>
@@ -119,6 +135,9 @@
       <if test="startTime != null">
         START_TIME = #{startTime,jdbcType=VARCHAR},
       </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=VARCHAR},
+      </if>
       <if test="userName != null">
         USER_NAME = #{userName,jdbcType=VARCHAR},
       </if>
@@ -128,8 +147,11 @@
       <if test="lastUserName != null">
         LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR},
       </if>
-      <if test="endTime != null">
-        END_TIME = #{endTime,jdbcType=VARCHAR},
+      <if test="signIn != null">
+        SIGN_IN = #{signIn,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        USER_LEVEL = #{userLevel,jdbcType=NUMERIC},
       </if>
     </set>
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
@@ -142,10 +164,12 @@
     -->
     update N_WF_USER_DONE
     set START_TIME = #{startTime,jdbcType=VARCHAR},
+      END_TIME = #{endTime,jdbcType=VARCHAR},
       USER_NAME = #{userName,jdbcType=VARCHAR},
       LAST_USER_ID = #{lastUserId,jdbcType=VARCHAR},
       LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR},
-      END_TIME = #{endTime,jdbcType=VARCHAR}
+      SIGN_IN = #{signIn,jdbcType=VARCHAR},
+      USER_LEVEL = #{userLevel,jdbcType=NUMERIC}
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
       and NODE_ID = #{nodeId,jdbcType=VARCHAR}
       and USER_ID = #{userId,jdbcType=VARCHAR}
@@ -193,6 +217,16 @@
           </otherwise>
         </choose>
       </if>
+      <if test="condition.endTime !=null and condition.endTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.endTime)">
+             AND END_TIME LIKE #{condition.endTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND END_TIME = #{condition.endTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
       <if test="condition.userName !=null and condition.userName !=''">
         <choose>
           <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userName)">
@@ -223,13 +257,23 @@
           </otherwise>
         </choose>
       </if>
-      <if test="condition.endTime !=null and condition.endTime !=''">
+      <if test="condition.signIn !=null and condition.signIn !=''">
         <choose>
-          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.endTime)">
-             AND END_TIME LIKE #{condition.endTime,jdbcType=VARCHAR}
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.signIn)">
+             AND SIGN_IN LIKE #{condition.signIn,jdbcType=VARCHAR}
           </when>
           <otherwise>
-            AND END_TIME = #{condition.endTime,jdbcType=VARCHAR}
+            AND SIGN_IN = #{condition.signIn,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userLevel !=null and condition.userLevel !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userLevel)">
+             AND USER_LEVEL LIKE #{condition.userLevel,jdbcType=NUMERIC}
+          </when>
+          <otherwise>
+            AND USER_LEVEL = #{condition.userLevel,jdbcType=NUMERIC}
           </otherwise>
         </choose>
       </if>

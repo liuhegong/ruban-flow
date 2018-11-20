@@ -80,4 +80,17 @@ public class WFDuty implements Serializable{
 		this.dutys = dutys;
 	}
 	
+	public void getUserInfos(Map<String,WFUser> users){
+		if(null!=getUsers()){
+			for(WFUser user:getUsers()){
+				users.put(user.getUserId(), user);
+			}
+		}
+		if(null!=getDutys()){
+			for(WFDuty dept:getDutys()){
+				dept.getUserInfos(users);
+			}
+		}
+	}
+	
 }

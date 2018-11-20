@@ -1,9 +1,9 @@
-package cn.com.yusys.yusp.workflow.service.impl;
+package cn.com.yusys.yusp.workflow.service.ext.impl;
 
 import org.springframework.stereotype.Service;
 
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
-import cn.com.yusys.yusp.workflow.service.WorkflowRouteInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowRouteInterface;
 @Service
 public class FeginWorkflowRouteImpl implements WorkflowRouteInterface {
 

@@ -1,6 +1,7 @@
 package cn.com.yusys.yusp.workflow.dto.result;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResultWFMessageDto  implements Serializable {
@@ -10,7 +11,8 @@ public class ResultWFMessageDto  implements Serializable {
 	private String code = "0";
     private String tip;
     private String nodeName;
-    private List<String> userNames;
+    private String nodeId;
+    private List<String> userNames = new ArrayList();
 	
     public String getCode() {
 		return code;
@@ -35,6 +37,12 @@ public class ResultWFMessageDto  implements Serializable {
 	}
 	public void setUserNames(List<String> userNames) {
 		this.userNames = userNames;
+	}
+	public String getNodeId() {
+		return nodeId;
+	}
+	public void setNodeId(String nodeId) {
+		this.nodeId = nodeId;
 	}
 	
 }

@@ -78,4 +78,18 @@ public class WFDept implements Serializable{
 	public void setUsers(List<WFUser> users) {
 		this.users = users;
 	}
+	
+	public void getUserInfos(Map<String,WFUser> users){
+		if(null!=getUsers()){
+			for(WFUser user:getUsers()){
+				users.put(user.getUserId(), user);
+			}
+		}
+		
+		if(null!=getDepts()){
+			for(WFDept dept:getDepts()){
+				dept.getUserInfos(users);
+			}
+		}
+	}
 }

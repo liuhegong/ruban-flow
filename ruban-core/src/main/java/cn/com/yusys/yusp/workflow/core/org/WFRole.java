@@ -2,6 +2,7 @@ package cn.com.yusys.yusp.workflow.core.org;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import com.figue.channel.transform.annotation.parse.BeanClass;
 import com.figue.channel.transform.annotation.parse.xml.XmlPath;
@@ -72,4 +73,16 @@ public class WFRole implements Serializable{
 		return "WFRole [roleId=" + roleId + ", roleName=" + roleName + ", ext=" + ext + "]";
 	}
 	
+	public void getUserInfos(Map<String,WFUser> users){		
+		if(null!=getUsers()){
+			for(WFUser user:getUsers()){
+				users.put(user.getUserId(), user);
+			}
+		}		
+		if(null!=getRoles()){
+			for(WFRole dept:getRoles()){
+				dept.getUserInfos(users);
+			}
+		}
+	}
 }

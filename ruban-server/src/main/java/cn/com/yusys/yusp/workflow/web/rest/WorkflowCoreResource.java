@@ -15,7 +15,7 @@ import cn.com.yusys.yusp.workflow.dto.WFSubmitDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
-import cn.com.yusys.yusp.workflow.service.WorkflowCoreServiceInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreServiceInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 import cn.com.yusys.yusp.workflow.web.fillter.session.CurrentUser;
 

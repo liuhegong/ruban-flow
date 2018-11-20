@@ -13,8 +13,8 @@ public class FlowState {
 	public final static String RUN = "R";
 	
 	/**
-	 * 删除
+	 * 结束
 	 */
-	public final static String DELETE = "F";
+	public final static String END = "E";
 	
 }

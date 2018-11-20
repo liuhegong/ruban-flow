@@ -1,4 +1,4 @@
-package cn.com.yusys.yusp.workflow.service;
+package cn.com.yusys.yusp.workflow.service.ext;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import cn.com.yusys.yusp.workflow.dto.WFUserDto;
  *
  */
 public interface WorkflowUserInterface {
-	String getUserName(String systemId,String orgId,String userId);
+	WFUserDto getUserInfo(String systemId,String userId);
 	List<WFUserDto> getUsersByOrgId(String systemId,String orgId);
 	List<WFUserDto> getUsersByRoleId(String systemId,String roleId);
 	List<WFUserDto> getUsersByDutyId(String systemId,String dutyId);

@@ -1,4 +1,4 @@
-package cn.com.yusys.yusp.workflow.service;
+package cn.com.yusys.yusp.workflow.service.ext;
 
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 

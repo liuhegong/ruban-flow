@@ -1,8 +1,12 @@
 package cn.com.yusys.yusp.workflow.core;
 
 public class Cons {
-	public final static String ROBOT = "#robot#";
-	public final static String SYSTEM = "#system#";
+	/**
+	 * 系统指定人员
+	 */
+	public final static String SYSTEM_USER_ID = "system_user_";
+	
+	public final static String SYSTEM_USER_NAME = "系统指定";
 	
 	/**
 	 * 用户分割符
@@ -12,7 +16,7 @@ public class Cons {
 	/**
 	 * 流程结束标识，否决专用
 	 */
-	public final static String END_SIGN = "e"; 
+	public final static String END_SIGN = "E"; 
 	
 	public final static String ERROR_MSG1 = "部分参数为空";
 	public final static String ERROR_MSG2 = "流程已经办结";
