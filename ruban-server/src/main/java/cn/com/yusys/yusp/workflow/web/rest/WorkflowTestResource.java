@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
 import cn.com.yusys.yusp.workflow.dto.NextNodeInfoDto;
 import cn.com.yusys.yusp.workflow.dto.WFCommentDto;
 import cn.com.yusys.yusp.workflow.dto.WFStratDto;
@@ -39,12 +40,15 @@ public class WorkflowTestResource {
 	private String instanceIdTTT = null;
 	
 	@GetMapping("/1")
-	public ResultDto WorkflowCoreServicee(){
+	public ResultDto WorkflowCoreServicee() throws WorkflowException{
 		WFStratDto stratDto = new WFStratDto();
 		stratDto.setBizType("bizType");
 		stratDto.setBizId("bizId");
 		stratDto.setBizUserId("客户id");
 		stratDto.setBizUserName("客户名称");
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put(System.currentTimeMillis()+"x", System.currentTimeMillis()+"cc");
+		stratDto.setParam(param );
 		
 		stratDto.setFlowId("1");
 		stratDto.setOrgId(CurrentUser.info.get().getOrgId());
@@ -65,8 +69,9 @@ public class WorkflowTestResource {
 	}
 	
 	@GetMapping("/2")
-	public ResultDto submit(){	
+	public ResultDto submit() throws WorkflowException{	
 		ResultDto resultDto = new ResultDto();
+		List<ResultWFMessageDto> data1 = new ArrayList();
 		for(String nodeId:nodeIdsTTT){
 			List<ResultNodeDto> data = WorkflowCoreServicee.getNextNodeInfos(instanceIdTTT,nodeId);
 			for(ResultNodeDto node:data){
@@ -91,15 +96,20 @@ public class WorkflowTestResource {
 				nextNodeInfoDto.setNextNodeUserIds(userIds);
 				nextNodeInfos.add(nextNodeInfoDto);
 				sb.setNextNodeInfos(nextNodeInfos);
-				List<ResultWFMessageDto> data1 = WorkflowCoreServicee.submit(sb);
-				resultDto.setData(data1);
+				
+				Map<String, Object> param = new HashMap();
+				param.put(System.currentTimeMillis()+"X", System.currentTimeMillis());
+				sb.setParam(param );
+				
+				data1.addAll(WorkflowCoreServicee.submit(sb));
 				
 				nodeIdsTTT.clear();
 				userIdsTTT.clear();
 				nodeIdsTTT.add(node.getNodeId());
 				userIdsTTT.put(node.getNodeId(),userIds);
 			}
-		}		
+		}	
+		resultDto.setData(data1);
 		return resultDto;
 	}
 	

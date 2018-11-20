@@ -14,6 +14,14 @@
 			<user id="45" name="王亚飞45" email="" mobile="17186281150"></user>
 		</org>
 	</org>
+	<org id="0000" name="测试机构"  level="2">
+		<user id="admin" name="王亚飞" email="2273976337@qq.com" mobile="17186281157"></user>
+		<user id="4" name="王亚飞4" email="" mobile="17186281150"></user>
+		<org id="0000-1" name="机构2-1-1"  level="3">
+			<user id="35" name="王亚飞35" email="2273976337@qq.com" mobile="17186281157"></user>
+			<user id="45" name="王亚飞45" email="" mobile="17186281150"></user>
+		</org>
+	</org>
 	<org id="2-2" name="机构2-2"  level="2">
 		<user id="33" name="王亚飞33" email="2273976337@qq.com" mobile="17186281157"></user>
 		<user id="43" name="王亚飞43" email="" mobile="17186281150"></user>

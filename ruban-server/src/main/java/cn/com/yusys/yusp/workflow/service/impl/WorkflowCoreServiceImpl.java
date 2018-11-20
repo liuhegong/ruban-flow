@@ -1,7 +1,9 @@
 package cn.com.yusys.yusp.workflow.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.com.yusys.yusp.workflow.core.Cons;
@@ -116,7 +120,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	
 	@Override
 	@Transactional
-	public ResultInstanceDto start(WFStratDto stratDto) {
+	public ResultInstanceDto start(WFStratDto stratDto) throws WorkflowException {
 		if(log.isDebugEnabled()){
 			log.debug("开始流程发起:"+stratDto);
 		}
@@ -137,9 +141,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		record.setStartTime(startTime);
 		if(null!=stratDto.getParam()){		
 			try {
-				record.setFlowParam(jsonObj.writeValueAsString(stratDto.getParam()));
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
+				record.setFlowParam(mapToStr(stratDto.getParam()));
+			} catch (Exception e) {
 				e.printStackTrace();
 				throw new WorkflowException("流程公共参数格式化字符串异常:"+stratDto.getParam());
 			}
@@ -186,11 +189,12 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	/**
 	 * 后业务处理
 	 * @param instanceInfo
+	 * @throws WorkflowException
 	 */
-	private void afterSubmit(ResultInstanceDto instanceInfo){
+	private void afterSubmit(ResultInstanceDto instanceInfo) throws WorkflowException{
 		String paramStr = instanceInfo.getFlowParam();
-		if(isNullOrEmpty(paramStr)){
-			Map<String,Object> param = jsonObj.convertValue(paramStr, Map.class);
+		if(!isNullOrEmpty(paramStr)){
+			Map<String,Object> param = strToMap(paramStr);
 			instanceInfo.setParam(param);
 		}		
 		workflowNodeBizService.afterSubmit(instanceInfo);
@@ -211,13 +215,12 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	}
 
 	@Override
-	public ResultInstanceDto getInstanceInfo(String instanceId,String nodeId,String currentUserId) {
+	public ResultInstanceDto getInstanceInfo(String instanceId,String nodeId,String currentUserId) throws WorkflowException {
 		ResultInstanceDto instanceInfo = workflowCoreService.getInstanceInfo(instanceId, nodeId);
-		if(null!=instanceInfo.getFlowParam()
-				&&!"".equals(instanceInfo.getFlowParam())){
-			Map param = jsonObj.convertValue(instanceInfo.getFlowParam(), Map.class);
-			instanceInfo.setParam(param);
-		}		
+		
+		Map<String, Object> param = strToMap(instanceInfo.getFlowParam());
+		instanceInfo.setParam(param);
+		
 		
 		FlowInfo flowInfo = EngineCache.getInstance().getFlowInfo(instanceInfo.getFlowId(), instanceInfo.getSystemId());
 		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
@@ -264,7 +267,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	}
 
 	@Override
-	public ResultCommentDto getComment(String instanceId, String nodeId, String currentUserId) {
+	public ResultCommentDto getComment(String instanceId, String nodeId, String currentUserId)  throws WorkflowException{
 		if(log.isDebugEnabled()){
 			log.debug("流程提交:[instanceId="+instanceId+";nodeId="+nodeId+";currentUserId="+currentUserId+"]");
 		}
@@ -290,7 +293,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	}
 
 	@Override
-	public List<ResultNodeDto> getNextNodeInfos(String instanceId,String nodeId) {		
+	public List<ResultNodeDto> getNextNodeInfos(String instanceId,String nodeId) throws WorkflowException {		
 		ResultInstanceDto instanceInfo = getInstanceInfo(instanceId, nodeId,null);
 		List<NextNodeInfoDto> nextNodes = getWFNextNodeInfos(instanceInfo,nodeId);
 		// 数据转换
@@ -462,7 +465,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		// 更新流程实例的参数
 		try {
 			updateInstanceParam(instanceId, submitDto.getParam());
-		} catch (JsonProcessingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			ResultWFMessageDto m1 = new ResultWFMessageDto();
 			m1.setCode("1");
@@ -493,21 +496,54 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	 * @param param
 	 * @throws JsonProcessingException
 	 */
-	private void updateInstanceParam(String instanceId,Map<String,Object> param) throws JsonProcessingException{
+	private void updateInstanceParam(String instanceId,Map<String,Object> param) {
 		if(null!=param&&!param.isEmpty()){
 			NWfInstance instanceInfo = instanceService.selectByPrimaryKey(instanceId);
 			Map<String,Object> paramT = null;
-			if(isNullOrEmpty(instanceInfo.getFlowParam())){
-				paramT = jsonObj.convertValue(instanceInfo.getFlowParam(), Map.class);
+			if(!isNullOrEmpty(instanceInfo.getFlowParam())){
+				paramT = strToMap(instanceInfo.getFlowParam());
+				paramT.putAll(param);
 			}else{
 				paramT = param;
 			}
 			NWfInstance record = new NWfInstance();
 			record.setInstanceId(instanceId);
-			record.setFlowParam(jsonObj.writeValueAsString(paramT));
+			record.setFlowParam(mapToStr(paramT));
 			instanceService.updateByPrimaryKeySelective(record);
 		}
 	}
+	
+	/**
+	 * 字符串转map
+	 * @param content
+	 * @return
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	private Map<String,Object> strToMap(String content) throws WorkflowException{
+		try {
+			if(!isNullOrEmpty(content)){
+				Map<String,Object> param = jsonObj.readValue(content, HashMap.class);
+				return param;
+			}
+		} catch (Exception e) {
+			throw new WorkflowException("流程公共参数格式化成map异常:"+content);
+		} 
+		return null;
+	}
+	
+	private  String mapToStr(Map<String,Object> param)throws WorkflowException{	
+		try {
+			if(null!=param&&!param.isEmpty()){
+				return jsonObj.writeValueAsString(param);
+			}
+		} catch (Exception e) {
+			throw new WorkflowException("流程公共参数格式化字符串异常:"+param);
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * 
@@ -515,7 +551,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	 * @param nodeInfoDtos
 	 * @param msg
 	 */
-	private void submitNextMultiNode(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId) {
+	private void submitNextMultiNode(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId) throws WorkflowException {
 		if (null == nodeInfoDtos || nodeInfoDtos.isEmpty()) {// 未指定节点从内存获取
 			if (nodeInfoDtos == null) {
 				nodeInfoDtos = new ArrayList<NextNodeInfoDto>();
@@ -531,7 +567,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		}
 	}
 	
-	private void submitNextOneNode(ResultInstanceDto instanceInfo,NextNodeInfoDto nodeInfoDtos,List<ResultWFMessageDto> msg,String currentUserId,String orgId){
+	private void submitNextOneNode(ResultInstanceDto instanceInfo,NextNodeInfoDto nodeInfoDtos,List<ResultWFMessageDto> msg,String currentUserId,String orgId) throws WorkflowException{
 		String nextNodeId = nodeInfoDtos.getNextNodeId();
 		if(nextNodeId.contains(Cons.END_SIGN)){// 流程结束标识
 			msg.add(end(instanceInfo,currentUserId,orgId));
@@ -566,7 +602,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	 * @param nextNodeUsers
 	 * @return
 	 */
-	public ResultWFMessageDto complete(ResultInstanceDto instanceInfo,String nextNodeId,List<WFUserDto> nextNodeUsers,String currentUserId,String orgId){
+	public ResultWFMessageDto complete(ResultInstanceDto instanceInfo,String nextNodeId,List<WFUserDto> nextNodeUsers,String currentUserId,String orgId) throws WorkflowException{
 		ResultWFMessageDto re = new ResultWFMessageDto();
 		
 		String instanceId = instanceInfo.getInstanceId();
@@ -684,7 +720,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	 * @param instanceInfo
 	 * @return
 	 */
-	private ResultWFMessageDto end(ResultInstanceDto instanceInfo,String currentUserId,String orgId){
+	private ResultWFMessageDto end(ResultInstanceDto instanceInfo,String currentUserId,String orgId) throws WorkflowException{
 		String instanceId = instanceInfo.getInstanceId();
 		String nodeId = instanceInfo.getNodeId();
 		String userId = currentUserId;

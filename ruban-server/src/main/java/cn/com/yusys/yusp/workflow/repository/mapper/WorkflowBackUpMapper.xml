@@ -25,7 +25,7 @@
       </foreach>
   </insert>
   <insert id="transUSerDone2End" parameterType="string">
-    insert into n_wf_user_end (select * from n_wf_user_done where instance_id = #{instanceId,jdbcType=VARCHAR})
+    insert into n_wf_user_his (select * from n_wf_user_done where instance_id = #{instanceId,jdbcType=VARCHAR})
   </insert>
   
    <insert id="transUSerComment2End" parameterType="string">
