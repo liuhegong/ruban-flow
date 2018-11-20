@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.yusys.yusp.workflow.dto.NextNodeInfoDto;
@@ -16,9 +17,11 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
 import cn.com.yusys.yusp.workflow.service.WorkflowCoreServiceInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
+import cn.com.yusys.yusp.workflow.web.fillter.session.CurrentUser;
 
 @RestController
-public class WorkflowIndexResource {
+@RequestMapping("/api/core")
+public class WorkflowCoreResource {
 	@Autowired
 	private WorkflowCoreServiceInterface WorkflowCoreServicee;
 	
@@ -32,14 +35,16 @@ public class WorkflowIndexResource {
 	@GetMapping("/1")
 	public ResultDto WorkflowCoreServicee(){
 		WFStratDto stratDto = new WFStratDto();
+		stratDto.setBizType("bizType");
 		stratDto.setBizId("bizId");
-		stratDto.setBizUserId("bizUserId");
-		stratDto.setBizUserName("bizUserName");
-		stratDto.setFlowId("22");
-		stratDto.setOrgId("orgId");
-		stratDto.setSystemId("cmis");
-		stratDto.setUserId("userId");
-		stratDto.setUserName("王菲");
+		stratDto.setBizUserId("客户id");
+		stratDto.setBizUserName("客户名称");
+		
+		stratDto.setFlowId("1");
+		stratDto.setOrgId(CurrentUser.info.get().getOrgId());
+		stratDto.setSystemId(CurrentUser.info.get().getSystemId());
+		stratDto.setUserId(CurrentUser.info.get().getUserId());
+		stratDto.setUserName(CurrentUser.info.get().getUserName());
 		ResultInstanceDto data = WorkflowCoreServicee.start(stratDto);
 		
 		ResultDto resultDto = new ResultDto();

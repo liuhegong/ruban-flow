@@ -6,8 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "N_WF_COMMENT")
-public class NWfComment implements Serializable {
+@Table(name = "N_WF_COMMENT_HIS")
+public class NWfCommentHis implements Serializable {
     /**
      * 主键
      */
@@ -214,7 +214,7 @@ public class NWfComment implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        NWfComment other = (NWfComment) that;
+        NWfCommentHis other = (NWfCommentHis) that;
         return (this.getCommentId() == null ? other.getCommentId() == null : this.getCommentId().equals(other.getCommentId()))
             && (this.getInstanceId() == null ? other.getInstanceId() == null : this.getInstanceId().equals(other.getInstanceId()))
             && (this.getNodeId() == null ? other.getNodeId() == null : this.getNodeId().equals(other.getNodeId()))

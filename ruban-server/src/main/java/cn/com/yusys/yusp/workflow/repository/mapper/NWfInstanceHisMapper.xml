@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.NWfInstanceMapper">
-  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.NWfInstanceHisMapper">
+  <resultMap id="BaseResultMap" type="cn.com.yusys.yusp.workflow.domain.NWfInstanceHis">
     <!--
       WARNING - @mbg.generated
     -->
@@ -19,13 +19,14 @@
     <result column="BIZ_USER_ID" jdbcType="VARCHAR" property="bizUserId" />
     <result column="FLOW_PARAM" jdbcType="VARCHAR" property="flowParam" />
     <result column="BIZ_TYPE" jdbcType="VARCHAR" property="bizType" />
+    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     INSTANCE_ID, FLOW_NAME, FLOW_ID, FLOW_ADMIN, FLOW_STARTER, START_TIME, SYSTEM_ID, 
-    ORG_ID, FLOW_STATE, BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, FLOW_PARAM, BIZ_TYPE
+    ORG_ID, FLOW_STATE, BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, FLOW_PARAM, BIZ_TYPE, END_TIME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--
@@ -33,36 +34,38 @@
     -->
     select 
     <include refid="Base_Column_List" />
-    from N_WF_INSTANCE
+    from N_WF_INSTANCE_HIS
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - @mbg.generated
     -->
-    delete from N_WF_INSTANCE
+    delete from N_WF_INSTANCE_HIS
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+  <insert id="insert" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstanceHis">
     <!--
       WARNING - @mbg.generated
     -->
-    insert into N_WF_INSTANCE (INSTANCE_ID, FLOW_NAME, FLOW_ID, 
+    insert into N_WF_INSTANCE_HIS (INSTANCE_ID, FLOW_NAME, FLOW_ID, 
       FLOW_ADMIN, FLOW_STARTER, START_TIME, 
       SYSTEM_ID, ORG_ID, FLOW_STATE, 
       BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, 
-      FLOW_PARAM, BIZ_TYPE)
+      FLOW_PARAM, BIZ_TYPE, END_TIME
+      )
     values (#{instanceId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, 
       #{flowAdmin,jdbcType=VARCHAR}, #{flowStarter,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
       #{systemId,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{flowState,jdbcType=VARCHAR}, 
       #{bizId,jdbcType=VARCHAR}, #{bizUserName,jdbcType=VARCHAR}, #{bizUserId,jdbcType=VARCHAR}, 
-      #{flowParam,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR})
+      #{flowParam,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+  <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstanceHis">
     <!--
       WARNING - @mbg.generated
     -->
-    insert into N_WF_INSTANCE
+    insert into N_WF_INSTANCE_HIS
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="instanceId != null">
         INSTANCE_ID,
@@ -105,6 +108,9 @@
       </if>
       <if test="bizType != null">
         BIZ_TYPE,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -150,13 +156,16 @@
       <if test="bizType != null">
         #{bizType,jdbcType=VARCHAR},
       </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstanceHis">
     <!--
       WARNING - @mbg.generated
     -->
-    update N_WF_INSTANCE
+    update N_WF_INSTANCE_HIS
     <set>
       <if test="flowName != null">
         FLOW_NAME = #{flowName,jdbcType=VARCHAR},
@@ -197,14 +206,17 @@
       <if test="bizType != null">
         BIZ_TYPE = #{bizType,jdbcType=VARCHAR},
       </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=VARCHAR},
+      </if>
     </set>
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstance">
+  <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstanceHis">
     <!--
       WARNING - @mbg.generated
     -->
-    update N_WF_INSTANCE
+    update N_WF_INSTANCE_HIS
     set FLOW_NAME = #{flowName,jdbcType=VARCHAR},
       FLOW_ID = #{flowId,jdbcType=VARCHAR},
       FLOW_ADMIN = #{flowAdmin,jdbcType=VARCHAR},
@@ -217,11 +229,12 @@
       BIZ_USER_NAME = #{bizUserName,jdbcType=VARCHAR},
       BIZ_USER_ID = #{bizUserId,jdbcType=VARCHAR},
       FLOW_PARAM = #{flowParam,jdbcType=VARCHAR},
-      BIZ_TYPE = #{bizType,jdbcType=VARCHAR}
+      BIZ_TYPE = #{bizType,jdbcType=VARCHAR},
+      END_TIME = #{endTime,jdbcType=VARCHAR}
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </update>
   <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
-    SELECT * FROM N_WF_INSTANCE
+    SELECT * FROM N_WF_INSTANCE_HIS
     <where>
       <if test="condition.instanceId !=null and condition.instanceId !=''">
         <choose>
@@ -363,6 +376,16 @@
           </otherwise>
         </choose>
       </if>
+      <if test="condition.endTime !=null and condition.endTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.endTime)">
+             AND END_TIME LIKE #{condition.endTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND END_TIME = #{condition.endTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
       ${dataAuth}
     </where>
     <if test="sort != null">
@@ -370,7 +393,7 @@
     </if>
   </select>
   <delete id="deleteByIds" parameterType="java.lang.String">
-    DELETE FROM N_WF_INSTANCE WHERE INSTANCE_ID IN
+    DELETE FROM N_WF_INSTANCE_HIS WHERE INSTANCE_ID IN
     <foreach close=")" collection="@cn.com.yusys.yusp.workflow.util.OGNLUtil@toList('java.lang.String',_parameter)" item="id" open="(" separator=",">
       #{id,jdbcType=VARCHAR}
     </foreach>

@@ -14,13 +14,14 @@
     <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
     <result column="LAST_NODE_ID" jdbcType="VARCHAR" property="lastNodeId" />
     <result column="LAST_NODE_NAME" jdbcType="VARCHAR" property="lastNodeName" />
+    <result column="NODE_LEVEL_TOTAL" jdbcType="NUMERIC" property="nodeLevelTotal" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     INSTANCE_ID, NODE_ID, NODE_SIGN, NODE_NAME, NODE_STATE, START_TIME, ORG_ID, LAST_NODE_ID, 
-    LAST_NODE_NAME
+    LAST_NODE_NAME, NODE_LEVEL_TOTAL
   </sql>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -46,12 +47,12 @@
     -->
     insert into N_WF_NODE (INSTANCE_ID, NODE_ID, NODE_SIGN, 
       NODE_NAME, NODE_STATE, START_TIME, 
-      ORG_ID, LAST_NODE_ID, LAST_NODE_NAME
-      )
+      ORG_ID, LAST_NODE_ID, LAST_NODE_NAME, 
+      NODE_LEVEL_TOTAL)
     values (#{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{nodeSign,jdbcType=VARCHAR}, 
       #{nodeName,jdbcType=VARCHAR}, #{nodeState,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
-      #{orgId,jdbcType=VARCHAR}, #{lastNodeId,jdbcType=VARCHAR}, #{lastNodeName,jdbcType=VARCHAR}
-      )
+      #{orgId,jdbcType=VARCHAR}, #{lastNodeId,jdbcType=VARCHAR}, #{lastNodeName,jdbcType=VARCHAR}, 
+      #{nodeLevelTotal,jdbcType=NUMERIC})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfNode">
     <!--
@@ -86,6 +87,9 @@
       <if test="lastNodeName != null">
         LAST_NODE_NAME,
       </if>
+      <if test="nodeLevelTotal != null">
+        NODE_LEVEL_TOTAL,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="instanceId != null">
@@ -114,6 +118,9 @@
       </if>
       <if test="lastNodeName != null">
         #{lastNodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeLevelTotal != null">
+        #{nodeLevelTotal,jdbcType=NUMERIC},
       </if>
     </trim>
   </insert>
@@ -144,6 +151,9 @@
       <if test="lastNodeName != null">
         LAST_NODE_NAME = #{lastNodeName,jdbcType=VARCHAR},
       </if>
+      <if test="nodeLevelTotal != null">
+        NODE_LEVEL_TOTAL = #{nodeLevelTotal,jdbcType=NUMERIC},
+      </if>
     </set>
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
       and NODE_ID = #{nodeId,jdbcType=VARCHAR}
@@ -159,7 +169,8 @@
       START_TIME = #{startTime,jdbcType=VARCHAR},
       ORG_ID = #{orgId,jdbcType=VARCHAR},
       LAST_NODE_ID = #{lastNodeId,jdbcType=VARCHAR},
-      LAST_NODE_NAME = #{lastNodeName,jdbcType=VARCHAR}
+      LAST_NODE_NAME = #{lastNodeName,jdbcType=VARCHAR},
+      NODE_LEVEL_TOTAL = #{nodeLevelTotal,jdbcType=NUMERIC}
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
       and NODE_ID = #{nodeId,jdbcType=VARCHAR}
   </update>
@@ -253,6 +264,16 @@
           </when>
           <otherwise>
             AND LAST_NODE_NAME = #{condition.lastNodeName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeLevelTotal !=null and condition.nodeLevelTotal !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeLevelTotal)">
+             AND NODE_LEVEL_TOTAL LIKE #{condition.nodeLevelTotal,jdbcType=NUMERIC}
+          </when>
+          <otherwise>
+            AND NODE_LEVEL_TOTAL = #{condition.nodeLevelTotal,jdbcType=NUMERIC}
           </otherwise>
         </choose>
       </if>

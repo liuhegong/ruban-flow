@@ -13,13 +13,22 @@ public class WorkflowBackUpService {
 	@Autowired
 	private WorkflowBackUpMapper workflowBackUpMapper;
 	
-	public int backUpUserTodo(List<NWfUserTodo> data){
-		return workflowBackUpMapper.backUpUserTodo(data);
+	public int transUSerDone2End(String instanceId){
+		return workflowBackUpMapper.transUSerDone2End(instanceId);
 	}
 	public int insertUserTodoBatch(List<NWfUserTodo> data){
 		return workflowBackUpMapper.insertUserTodoBatch(data);
 	}
 	public int deleteUserTodo(String instanceId, String nodeId){
 		return workflowBackUpMapper.deleteUserTodo(instanceId,nodeId);
+	}
+	public int deleteAllUserDone(String instanceId){
+		return workflowBackUpMapper.deleteAllUserDone(instanceId);
+	}
+	public int transUSerComment2End(String instanceId){
+		return workflowBackUpMapper.transUSerComment2End(instanceId);
+	}
+	public int deleteAllUserComment(String instanceId){
+		return workflowBackUpMapper.deleteAllUserComment(instanceId);
 	}
 }

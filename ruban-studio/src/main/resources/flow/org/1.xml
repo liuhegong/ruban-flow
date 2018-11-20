@@ -2,7 +2,7 @@
 <system id="cmis" name="信贷系统">
 <user id="0" name="王亚飞" email="2273976335@qq.com" mobile="17186281150"></user>
 <user id="1" name="王亚飞1" email="2273976331@qq.com" mobile="17186281151"></user>
-
+<user id="admin" name="王亚飞admin" email="2273976331@qq.com" mobile="17186281151"></user>
 <org id="0" name="机构1" level="1"></org>
 <org id="2" name="机构2"  level="1">
 	<user id="2" name="王亚飞2" email="2273976336@qq.com" mobile="17186281152"></user>

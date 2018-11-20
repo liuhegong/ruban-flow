@@ -21,7 +21,9 @@ public class Cons {
 	
 	public final static String SUCCESS_MSG5 = "正常结束";
 	public final static String ERROR_MSG6 = "节点无处理人，无法提交";
-	
+	public final static String SUCCESS_MSG7 = "提交完成";
+	public final static String ERROR_MSG8 = "更新流程扩展参数失败";
+
 	
 	public final static String  DEV = "dev";
 	public final static String  ORG = "org";	

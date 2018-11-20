@@ -64,6 +64,12 @@ public class NWfNode implements Serializable {
     @Column(name = "LAST_NODE_NAME")
     private String lastNodeName;
 
+    /**
+     * 流经的节点等级之和
+     */
+    @Column(name = "NODE_LEVEL_TOTAL")
+    private Long nodeLevelTotal;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -228,6 +234,24 @@ public class NWfNode implements Serializable {
         this.lastNodeName = lastNodeName == null ? null : lastNodeName.trim();
     }
 
+    /**
+     * 获取流经的节点等级之和
+     *
+     * @return NODE_LEVEL_TOTAL - 流经的节点等级之和
+     */
+    public Long getNodeLevelTotal() {
+        return nodeLevelTotal;
+    }
+
+    /**
+     * 设置流经的节点等级之和
+     *
+     * @param nodeLevelTotal 流经的节点等级之和
+     */
+    public void setNodeLevelTotal(Long nodeLevelTotal) {
+        this.nodeLevelTotal = nodeLevelTotal;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -248,7 +272,8 @@ public class NWfNode implements Serializable {
             && (this.getStartTime() == null ? other.getStartTime() == null : this.getStartTime().equals(other.getStartTime()))
             && (this.getOrgId() == null ? other.getOrgId() == null : this.getOrgId().equals(other.getOrgId()))
             && (this.getLastNodeId() == null ? other.getLastNodeId() == null : this.getLastNodeId().equals(other.getLastNodeId()))
-            && (this.getLastNodeName() == null ? other.getLastNodeName() == null : this.getLastNodeName().equals(other.getLastNodeName()));
+            && (this.getLastNodeName() == null ? other.getLastNodeName() == null : this.getLastNodeName().equals(other.getLastNodeName()))
+            && (this.getNodeLevelTotal() == null ? other.getNodeLevelTotal() == null : this.getNodeLevelTotal().equals(other.getNodeLevelTotal()));
     }
 
     @Override
@@ -264,6 +289,7 @@ public class NWfNode implements Serializable {
         result = prime * result + ((getOrgId() == null) ? 0 : getOrgId().hashCode());
         result = prime * result + ((getLastNodeId() == null) ? 0 : getLastNodeId().hashCode());
         result = prime * result + ((getLastNodeName() == null) ? 0 : getLastNodeName().hashCode());
+        result = prime * result + ((getNodeLevelTotal() == null) ? 0 : getNodeLevelTotal().hashCode());
         return result;
     }
 
@@ -282,6 +308,7 @@ public class NWfNode implements Serializable {
         sb.append(", orgId=").append(orgId);
         sb.append(", lastNodeId=").append(lastNodeId);
         sb.append(", lastNodeName=").append(lastNodeName);
+        sb.append(", nodeLevelTotal=").append(nodeLevelTotal);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

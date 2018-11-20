@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
 import cn.com.yusys.yusp.workflow.core.org.OrgCache;
+import cn.com.yusys.yusp.workflow.web.fillter.UserSessionRequestFilter;
 
 @Configuration
 public class WorkFlowConfig {
@@ -25,5 +26,10 @@ public class WorkFlowConfig {
 		OrgCache engineCache = OrgCache.getInstance(flowPath);
 		engineCache.init();	
 		return engineCache;
+	}
+	
+	@Bean
+	public UserSessionRequestFilter userSessionRequestFilter(){
+		return new UserSessionRequestFilter();
 	}
 }

@@ -26,6 +26,11 @@ public class WFStratDto implements Serializable {
      * 业务流水号
      */
     private String bizId;
+    
+    /**
+     * 业务类型
+     */
+    private String bizType;
 
     /**
      * 客户名称
@@ -124,4 +129,19 @@ public class WFStratDto implements Serializable {
 		this.userName = userName;
 	}
 
+	public String getBizType() {
+		return bizType;
+	}
+
+	public void setBizType(String bizType) {
+		this.bizType = bizType;
+	}
+
+	@Override
+	public String toString() {
+		return "WFStratDto [flowId=" + flowId + ", systemId=" + systemId + ", orgId=" + orgId + ", bizId=" + bizId
+				+ ", bizType=" + bizType + ", bizUserName=" + bizUserName + ", bizUserId=" + bizUserId + ", userId="
+				+ userId + ", userName=" + userName + ", param=" + param + "]";
+	}
+	
 }

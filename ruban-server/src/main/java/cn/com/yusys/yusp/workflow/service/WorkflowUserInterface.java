@@ -10,6 +10,7 @@ import cn.com.yusys.yusp.workflow.dto.WFUserDto;
  *
  */
 public interface WorkflowUserInterface {
+	String getUserName(String systemId,String orgId,String userId);
 	List<WFUserDto> getUsersByOrgId(String systemId,String orgId);
 	List<WFUserDto> getUsersByRoleId(String systemId,String roleId);
 	List<WFUserDto> getUsersByDutyId(String systemId,String dutyId);

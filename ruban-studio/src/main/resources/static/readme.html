@@ -9,8 +9,37 @@
 汇总节点处理：当前实例下等级最大且，汇总节点无处理历史 则向前
 每经过多选节点时，等级加一 
 
-
+流程重置办里人
 打回逐级提交时将清空所有待办
 打回原路返回时不做待办处理
+ /**
+     * 流程提交
+     * <pre>
+     *      instanceId    : 实例id
+     *      nodeId        : 当前节点id
+     *      currentUserId : 当前处理人员代码
+     *      orgCde         : 当前人员机构代码
+     *      nextNodeId    : 下个节点id
+     *      nextNodeUser  : 下个节点处理人
+     *      annouceUser   : 抄送人员
+     *      entrustModel  : 委托模式
+     * </pre>
+     * @param dto
+     * @return
+     */
+     
+select * from N_WF_COMMENT t;
+select * from N_WF_INSTANCE t;
+select * from N_WF_NODE t;
+select * from N_WF_NODE_HIS t;
+select * from N_WF_USER_DONE t;
+select * from N_WF_USER_TODO t;
+
+delete from N_WF_COMMENT t;
+delete from N_WF_INSTANCE t;
+delete from N_WF_NODE t;
+delete from N_WF_NODE_HIS t;
+delete from N_WF_USER_DONE t;
+delete from N_WF_USER_TODO t;
 </body>
 </html>

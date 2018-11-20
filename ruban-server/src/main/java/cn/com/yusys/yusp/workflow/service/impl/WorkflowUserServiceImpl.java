@@ -26,6 +26,23 @@ import cn.com.yusys.yusp.workflow.service.WorkflowUserInterface;
 public class WorkflowUserServiceImpl implements WorkflowUserInterface {
 
 	private static final Log log = LogFactory.getLog(WorkflowUserServiceImpl.class);
+	@Override
+	public String getUserName(String systemId, String orgId, String userId) {
+		WFOrg orgT = getOrgById( systemId, orgId);	
+		List<WFUser> usersT = orgT.getUsers();
+		String userName = "系统指定";
+		if(null!=usersT){
+			for(WFUser wFUser:usersT){
+				if(wFUser.getUserId().equals(userId)){
+					return wFUser.getUserName();
+				}
+			}
+		}
+		if(log.isDebugEnabled()){
+			log.debug("获取用户名[systemId="+systemId+",orgId="+orgId+"] "+userName);
+		}
+		return userName;
+	}
 	
 	@Override
 	public List<WFUserDto> getUsersByOrgId(String systemId, String orgId) {
@@ -256,5 +273,5 @@ public class WorkflowUserServiceImpl implements WorkflowUserInterface {
 		
 		return users;
 	}
-	
+
 }

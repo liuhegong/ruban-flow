@@ -6,8 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "N_WF_INSTANCE")
-public class NWfInstance implements Serializable {
+@Table(name = "N_WF_INSTANCE_HIS")
+public class NWfInstanceHis implements Serializable {
     /**
      * 流程实例id
      */
@@ -92,6 +92,12 @@ public class NWfInstance implements Serializable {
      */
     @Column(name = "BIZ_TYPE")
     private String bizType;
+
+    /**
+     * 流程结束时间
+     */
+    @Column(name = "END_TIME")
+    private String endTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -347,6 +353,24 @@ public class NWfInstance implements Serializable {
         this.bizType = bizType == null ? null : bizType.trim();
     }
 
+    /**
+     * 获取流程结束时间
+     *
+     * @return END_TIME - 流程结束时间
+     */
+    public String getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * 设置流程结束时间
+     *
+     * @param endTime 流程结束时间
+     */
+    public void setEndTime(String endTime) {
+        this.endTime = endTime == null ? null : endTime.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -358,7 +382,7 @@ public class NWfInstance implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        NWfInstance other = (NWfInstance) that;
+        NWfInstanceHis other = (NWfInstanceHis) that;
         return (this.getInstanceId() == null ? other.getInstanceId() == null : this.getInstanceId().equals(other.getInstanceId()))
             && (this.getFlowName() == null ? other.getFlowName() == null : this.getFlowName().equals(other.getFlowName()))
             && (this.getFlowId() == null ? other.getFlowId() == null : this.getFlowId().equals(other.getFlowId()))
@@ -372,7 +396,8 @@ public class NWfInstance implements Serializable {
             && (this.getBizUserName() == null ? other.getBizUserName() == null : this.getBizUserName().equals(other.getBizUserName()))
             && (this.getBizUserId() == null ? other.getBizUserId() == null : this.getBizUserId().equals(other.getBizUserId()))
             && (this.getFlowParam() == null ? other.getFlowParam() == null : this.getFlowParam().equals(other.getFlowParam()))
-            && (this.getBizType() == null ? other.getBizType() == null : this.getBizType().equals(other.getBizType()));
+            && (this.getBizType() == null ? other.getBizType() == null : this.getBizType().equals(other.getBizType()))
+            && (this.getEndTime() == null ? other.getEndTime() == null : this.getEndTime().equals(other.getEndTime()));
     }
 
     @Override
@@ -393,6 +418,7 @@ public class NWfInstance implements Serializable {
         result = prime * result + ((getBizUserId() == null) ? 0 : getBizUserId().hashCode());
         result = prime * result + ((getFlowParam() == null) ? 0 : getFlowParam().hashCode());
         result = prime * result + ((getBizType() == null) ? 0 : getBizType().hashCode());
+        result = prime * result + ((getEndTime() == null) ? 0 : getEndTime().hashCode());
         return result;
     }
 
@@ -416,6 +442,7 @@ public class NWfInstance implements Serializable {
         sb.append(", bizUserId=").append(bizUserId);
         sb.append(", flowParam=").append(flowParam);
         sb.append(", bizType=").append(bizType);
+        sb.append(", endTime=").append(endTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
