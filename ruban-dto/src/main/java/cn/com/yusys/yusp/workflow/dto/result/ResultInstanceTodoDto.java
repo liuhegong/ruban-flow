@@ -3,11 +3,11 @@ package cn.com.yusys.yusp.workflow.dto.result;
 import java.io.Serializable;
 import java.util.Map;
 /**
- * 实例信息，不含办里人员
+ * 待办实例信息包含办理人员
  * @author figue
  *
  */
-public class ResultInstanceDto  implements Serializable {
+public class ResultInstanceTodoDto  implements Serializable {
     
 	/**
      * 流程实例id
@@ -45,7 +45,7 @@ public class ResultInstanceDto  implements Serializable {
     private String systemId;
 
     /**
-     * 发起人机构id
+     * 上一办里人机构id
      */
     private String orgId;
 
@@ -58,6 +58,11 @@ public class ResultInstanceDto  implements Serializable {
      * 业务流水号
      */
     private String bizId;
+    
+    /**
+     * 业务类型
+     */
+    private String bizType;
 
     /**
      * 客户名称
@@ -95,20 +100,11 @@ public class ResultInstanceDto  implements Serializable {
      */
     private String nodeState;
     
-    /**
-     *操作权限
-     */
-    private ResultOpTypeDto opType;
-    
-    /**
-     * 评论
-     */
-    private ResultCommentDto comment;
-    
-    /**
-     * 流程公共参数
-     */
-    private Map<String,Object> param;
+    private String userId;
+    private String userName;
+    private String lastUserId;
+    private String lastUserName;
+    private String signIn;
 
     private static final long serialVersionUID = 1L;
 
@@ -379,30 +375,6 @@ public class ResultInstanceDto  implements Serializable {
 		this.nodeState = nodeState;
 	}
 
-	public ResultOpTypeDto getOpType() {
-		return opType;
-	}
-
-	public void setOpType(ResultOpTypeDto opType) {
-		this.opType = opType;
-	}
-
-	public ResultCommentDto getComment() {
-		return comment;
-	}
-
-	public void setComment(ResultCommentDto comment) {
-		this.comment = comment;
-	}
-
-	public Map<String, Object> getParam() {
-		return param;
-	}
-
-	public void setParam(Map<String, Object> param) {
-		this.param = param;
-	}
-
 	public String getLastNodeId() {
 		return lastNodeId;
 	}
@@ -419,16 +391,64 @@ public class ResultInstanceDto  implements Serializable {
 		this.lastNodeName = lastNodeName;
 	}
 
-	@Override
-	public String toString() {
-		return "ResultInstanceDto [instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
-				+ ", flowAdmin=" + flowAdmin + ", flowStarter=" + flowStarter + ", startTime=" + startTime
-				+ ", systemId=" + systemId + ", orgId=" + orgId + ", flowState=" + flowState + ", bizId=" + bizId
-				+ ", bizUserName=" + bizUserName + ", bizUserId=" + bizUserId + ", flowParam=" + flowParam
-				+ ", lastNodeId=" + lastNodeId + ", lastNodeName=" + lastNodeName + ", nodeId=" + nodeId + ", nodeSign="
-				+ nodeSign + ", nodeName=" + nodeName + ", nodeState=" + nodeState + ", opType=" + opType + ", comment="
-				+ comment + ", param=" + param + "]";
+	public String getBizType() {
+		return bizType;
 	}
 
+	public void setBizType(String bizType) {
+		this.bizType = bizType;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getLastUserId() {
+		return lastUserId;
+	}
+
+	public void setLastUserId(String lastUserId) {
+		this.lastUserId = lastUserId;
+	}
+
+	public String getLastUserName() {
+		return lastUserName;
+	}
+
+	public void setLastUserName(String lastUserName) {
+		this.lastUserName = lastUserName;
+	}
+
+	public String getSignIn() {
+		return signIn;
+	}
+
+	public void setSignIn(String signIn) {
+		this.signIn = signIn;
+	}
+
+	@Override
+	public String toString() {
+		return "ResultInstanceTodoDto [instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
+				+ ", flowAdmin=" + flowAdmin + ", flowStarter=" + flowStarter + ", startTime=" + startTime
+				+ ", systemId=" + systemId + ", orgId=" + orgId + ", flowState=" + flowState + ", bizId=" + bizId
+				+ ", bizType=" + bizType + ", bizUserName=" + bizUserName + ", bizUserId=" + bizUserId + ", flowParam="
+				+ flowParam + ", lastNodeId=" + lastNodeId + ", lastNodeName=" + lastNodeName + ", nodeId=" + nodeId
+				+ ", nodeSign=" + nodeSign + ", nodeName=" + nodeName + ", nodeState=" + nodeState + ", userId="
+				+ userId + ", userName=" + userName + ", lastUserId=" + lastUserId + ", lastUserName=" + lastUserName
+				+ ", signIn=" + signIn + "]";
+	}
 	
 }

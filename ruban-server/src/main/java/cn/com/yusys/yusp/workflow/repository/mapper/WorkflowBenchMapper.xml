@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yusys.yusp.workflow.repository.mapper.WorkflowBenchMapper">
+  <resultMap id="InstanceInfoTodoMap" type="cn.com.yusys.yusp.workflow.dto.result.ResultInstanceTodoDto">
+    <result column="INSTANCE_ID" jdbcType="VARCHAR" property="instanceId" />
+    <result column="FLOW_NAME" jdbcType="VARCHAR" property="flowName" />
+    <result column="FLOW_ID" jdbcType="VARCHAR" property="flowId" />
+    <result column="FLOW_ADMIN" jdbcType="VARCHAR" property="flowAdmin" />
+    <result column="FLOW_STARTER" jdbcType="VARCHAR" property="flowStarter" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="SYSTEM_ID" jdbcType="VARCHAR" property="systemId" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="FLOW_STATE" jdbcType="VARCHAR" property="flowState" />
+    <result column="BIZ_ID" jdbcType="VARCHAR" property="bizId" />
+    <result column="BIZ_USER_NAME" jdbcType="VARCHAR" property="bizUserName" />
+    <result column="BIZ_USER_ID" jdbcType="VARCHAR" property="bizUserId" />
+    <result column="BIZ_TYPE" jdbcType="VARCHAR" property="bizType" />
+    <result column="FLOW_PARAM" jdbcType="VARCHAR" property="flowParam" />
+    <result column="NODE_ID" jdbcType="VARCHAR" property="nodeId" />
+    <result column="NODE_SIGN" jdbcType="VARCHAR" property="nodeSign" />
+    <result column="NODE_NAME" jdbcType="VARCHAR" property="nodeName" />
+    <result column="NODE_STATE" jdbcType="VARCHAR" property="nodeState" />
+    <result column="LAST_NODE_ID" jdbcType="VARCHAR" property="lastNodeId" />
+    <result column="LAST_NODE_NAME" jdbcType="VARCHAR" property="lastNodeName" />
+    
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="LAST_USER_ID" jdbcType="VARCHAR" property="lastUserId" />
+    <result column="LAST_USER_NAME" jdbcType="VARCHAR" property="lastUserName" />
+    <result column="SIGN_IN" jdbcType="VARCHAR" property="signIn" />     
+  </resultMap>
+  <select id="getInstanceInfoTodo" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="InstanceInfoTodoMap">
+   select t1.INSTANCE_ID,
+       t1.FLOW_NAME,
+       t1.FLOW_ID,
+       t1.FLOW_ADMIN,
+       t1.FLOW_STARTER,
+       t1.SYSTEM_ID,
+       t1.FLOW_STATE,
+       t1.BIZ_ID,
+       t1.BIZ_USER_NAME,
+       t1.BIZ_USER_ID,
+       t1.FLOW_PARAM,
+       t2.node_id,
+       t2.node_sign,
+       t2.node_name,
+       t2.last_node_id,
+       t2.last_node_name,
+       t2.node_state,
+       t2.org_id,
+       uu.user_id,
+       uu.user_name,
+       uu.last_user_id,
+       uu.last_user_name,
+       uu.sign_in,
+       uu.start_time
+  from N_WF_INSTANCE t1 
+  left join N_WF_NODE t2
+    on t1.instance_id = t2.instance_id 
+  left join (select u.INSTANCE_ID ,u.node_id,u.user_id,u.user_name,u.last_user_id,u.last_user_name,u.sign_in,u.start_time from n_wf_user_todo u where u.user_level in (select min(tt.user_level) from n_wf_user_todo tt)) uu
+    on uu.node_id = t2.node_id    
+    <where>
+      <if test="condition.flowStarter !=null and condition.flowStarter !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowStarter)">
+             AND t2.FLOW_STARTER LIKE #{condition.flowStarter,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND t2.FLOW_STARTER = #{condition.flowStarter,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.instanceId !=null and condition.instanceId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
+             AND t2.INSTANCE_ID LIKE #{condition.instanceId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND t2.INSTANCE_ID = #{condition.instanceId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeId !=null and condition.nodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeId)">
+             AND t2.NODE_ID LIKE #{condition.nodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND t2.NODE_ID = #{condition.nodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userId !=null and condition.userId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userId)">
+             AND uu.USER_ID LIKE #{condition.userId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND uu.USER_ID = #{condition.userId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND uu.START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND uu.START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userName !=null and condition.userName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userName)">
+             AND uu.USER_NAME LIKE #{condition.userName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND uu.USER_NAME = #{condition.userName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserId !=null and condition.lastUserId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserId)">
+             AND uu.LAST_USER_ID LIKE #{condition.lastUserId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND uu.LAST_USER_ID = #{condition.lastUserId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserName !=null and condition.lastUserName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserName)">
+             AND uu.LAST_USER_NAME LIKE #{condition.lastUserName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND uu.LAST_USER_NAME = #{condition.lastUserName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.signIn !=null and condition.signIn !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.signIn)">
+             AND uu.SIGN_IN LIKE #{condition.signIn,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND uu.SIGN_IN = #{condition.signIn,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+    </select>
+</mapper>

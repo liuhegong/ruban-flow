@@ -51,5 +51,5 @@
   
   <select id="getNodeUsers" parameterType="string" resultType="string">
      select t.user_id from N_WF_USER_TODO t where t.instance_id = #{instanceId,jdbcType=VARCHAR} and t.node_id = #{nodeId,jdbcType=VARCHAR}
-  </select>
+  </select>  
 </mapper>

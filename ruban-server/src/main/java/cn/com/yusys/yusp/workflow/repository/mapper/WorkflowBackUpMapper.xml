@@ -15,13 +15,20 @@
   </delete>
   
   <insert id="insertUserTodoBatch" parameterType="java.util.List">
-    insert into N_WF_USER_TODO (INSTANCE_ID, NODE_ID, USER_ID, 
-      START_TIME, USER_NAME, LAST_USER_ID, 
-      LAST_USER_NAME) values
-      <foreach collection="list" item="item" index="index" separator=",">
-       (#{item.instanceId,jdbcType=VARCHAR}, #{item.nodeId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR}, 
-              #{item.startTime,jdbcType=VARCHAR}, #{item.userName,jdbcType=VARCHAR}, #{item.lastUserId,jdbcType=VARCHAR}, 
-              #{item.lastUserName,jdbcType=VARCHAR})
+       insert into N_WF_USER_TODO (INSTANCE_ID, NODE_ID, USER_ID, START_TIME, USER_NAME, LAST_USER_ID, LAST_USER_NAME, SIGN_IN, USER_LEVEL)
+      <foreach collection="list" item="item" index="index" separator="UNION ALL">
+       (select 
+       #{item.instanceId,jdbcType=VARCHAR} INSTANCE_ID, 
+       #{item.nodeId,jdbcType=VARCHAR} NODE_ID,
+       #{item.userId,jdbcType=VARCHAR} USER_ID,
+       #{item.startTime,jdbcType=VARCHAR} START_TIME,
+       #{item.userName,jdbcType=VARCHAR} USER_NAME,
+       #{item.lastUserId,jdbcType=VARCHAR} LAST_USER_ID,
+       #{item.lastUserName,jdbcType=VARCHAR} LAST_USER_NAME,
+       #{item.signIn,jdbcType=VARCHAR} SIGN_IN,
+       #{item.userLevel,jdbcType=NUMERIC} USER_LEVEL
+       from dual
+       )
       </foreach>
   </insert>
   <insert id="transUSerDone2End" parameterType="string">

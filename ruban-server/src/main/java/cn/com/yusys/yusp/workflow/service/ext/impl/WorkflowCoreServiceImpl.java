@@ -549,9 +549,9 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		
 		String systemId = instanceInfo.getSystemId();
 		if(isLast){// 是最后办理人,直接提交流程
-			 submitNextMultiNode(instanceInfo, submitDto.getNextNodeInfos(),re,userId,orgId,systemId);
+			submitNextNodeMulti(instanceInfo, submitDto.getNextNodeInfos(),re,userId,orgId,systemId);
 		}else{// 不是最后办理人，节点内流转
-			 //flow( instanceId, nodeId, userId, orgId, submitDto.getNextNodeInfos(),re);			
+			 inNodeFlow(instanceInfo, submitDto.getNextNodeInfos(),re,userId,orgId,systemId);
 		}
 		return re;
 		
@@ -618,7 +618,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	 * @param nodeInfoDtos
 	 * @param msg
 	 */
-	private void submitNextMultiNode(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
+	private void submitNextNodeMulti(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
 		if (null == nodeInfoDtos || nodeInfoDtos.isEmpty()) {// 未指定节点从内存获取
 			if (nodeInfoDtos == null) {
 				nodeInfoDtos = new ArrayList<NextNodeInfoDto>();
@@ -632,6 +632,24 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 				submitNextOneNode(instanceInfo, nextNodeDto, msg,currentUserId,orgId,systemId);
 			}
 		}
+	}
+	
+	/**
+	 * 节点内流转【此节点有多个办里人】
+	 * @param instanceInfo
+	 * @param nodeInfoDtos
+	 * @param msg
+	 * @param currentUserId
+	 * @param orgId
+	 * @param systemId
+	 * @throws WorkflowException
+	 */
+	private void inNodeFlow(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
+		// 用户待办信息迁移为已办
+		userTodoBackup2Done(instanceInfo.getInstanceId(), instanceInfo.getNodeId(),currentUserId, TimeUtil.getDateyyyyMMddHHmmss());		
+		ResultWFMessageDto re = new ResultWFMessageDto();
+		re.setTip(Cons.SUCCESS_MSG9);
+		re.setCode(FlowState.RUN);
 	}
 	
 	private void submitNextOneNode(ResultInstanceDto instanceInfo,NextNodeInfoDto nodeInfoDtos,List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException{
@@ -707,6 +725,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			userTodo.setUserId(wFUserDto.getUserId());
 			userTodo.setUserName(wFUserDto.getUserName());
 			userTodo.setSignIn("0");
+			userTodo.setUserLevel(0);
 			userTodeNew.add(userTodo);
 			re.getUserNames().add(wFUserDto.getUserName());// 设置返回待办人员名称
 		}
