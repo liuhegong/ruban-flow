@@ -12,33 +12,23 @@
     <result column="COMMENT_SIGN" jdbcType="VARCHAR" property="commentSign" />
     <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
     <result column="NODE_LEVEL" jdbcType="NUMERIC" property="nodeLevel" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.yusys.yusp.workflow.domain.NWfComment">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="USER_COMMENT" jdbcType="CLOB" property="userComment" />
+    <result column="USER_COMMENT" jdbcType="VARCHAR" property="userComment" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="NODE_NAME" jdbcType="VARCHAR" property="nodeName" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    COMMENT_ID, INSTANCE_ID, NODE_ID, USER_ID, COMMENT_SIGN, START_TIME, NODE_LEVEL
+    COMMENT_ID, INSTANCE_ID, NODE_ID, USER_ID, COMMENT_SIGN, START_TIME, NODE_LEVEL, 
+    USER_COMMENT, USER_NAME, NODE_NAME
   </sql>
-  <sql id="Blob_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    USER_COMMENT
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
     -->
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from N_WF_COMMENT
     where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
   </select>
@@ -55,10 +45,12 @@
     -->
     insert into N_WF_COMMENT (COMMENT_ID, INSTANCE_ID, NODE_ID, 
       USER_ID, COMMENT_SIGN, START_TIME, 
-      NODE_LEVEL, USER_COMMENT)
+      NODE_LEVEL, USER_COMMENT, USER_NAME, 
+      NODE_NAME)
     values (#{commentId,jdbcType=VARCHAR}, #{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
       #{userId,jdbcType=VARCHAR}, #{commentSign,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
-      #{nodeLevel,jdbcType=NUMERIC}, #{userComment,jdbcType=CLOB})
+      #{nodeLevel,jdbcType=NUMERIC}, #{userComment,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{nodeName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
     <!--
@@ -90,6 +82,12 @@
       <if test="userComment != null">
         USER_COMMENT,
       </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="nodeName != null">
+        NODE_NAME,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="commentId != null">
@@ -114,7 +112,13 @@
         #{nodeLevel,jdbcType=NUMERIC},
       </if>
       <if test="userComment != null">
-        #{userComment,jdbcType=CLOB},
+        #{userComment,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null">
+        #{nodeName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -143,23 +147,15 @@
         NODE_LEVEL = #{nodeLevel,jdbcType=NUMERIC},
       </if>
       <if test="userComment != null">
-        USER_COMMENT = #{userComment,jdbcType=CLOB},
+        USER_COMMENT = #{userComment,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null">
+        NODE_NAME = #{nodeName,jdbcType=VARCHAR},
       </if>
     </set>
-    where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    update N_WF_COMMENT
-    set INSTANCE_ID = #{instanceId,jdbcType=VARCHAR},
-      NODE_ID = #{nodeId,jdbcType=VARCHAR},
-      USER_ID = #{userId,jdbcType=VARCHAR},
-      COMMENT_SIGN = #{commentSign,jdbcType=VARCHAR},
-      START_TIME = #{startTime,jdbcType=VARCHAR},
-      NODE_LEVEL = #{nodeLevel,jdbcType=NUMERIC},
-      USER_COMMENT = #{userComment,jdbcType=CLOB}
     where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.com.yusys.yusp.workflow.domain.NWfComment">
@@ -172,7 +168,10 @@
       USER_ID = #{userId,jdbcType=VARCHAR},
       COMMENT_SIGN = #{commentSign,jdbcType=VARCHAR},
       START_TIME = #{startTime,jdbcType=VARCHAR},
-      NODE_LEVEL = #{nodeLevel,jdbcType=NUMERIC}
+      NODE_LEVEL = #{nodeLevel,jdbcType=NUMERIC},
+      USER_COMMENT = #{userComment,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      NODE_NAME = #{nodeName,jdbcType=VARCHAR}
     where COMMENT_ID = #{commentId,jdbcType=VARCHAR}
   </update>
   <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
@@ -251,10 +250,30 @@
       <if test="condition.userComment !=null and condition.userComment !=''">
         <choose>
           <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userComment)">
-             AND USER_COMMENT LIKE #{condition.userComment,jdbcType=CLOB}
+             AND USER_COMMENT LIKE #{condition.userComment,jdbcType=VARCHAR}
           </when>
           <otherwise>
-            AND USER_COMMENT = #{condition.userComment,jdbcType=CLOB}
+            AND USER_COMMENT = #{condition.userComment,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userName !=null and condition.userName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userName)">
+             AND USER_NAME LIKE #{condition.userName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND USER_NAME = #{condition.userName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeName !=null and condition.nodeName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeName)">
+             AND NODE_NAME LIKE #{condition.nodeName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NODE_NAME = #{condition.nodeName,jdbcType=VARCHAR}
           </otherwise>
         </choose>
       </if>

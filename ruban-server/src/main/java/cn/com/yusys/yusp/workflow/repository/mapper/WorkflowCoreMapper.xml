@@ -7,6 +7,7 @@
     <result column="FLOW_ID" jdbcType="VARCHAR" property="flowId" />
     <result column="FLOW_ADMIN" jdbcType="VARCHAR" property="flowAdmin" />
     <result column="FLOW_STARTER" jdbcType="VARCHAR" property="flowStarter" />
+    <result column="FLOW_STARTER_NAME" jdbcType="VARCHAR" property="flowStarterName" />
     <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
     <result column="SYSTEM_ID" jdbcType="VARCHAR" property="systemId" />
     <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
@@ -29,6 +30,7 @@
        t1.FLOW_ID,
        t1.FLOW_ADMIN,
        t1.FLOW_STARTER,
+       t1.FLOW_STARTER_NAME,
        t1.SYSTEM_ID,
        t1.FLOW_STATE,
        t1.BIZ_ID,

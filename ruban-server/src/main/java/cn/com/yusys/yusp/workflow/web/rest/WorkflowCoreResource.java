@@ -67,8 +67,6 @@ public class WorkflowCoreResource {
 		comment.setCommentSign("1");
 		comment.setInstanceId("1542366521504");
 		comment.setNodeId("22_a8");
-		comment.setOrgId("1orgId");
-		comment.setUserComment("userComment");
 		comment.setUserId("userId");
 		sb.setComment(comment );
 		List<NextNodeInfoDto> nextNodeInfos = new ArrayList<NextNodeInfoDto>();
@@ -102,7 +100,6 @@ public class WorkflowCoreResource {
 		comment.setCommentSign("1");
 		comment.setInstanceId(data.getInstanceId());
 		comment.setNodeId(data.getNodeId());
-		comment.setOrgId("1orgId");
 		comment.setUserComment("userComment");
 		comment.setUserId("userId");
 		sb.setComment(comment );

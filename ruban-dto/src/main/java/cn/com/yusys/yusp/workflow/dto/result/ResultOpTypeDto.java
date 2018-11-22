@@ -70,7 +70,7 @@ public class ResultOpTypeDto {
 	/**
 	 * 撤销签收
 	 */
-	private String unsignIn;
+	private String unSignIn;
 
 	public String getHangUp() {
 		return hangUp;
@@ -178,12 +178,12 @@ public class ResultOpTypeDto {
 		this.signIn = signIn;
 	}
 
-	public String getUnsignIn() {
-		return unsignIn;
+	public String getUnSignIn() {
+		return unSignIn;
 	}
 
-	public void setUnsignIn(String unsignIn) {
-		this.unsignIn = unsignIn;
+	public void setUnSignIn(String unSignIn) {
+		this.unSignIn = unSignIn;
 	}
 
 	@Override
@@ -191,7 +191,8 @@ public class ResultOpTypeDto {
 		return "ResultOpTypeDto [hangUp=" + hangUp + ", wackUp=" + wackUp + ", tackBack=" + tackBack + ", callBack="
 				+ callBack + ", returnBack=" + returnBack + ", urged=" + urged + ", change=" + change + ", assist="
 				+ assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust + ", copy=" + copy
-				+ ", signIn=" + signIn + ", unsignIn=" + unsignIn + "]";
+				+ ", signIn=" + signIn + ", unSignIn=" + unSignIn + "]";
 	}
+	
 
 }

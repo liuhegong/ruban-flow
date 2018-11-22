@@ -12,5 +12,5 @@ public interface WorkflowBenchMapper {
 	 * @param queryModel
 	 * @return
 	 */
-	List<ResultInstanceTodoDto> getInstanceInfoTodo(QueryModel queryModel);
+	List<ResultInstanceTodoDto> getInstanceInfoUserTodo(QueryModel queryModel);
 }

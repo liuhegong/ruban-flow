@@ -9,6 +9,10 @@ public class WFSubmitDto implements Serializable {
 	private static final long serialVersionUID = -3914960001309796362L;
 	
 	/**
+	 * 提交人机构
+	 */
+	private String orgId;
+	/**
      * 流程公共参数
      */
     private Map<String,Object> param;
@@ -49,5 +53,12 @@ public class WFSubmitDto implements Serializable {
 		this.comment = comment;
 	}
 
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
 	
 }

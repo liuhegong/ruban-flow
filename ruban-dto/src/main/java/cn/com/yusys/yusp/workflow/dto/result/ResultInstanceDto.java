@@ -33,6 +33,11 @@ public class ResultInstanceDto  implements Serializable {
      * 流程发起者
      */
     private String flowStarter;
+    
+    /**
+     * 流程发起者
+     */
+    private String flowStarterName;
 
     /**
      * 流程发起时间
@@ -419,16 +424,23 @@ public class ResultInstanceDto  implements Serializable {
 		this.lastNodeName = lastNodeName;
 	}
 
+	public String getFlowStarterName() {
+		return flowStarterName;
+	}
+
+	public void setFlowStarterName(String flowStarterName) {
+		this.flowStarterName = flowStarterName;
+	}
+
 	@Override
 	public String toString() {
 		return "ResultInstanceDto [instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
-				+ ", flowAdmin=" + flowAdmin + ", flowStarter=" + flowStarter + ", startTime=" + startTime
-				+ ", systemId=" + systemId + ", orgId=" + orgId + ", flowState=" + flowState + ", bizId=" + bizId
-				+ ", bizUserName=" + bizUserName + ", bizUserId=" + bizUserId + ", flowParam=" + flowParam
-				+ ", lastNodeId=" + lastNodeId + ", lastNodeName=" + lastNodeName + ", nodeId=" + nodeId + ", nodeSign="
-				+ nodeSign + ", nodeName=" + nodeName + ", nodeState=" + nodeState + ", opType=" + opType + ", comment="
-				+ comment + ", param=" + param + "]";
+				+ ", flowAdmin=" + flowAdmin + ", flowStarter=" + flowStarter + ", flowStarterName=" + flowStarterName
+				+ ", startTime=" + startTime + ", systemId=" + systemId + ", orgId=" + orgId + ", flowState="
+				+ flowState + ", bizId=" + bizId + ", bizUserName=" + bizUserName + ", bizUserId=" + bizUserId
+				+ ", flowParam=" + flowParam + ", lastNodeId=" + lastNodeId + ", lastNodeName=" + lastNodeName
+				+ ", nodeId=" + nodeId + ", nodeSign=" + nodeSign + ", nodeName=" + nodeName + ", nodeState="
+				+ nodeState + ", opType=" + opType + ", comment=" + comment + ", param=" + param + "]";
 	}
-
 	
 }

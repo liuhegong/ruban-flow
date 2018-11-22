@@ -1,10 +1,12 @@
 package cn.com.yusys.yusp.workflow.core.engine.node.type;
 
 public class OpType {
+	
 	/**
 	 * 拿回
 	 */
 	public final static String TACK_BACK = "O-0";
+	
 	/**
 	 * 打回
 	 */
@@ -51,5 +53,10 @@ public class OpType {
 	 * 抄送
 	 */
 	public final static String COPY = "O-11";
+	
+	/**
+	 * 同意
+	 */
+	public final static String RUN = "O-12";
 	
 }

@@ -15,8 +15,6 @@ public interface NWfCommentMapper {
 
     int updateByPrimaryKeySelective(NWfComment record);
 
-    int updateByPrimaryKeyWithBLOBs(NWfComment record);
-
     int updateByPrimaryKey(NWfComment record);
 
     List<NWfComment> selectByModel(QueryModel model);

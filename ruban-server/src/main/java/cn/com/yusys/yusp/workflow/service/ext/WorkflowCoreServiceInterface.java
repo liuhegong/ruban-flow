@@ -32,14 +32,24 @@ public interface WorkflowCoreServiceInterface {
 	 * @param comment
 	 * @return
 	 */
-	int saveComment(WFCommentDto comment)  throws WorkflowException;
+	ResultCommentDto saveComment(WFCommentDto comment)  throws WorkflowException;
 	
 	/**
-	 * 获取用户评论
+	 * 获取实例下所有用户评论
 	 * @param comment
 	 * @return
 	 */
-	ResultCommentDto getComment(String instanceId,String nodeId,String currentUserId)  throws WorkflowException;
+	 List<ResultCommentDto> getComments(String instanceId)  throws WorkflowException;
+	
+	/**
+	 * 获取节点下用户评论
+	 * @param instanceId
+	 * @param nodeId
+	 * @param userId
+	 * @return
+	 * @throws WorkflowException
+	 */
+	ResultCommentDto getNodeUserComment(String instanceId,String nodeId,String userId)  throws WorkflowException;
 	
 	/**
 	 * 获取路由后面节点信息
@@ -71,5 +81,5 @@ public interface WorkflowCoreServiceInterface {
 	 * @param userId
 	 * @return
 	 */
-	ResultWFMessageDto unsignIn(String instanceId,String nodeId,String userId);
+	ResultWFMessageDto unSignIn(String instanceId,String nodeId,String userId);
 }

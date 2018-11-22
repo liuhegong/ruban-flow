@@ -99,6 +99,12 @@ public class NWfInstanceHis implements Serializable {
     @Column(name = "END_TIME")
     private String endTime;
 
+    /**
+     * 发起者姓名
+     */
+    @Column(name = "FLOW_STARTER_NAME")
+    private String flowStarterName;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -371,6 +377,24 @@ public class NWfInstanceHis implements Serializable {
         this.endTime = endTime == null ? null : endTime.trim();
     }
 
+    /**
+     * 获取发起者姓名
+     *
+     * @return FLOW_STARTER_NAME - 发起者姓名
+     */
+    public String getFlowStarterName() {
+        return flowStarterName;
+    }
+
+    /**
+     * 设置发起者姓名
+     *
+     * @param flowStarterName 发起者姓名
+     */
+    public void setFlowStarterName(String flowStarterName) {
+        this.flowStarterName = flowStarterName == null ? null : flowStarterName.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -397,7 +421,8 @@ public class NWfInstanceHis implements Serializable {
             && (this.getBizUserId() == null ? other.getBizUserId() == null : this.getBizUserId().equals(other.getBizUserId()))
             && (this.getFlowParam() == null ? other.getFlowParam() == null : this.getFlowParam().equals(other.getFlowParam()))
             && (this.getBizType() == null ? other.getBizType() == null : this.getBizType().equals(other.getBizType()))
-            && (this.getEndTime() == null ? other.getEndTime() == null : this.getEndTime().equals(other.getEndTime()));
+            && (this.getEndTime() == null ? other.getEndTime() == null : this.getEndTime().equals(other.getEndTime()))
+            && (this.getFlowStarterName() == null ? other.getFlowStarterName() == null : this.getFlowStarterName().equals(other.getFlowStarterName()));
     }
 
     @Override
@@ -419,6 +444,7 @@ public class NWfInstanceHis implements Serializable {
         result = prime * result + ((getFlowParam() == null) ? 0 : getFlowParam().hashCode());
         result = prime * result + ((getBizType() == null) ? 0 : getBizType().hashCode());
         result = prime * result + ((getEndTime() == null) ? 0 : getEndTime().hashCode());
+        result = prime * result + ((getFlowStarterName() == null) ? 0 : getFlowStarterName().hashCode());
         return result;
     }
 
@@ -443,6 +469,7 @@ public class NWfInstanceHis implements Serializable {
         sb.append(", flowParam=").append(flowParam);
         sb.append(", bizType=").append(bizType);
         sb.append(", endTime=").append(endTime);
+        sb.append(", flowStarterName=").append(flowStarterName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

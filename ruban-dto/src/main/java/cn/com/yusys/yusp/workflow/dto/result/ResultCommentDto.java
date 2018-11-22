@@ -17,11 +17,15 @@ public class ResultCommentDto implements Serializable {
      * 节点id
      */
     private String nodeId;
+    
+    private String nodeName;
 
     /**
      * 用户id
      */
     private String userId;
+    
+    private String userName;
 
     /**
      * 用户结论
@@ -166,11 +170,28 @@ public class ResultCommentDto implements Serializable {
         this.userComment = userComment == null ? null : userComment.trim();
     }
 
+	public String getNodeName() {
+		return nodeName;
+	}
+
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public String toString() {
-		return "NWfCommentDto [commentId=" + commentId + ", instanceId=" + instanceId + ", nodeId=" + nodeId
-				+ ", userId=" + userId + ", commentSign=" + commentSign + ", startTime=" + startTime + ", userComment="
-				+ userComment + "]";
+		return "ResultCommentDto [commentId=" + commentId + ", instanceId=" + instanceId + ", nodeId=" + nodeId
+				+ ", nodeName=" + nodeName + ", userId=" + userId + ", userName=" + userName + ", commentSign="
+				+ commentSign + ", startTime=" + startTime + ", userComment=" + userComment + "]";
 	}
+
 
 }

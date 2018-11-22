@@ -57,6 +57,18 @@ public class NWfCommentHis implements Serializable {
     @Column(name = "USER_COMMENT")
     private String userComment;
 
+    /**
+     * 用户名称
+     */
+    @Column(name = "USER_NAME")
+    private String userName;
+
+    /**
+     * 节点名称
+     */
+    @Column(name = "NODE_NAME")
+    private String nodeName;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -203,6 +215,42 @@ public class NWfCommentHis implements Serializable {
         this.userComment = userComment == null ? null : userComment.trim();
     }
 
+    /**
+     * 获取用户名称
+     *
+     * @return USER_NAME - 用户名称
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * 设置用户名称
+     *
+     * @param userName 用户名称
+     */
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
+
+    /**
+     * 获取节点名称
+     *
+     * @return NODE_NAME - 节点名称
+     */
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    /**
+     * 设置节点名称
+     *
+     * @param nodeName 节点名称
+     */
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName == null ? null : nodeName.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -222,7 +270,9 @@ public class NWfCommentHis implements Serializable {
             && (this.getCommentSign() == null ? other.getCommentSign() == null : this.getCommentSign().equals(other.getCommentSign()))
             && (this.getStartTime() == null ? other.getStartTime() == null : this.getStartTime().equals(other.getStartTime()))
             && (this.getNodeLevel() == null ? other.getNodeLevel() == null : this.getNodeLevel().equals(other.getNodeLevel()))
-            && (this.getUserComment() == null ? other.getUserComment() == null : this.getUserComment().equals(other.getUserComment()));
+            && (this.getUserComment() == null ? other.getUserComment() == null : this.getUserComment().equals(other.getUserComment()))
+            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
+            && (this.getNodeName() == null ? other.getNodeName() == null : this.getNodeName().equals(other.getNodeName()));
     }
 
     @Override
@@ -237,6 +287,8 @@ public class NWfCommentHis implements Serializable {
         result = prime * result + ((getStartTime() == null) ? 0 : getStartTime().hashCode());
         result = prime * result + ((getNodeLevel() == null) ? 0 : getNodeLevel().hashCode());
         result = prime * result + ((getUserComment() == null) ? 0 : getUserComment().hashCode());
+        result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
+        result = prime * result + ((getNodeName() == null) ? 0 : getNodeName().hashCode());
         return result;
     }
 
@@ -254,6 +306,8 @@ public class NWfCommentHis implements Serializable {
         sb.append(", startTime=").append(startTime);
         sb.append(", nodeLevel=").append(nodeLevel);
         sb.append(", userComment=").append(userComment);
+        sb.append(", userName=").append(userName);
+        sb.append(", nodeName=").append(nodeName);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

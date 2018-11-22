@@ -2,12 +2,10 @@ package cn.com.yusys.yusp.workflow.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 public class WFCommentDto implements Serializable {
-    /**
-     * 系统id
-     */
-	private String systemId;
-	
+    
 	/**
      * 主键
      */
@@ -16,32 +14,32 @@ public class WFCommentDto implements Serializable {
     /**
      * 实例id
      */
+    @NotNull
     private String instanceId;
 
     /**
      * 节点id
      */
+    @NotNull
     private String nodeId;
 
     /**
      * 用户id
      */
+    @NotNull
     private String userId;
     
     /**
-     * 机构id
-     */
-    private String orgId;
-
-    /**
      * 用户结论
      */
+    @NotNull
     private String commentSign;
 
 
     /**
      * 用户评价
      */
+    @NotNull
     private String userComment;
 
     private static final long serialVersionUID = 1L;
@@ -153,21 +151,5 @@ public class WFCommentDto implements Serializable {
     public void setUserComment(String userComment) {
         this.userComment = userComment == null ? null : userComment.trim();
     }
-
-	public String getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-
-	public String getSystemId() {
-		return systemId;
-	}
-
-	public void setSystemId(String systemId) {
-		this.systemId = systemId;
-	}
 
 }

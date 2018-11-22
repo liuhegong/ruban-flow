@@ -12,9 +12,9 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceTodoDto;
  */
 public interface WorkflowBenchInterface {
 	/**
-	 * 待办信息查询
+	 * 用户待办信息查询
 	 * @param queryModel
 	 * @return
 	 */
-	List<ResultInstanceTodoDto> getInstanceInfoTodo(QueryModel queryModel);
+	List<ResultInstanceTodoDto> getInstanceInfoUserTodo(QueryModel queryModel);
 }

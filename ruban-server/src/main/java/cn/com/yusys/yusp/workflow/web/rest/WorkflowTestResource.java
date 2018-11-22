@@ -76,11 +76,11 @@ public class WorkflowTestResource {
 			List<ResultNodeDto> data = WorkflowCoreServicee.getNextNodeInfos(instanceIdTTT,nodeId);
 			for(ResultNodeDto node:data){
 				WFSubmitDto sb = new WFSubmitDto();
+				sb.setOrgId(CurrentUser.info.get().getOrgId());
 				WFCommentDto comment = new WFCommentDto();
 				comment.setCommentSign("1");
 				comment.setInstanceId(instanceIdTTT);
 				comment.setNodeId(nodeId);
-				comment.setOrgId(CurrentUser.info.get().getOrgId());
 				comment.setUserComment("userComment");
 				comment.setUserId(CurrentUser.info.get().getUserId());
 				sb.setComment(comment);
@@ -116,6 +116,7 @@ public class WorkflowTestResource {
 	@GetMapping("/2")
 	public ResultDto WorkflowCoreService2() throws WorkflowException{
 		WFStratDto stratDto = new WFStratDto();
+		stratDto.setOrgId(CurrentUser.info.get().getOrgId());
 		stratDto.setBizType("bizType");
 		stratDto.setBizId("bizId");
 		stratDto.setBizUserId("客户id");
@@ -150,11 +151,11 @@ public class WorkflowTestResource {
 			List<ResultNodeDto> data = WorkflowCoreServicee.getNextNodeInfos(instanceIdTTT,nodeId);
 			for(ResultNodeDto node:data){
 				WFSubmitDto sb = new WFSubmitDto();
+				sb.setOrgId(CurrentUser.info.get().getUserId());
 				WFCommentDto comment = new WFCommentDto();
 				comment.setCommentSign("1");
 				comment.setInstanceId(instanceIdTTT);
 				comment.setNodeId(nodeId);
-				comment.setOrgId(CurrentUser.info.get().getOrgId());
 				comment.setUserComment("userComment");
 				comment.setUserId(CurrentUser.info.get().getUserId());
 				sb.setComment(comment);

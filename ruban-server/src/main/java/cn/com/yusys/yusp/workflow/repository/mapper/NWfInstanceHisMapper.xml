@@ -20,13 +20,15 @@
     <result column="FLOW_PARAM" jdbcType="VARCHAR" property="flowParam" />
     <result column="BIZ_TYPE" jdbcType="VARCHAR" property="bizType" />
     <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
+    <result column="FLOW_STARTER_NAME" jdbcType="VARCHAR" property="flowStarterName" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     INSTANCE_ID, FLOW_NAME, FLOW_ID, FLOW_ADMIN, FLOW_STARTER, START_TIME, SYSTEM_ID, 
-    ORG_ID, FLOW_STATE, BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, FLOW_PARAM, BIZ_TYPE, END_TIME
+    ORG_ID, FLOW_STATE, BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, FLOW_PARAM, BIZ_TYPE, END_TIME, 
+    FLOW_STARTER_NAME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--
@@ -52,14 +54,14 @@
       FLOW_ADMIN, FLOW_STARTER, START_TIME, 
       SYSTEM_ID, ORG_ID, FLOW_STATE, 
       BIZ_ID, BIZ_USER_NAME, BIZ_USER_ID, 
-      FLOW_PARAM, BIZ_TYPE, END_TIME
-      )
+      FLOW_PARAM, BIZ_TYPE, END_TIME, 
+      FLOW_STARTER_NAME)
     values (#{instanceId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, #{flowId,jdbcType=VARCHAR}, 
       #{flowAdmin,jdbcType=VARCHAR}, #{flowStarter,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
       #{systemId,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{flowState,jdbcType=VARCHAR}, 
       #{bizId,jdbcType=VARCHAR}, #{bizUserName,jdbcType=VARCHAR}, #{bizUserId,jdbcType=VARCHAR}, 
-      #{flowParam,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}
-      )
+      #{flowParam,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, 
+      #{flowStarterName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfInstanceHis">
     <!--
@@ -112,6 +114,9 @@
       <if test="endTime != null">
         END_TIME,
       </if>
+      <if test="flowStarterName != null">
+        FLOW_STARTER_NAME,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="instanceId != null">
@@ -158,6 +163,9 @@
       </if>
       <if test="endTime != null">
         #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="flowStarterName != null">
+        #{flowStarterName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -209,6 +217,9 @@
       <if test="endTime != null">
         END_TIME = #{endTime,jdbcType=VARCHAR},
       </if>
+      <if test="flowStarterName != null">
+        FLOW_STARTER_NAME = #{flowStarterName,jdbcType=VARCHAR},
+      </if>
     </set>
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </update>
@@ -230,7 +241,8 @@
       BIZ_USER_ID = #{bizUserId,jdbcType=VARCHAR},
       FLOW_PARAM = #{flowParam,jdbcType=VARCHAR},
       BIZ_TYPE = #{bizType,jdbcType=VARCHAR},
-      END_TIME = #{endTime,jdbcType=VARCHAR}
+      END_TIME = #{endTime,jdbcType=VARCHAR},
+      FLOW_STARTER_NAME = #{flowStarterName,jdbcType=VARCHAR}
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
   </update>
   <select id="selectByModel" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="BaseResultMap">
@@ -383,6 +395,16 @@
           </when>
           <otherwise>
             AND END_TIME = #{condition.endTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.flowStarterName !=null and condition.flowStarterName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowStarterName)">
+             AND FLOW_STARTER_NAME LIKE #{condition.flowStarterName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND FLOW_STARTER_NAME = #{condition.flowStarterName,jdbcType=VARCHAR}
           </otherwise>
         </choose>
       </if>

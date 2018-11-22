@@ -26,12 +26,13 @@ import cn.com.yusys.yusp.workflow.core.engine.node.NodeInfo;
 import cn.com.yusys.yusp.workflow.core.engine.node.RouteInfo;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.FlowState;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.HandleType;
-import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeState;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeType;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.OpType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.OpUsersType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.SignInType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.UserType;
 import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
+import cn.com.yusys.yusp.workflow.core.org.OrgCache;
 import cn.com.yusys.yusp.workflow.core.util.TimeUtil;
 import cn.com.yusys.yusp.workflow.core.util.UUIDUtil;
 import cn.com.yusys.yusp.workflow.domain.NWfComment;
@@ -142,6 +143,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		BeanUtils.copyProperties(stratDto,record);
 		BeanUtils.copyProperties(flowInfo,record);		
 		record.setFlowStarter(stratDto.getUserId());
+		record.setFlowStarterName(stratDto.getUserName());
 		record.setFlowAdmin(flowInfo.getAdmin());
 		record.setFlowState(FlowState.STRAT);
 		record.setInstanceId(instanceId);
@@ -162,7 +164,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		NodeInfo firstNode = flowInfo.getNodeInfo(firstNodeId);
 		BeanUtils.copyProperties(firstNode,nodeInfo);
 		nodeInfo.setInstanceId(instanceId);
-		nodeInfo.setNodeState(NodeState.RUN);
+		nodeInfo.setNodeState(OpType.RUN);
 		nodeInfo.setOrgId(stratDto.getOrgId());
 		nodeInfo.setLastNodeId(stratNodeInfo.getNodeId());
 		nodeInfo.setLastNodeName(stratNodeInfo.getNodeName());
@@ -260,7 +262,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		BeanUtils.copyProperties(flowInfo,opTypeDto);
 		BeanUtils.copyProperties(nodeInfo,opTypeDto);
 		opTypeDto.setSignIn("0");// 签收和撤销签收按钮默认不显示
-		opTypeDto.setUnsignIn("0");
+		opTypeDto.setUnSignIn("0");
 		// 设置操作权限
 		instanceInfo.setOpType(opTypeDto);
 		
@@ -283,10 +285,10 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 				NWfUserTodo userTodoInfo = userTodoService.selectByPrimaryKey(instanceId, nodeId, currentUserId);
 				if(SignInType.HAVE_SIGN_IN.equals(userTodoInfo.getSignIn())){
 					opTypeDto.setSignIn("0");// 撤销签收按钮显示
-					opTypeDto.setUnsignIn("1");
+					opTypeDto.setUnSignIn("1");
 				}else if(SignInType.TODO_SIGN_IN.equals(userTodoInfo.getSignIn())){
 					opTypeDto.setSignIn("1");// 签收按钮显示
-					opTypeDto.setUnsignIn("0");
+					opTypeDto.setUnSignIn("0");
 				}
 			}
 			
@@ -295,10 +297,22 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	}
 
 	@Override
-	public int saveComment(WFCommentDto comment) {
+	public ResultCommentDto saveComment(WFCommentDto comment) {
+		if(log.isDebugEnabled()){
+			log.debug("保存评论:[comment="+comment+"]");
+		}
+		ResultInstanceDto instanceInfo = getInstanceInfo(comment.getInstanceId(), comment.getNodeId(),null);
+		if(null==instanceInfo){// 流程已经办结
+			throw new WorkflowException(Cons.ERROR_MSG1); 
+		}
+		
 		NWfComment record = new NWfComment();
 		BeanUtils.copyProperties(comment,record);
-		String nodeLevel = EngineCache.getInstance().getNodeInfo(comment.getNodeId()).getNodeLevel();
+		
+		record.setUserName(OrgCache.getUserInfo(instanceInfo.getSystemId(), comment.getUserId()).getUserName());
+		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(comment.getNodeId());
+		String nodeLevel = nodeInfo.getNodeLevel();
+		record.setNodeName(nodeInfo.getNodeName());
 		if(null!=nodeLevel){// 设置节点等级，根据节点等级排序可以控制打回等选择范围
 			record.setNodeLevel(Long.parseLong(nodeLevel));
 		}
@@ -309,35 +323,58 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			record.setCommentId(UUIDUtil.getUUID());
 			commentService.insertSelective(record);
 		}
-		return 1;
+		if(log.isDebugEnabled()){
+			log.debug("保存评论完成:[comment="+comment+"]");
+		}
+		return getNodeUserComment(comment.getInstanceId(), comment.getNodeId(), comment.getUserId());
 	}
 
 	@Override
-	public ResultCommentDto getComment(String instanceId, String nodeId, String currentUserId)  throws WorkflowException{
+	public List<ResultCommentDto> getComments(String instanceId)  throws WorkflowException{
 		if(log.isDebugEnabled()){
-			log.debug("流程提交:[instanceId="+instanceId+";nodeId="+nodeId+";currentUserId="+currentUserId+"]");
+			log.debug("获取流程所有评论:[instanceId="+instanceId+"]");
 		}
-		if (null != instanceId && !"".equals(instanceId) 				
-				&& null != nodeId && !"".equals(nodeId)
-				&& null != currentUserId && !"".equals(currentUserId)) {
-			QueryModel model = new QueryModel();
-			model.getCondition().put("instanceId", instanceId);
-			model.getCondition().put("nodeId", nodeId);
-			model.getCondition().put("userId", currentUserId);
-			model.setSort("start_time desc");
-
-			List<NWfComment> comments = commentService.selectByModel(model);
-			if (!comments.isEmpty()) {
-				ResultCommentDto comment = new ResultCommentDto();
-				BeanUtils.copyProperties(comments.get(0), comment);
-				return comment;
-			}
-			return null;
-		} else {
+		if(isNullOrEmpty(instanceId)){
 			throw new WorkflowException(Cons.ERROR_MSG1);
 		}
+		QueryModel model = new QueryModel();
+		model.getCondition().put("instanceId", instanceId);
+		model.setSort("start_time desc");
+		List<ResultCommentDto> comments = new ArrayList<ResultCommentDto>();
+		List<NWfComment> commentsT = commentService.selectByModel(model);
+		for(NWfComment commentT:commentsT){
+			ResultCommentDto comment = new ResultCommentDto();
+			BeanUtils.copyProperties(commentT, comment);
+			comments.add(comment);
+		}
+		return comments;
 	}
 
+	@Override
+	public ResultCommentDto getNodeUserComment(String instanceId, String nodeId, String currentUserId)  throws WorkflowException{
+		if(log.isDebugEnabled()){
+			log.debug("获取流程评论:[instanceId="+instanceId+";nodeId="+nodeId+";currentUserId="+currentUserId+"]");
+		}
+		
+		if (isNullOrEmpty(instanceId) || isNullOrEmpty(nodeId) || isNullOrEmpty(instanceId)) {
+			throw new WorkflowException(Cons.ERROR_MSG1);
+		}
+
+		QueryModel model = new QueryModel();
+		model.getCondition().put("instanceId", instanceId);
+		model.getCondition().put("nodeId", nodeId);
+		model.getCondition().put("userId", currentUserId);
+		model.setSort("start_time desc");
+
+		List<NWfComment> comments = commentService.selectByModel(model);
+		if (!comments.isEmpty()) {
+			ResultCommentDto comment = new ResultCommentDto();
+			BeanUtils.copyProperties(comments.get(0), comment);
+			return comment;
+		}
+		return null;		
+	}
+	
 	@Override
 	public List<ResultNodeDto> getNextNodeInfos(String instanceId,String nodeId) throws WorkflowException {		
 		ResultInstanceDto instanceInfo = getInstanceInfo(instanceId, nodeId,null);
@@ -505,10 +542,9 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		List<ResultWFMessageDto> re = new ArrayList<ResultWFMessageDto>();
 		// 保存评论
 		saveComment(submitDto.getComment());
-		String systemId = submitDto.getComment().getSystemId();
 		String instanceId = submitDto.getComment().getInstanceId();
 		String nodeId = submitDto.getComment().getNodeId();
-		String orgId = submitDto.getComment().getOrgId();
+		String orgId = submitDto.getOrgId();
 		String userId = submitDto.getComment().getUserId();			
 		if(log.isDebugEnabled()){
 			log.debug("流程提交:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"] to "+submitDto.getNextNodeInfos());
@@ -537,7 +573,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			re.add(m1);
 			return re;
 		}
-		
+		String systemId = instanceInfo.getSystemId();
 		//判断提交者是否是当前流程提交人
 		List<String> users = getCurrentNodeUsers(instanceId, nodeId);
 		if(!isPartOf( users,userId)){
@@ -773,7 +809,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		NWfNode nodeInfo = new NWfNode();
 		BeanUtils.copyProperties(nextNodeInfo, nodeInfo);
 		nodeInfo.setInstanceId(instanceId);
-		nodeInfo.setNodeState(NodeState.RUN);
+		nodeInfo.setNodeState(OpType.RUN);
 		nodeInfo.setOrgId(orgId);
 		nodeInfo.setLastNodeId(currentNodeInfo.getNodeId());
 		nodeInfo.setLastNodeName(currentNodeInfo.getNodeName());
@@ -984,7 +1020,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	}
 
 	@Override
-	public ResultWFMessageDto unsignIn(String instanceId, String nodeId, String userId) {
+	public ResultWFMessageDto unSignIn(String instanceId, String nodeId, String userId) {
 		ResultWFMessageDto re = new ResultWFMessageDto();
 		if(log.isDebugEnabled()){
 			log.debug("流程撤销签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]");
@@ -1018,7 +1054,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		workflowCoreService.updateUserTodoByInstanceidNodeid(record);
 
 		re.setCode("0");
-		re.setTip(Cons.SUCCESS_MSG10);
+		re.setTip(Cons.SUCCESS_MSG11);
 		if(log.isDebugEnabled()){
 			log.debug("流程撤销签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]"+re);
 		}
