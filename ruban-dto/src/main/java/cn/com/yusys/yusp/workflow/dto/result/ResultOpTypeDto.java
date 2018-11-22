@@ -61,6 +61,16 @@ public class ResultOpTypeDto {
 	 * 抄送
 	 */
 	private String copy ;
+	
+	/**
+	 * 签收
+	 */
+	private String signIn;
+	
+	/**
+	 * 撤销签收
+	 */
+	private String unsignIn;
 
 	public String getHangUp() {
 		return hangUp;
@@ -157,12 +167,31 @@ public class ResultOpTypeDto {
 	public void setCopy(String copy) {
 		this.copy = copy;
 	}
+	
+	
+
+	public String getSignIn() {
+		return signIn;
+	}
+
+	public void setSignIn(String signIn) {
+		this.signIn = signIn;
+	}
+
+	public String getUnsignIn() {
+		return unsignIn;
+	}
+
+	public void setUnsignIn(String unsignIn) {
+		this.unsignIn = unsignIn;
+	}
 
 	@Override
 	public String toString() {
-		return "OpTypeDto [hangUp=" + hangUp + ", wackUp=" + wackUp + ", tackBack=" + tackBack + ", callBack="
+		return "ResultOpTypeDto [hangUp=" + hangUp + ", wackUp=" + wackUp + ", tackBack=" + tackBack + ", callBack="
 				+ callBack + ", returnBack=" + returnBack + ", urged=" + urged + ", change=" + change + ", assist="
-				+ assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust + ", copy=" + copy + "]";
-	}	
+				+ assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust + ", copy=" + copy
+				+ ", signIn=" + signIn + ", unsignIn=" + unsignIn + "]";
+	}
 
 }

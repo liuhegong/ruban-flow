@@ -1,17 +1,19 @@
 package cn.com.yusys.yusp.workflow.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
 import cn.com.yusys.yusp.workflow.core.org.OrgCache;
 import cn.com.yusys.yusp.workflow.web.fillter.UserSessionRequestFilter;
 
 @Configuration
-public class WorkFlowConfig extends WebMvcConfigurerAdapter{
+public class WorkFlowConfig{
 	
 	@Value("${flow.path}")
 	private String flowPath = null;
@@ -35,8 +37,19 @@ public class WorkFlowConfig extends WebMvcConfigurerAdapter{
 		return new UserSessionRequestFilter();
 	}
 	
-	@Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
-    }
+	@Bean
+	public FilterRegistrationBean corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+
+		FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+		bean.setOrder(Integer.MIN_VALUE);
+		return bean;
+	}
+
 }

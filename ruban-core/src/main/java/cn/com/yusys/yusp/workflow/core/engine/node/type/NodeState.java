@@ -29,9 +29,4 @@ public class NodeState {
 	 */
 	public final static String RUN = "O-12";
 	
-	/**
-	 * 待签收
-	 */
-	public final static String SIGNING = "O-13";
-	
 }

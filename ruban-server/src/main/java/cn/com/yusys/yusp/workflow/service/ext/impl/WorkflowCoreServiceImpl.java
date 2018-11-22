@@ -29,6 +29,7 @@ import cn.com.yusys.yusp.workflow.core.engine.node.type.HandleType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeState;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.OpUsersType;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.SignInType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.UserType;
 import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
 import cn.com.yusys.yusp.workflow.core.util.TimeUtil;
@@ -98,6 +99,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	
 	@Autowired
 	private NWfCommentService commentService;
+	
 	
 	/**
 	 * 业务后处理
@@ -257,6 +259,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		ResultOpTypeDto opTypeDto = new ResultOpTypeDto();
 		BeanUtils.copyProperties(flowInfo,opTypeDto);
 		BeanUtils.copyProperties(nodeInfo,opTypeDto);
+		opTypeDto.setSignIn("0");// 签收和撤销签收按钮默认不显示
+		opTypeDto.setUnsignIn("0");
 		// 设置操作权限
 		instanceInfo.setOpType(opTypeDto);
 		
@@ -273,6 +277,19 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 				BeanUtils.copyProperties(comments.get(0),comment);
 				instanceInfo.setComment(comment);
 			}
+			
+			// 添加用户签收、撤销签收按钮权限
+			if(HandleType.ONE_SIGN.equals(nodeInfo.getHandleType())){//节点【办理类型】是【单人签收办里】时，获取当前用户是否已经签收
+				NWfUserTodo userTodoInfo = userTodoService.selectByPrimaryKey(instanceId, nodeId, currentUserId);
+				if(SignInType.HAVE_SIGN_IN.equals(userTodoInfo.getSignIn())){
+					opTypeDto.setSignIn("0");// 撤销签收按钮显示
+					opTypeDto.setUnsignIn("1");
+				}else if(SignInType.TODO_SIGN_IN.equals(userTodoInfo.getSignIn())){
+					opTypeDto.setSignIn("1");// 签收按钮显示
+					opTypeDto.setUnsignIn("0");
+				}
+			}
+			
 		}
 		return instanceInfo;
 	}
@@ -488,11 +505,11 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		List<ResultWFMessageDto> re = new ArrayList<ResultWFMessageDto>();
 		// 保存评论
 		saveComment(submitDto.getComment());
+		String systemId = submitDto.getComment().getSystemId();
 		String instanceId = submitDto.getComment().getInstanceId();
 		String nodeId = submitDto.getComment().getNodeId();
 		String orgId = submitDto.getComment().getOrgId();
-		String userId = submitDto.getComment().getUserId();
-				
+		String userId = submitDto.getComment().getUserId();			
 		if(log.isDebugEnabled()){
 			log.debug("流程提交:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"] to "+submitDto.getNextNodeInfos());
 		}
@@ -544,10 +561,12 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		}
 		
 		//是否是最后一个处理人
-		boolean isLast = (users.size()==1);
+		boolean isLast = (users.size()==1);	
+		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		if(HandleType.ONE_SIGN.equals(nodeInfo.getHandleType())){// 【办理类型】是【单人签收办里】时,无论待办有多少人，强行提交
+			isLast = true;
+		}
 		// TODO 按条件转移操作操作
-		
-		String systemId = instanceInfo.getSystemId();
 		if(isLast){// 是最后办理人,直接提交流程
 			submitNextNodeMulti(instanceInfo, submitDto.getNextNodeInfos(),re,userId,orgId,systemId);
 		}else{// 不是最后办理人，节点内流转
@@ -724,18 +743,19 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			userTodo.setStartTime(completeTime);
 			userTodo.setUserId(wFUserDto.getUserId());
 			userTodo.setUserName(wFUserDto.getUserName());
-			userTodo.setSignIn("0");
+			userTodo.setSignIn(SignInType.NO_SIGN_IN);// 置签收状态为不需要签收
 			userTodo.setUserLevel(0);
 			userTodeNew.add(userTodo);
 			re.getUserNames().add(wFUserDto.getUserName());// 设置返回待办人员名称
 		}
 		
-		String nodeState = NodeState.RUN;
 		// 当前节点的处理人大于一个
 		if(userTodeNew.size()>1){
-			//且节点【办理类型】是【单人签收办里】时，节点状态需要更新为待签收
+			//且节点【办理类型】是【单人签收办里】时，用户签收状态需要更新为待签收
 			if(HandleType.ONE_SIGN.equals(nextNodeInfo.getHandleType())){
-				nodeState = NodeState.SIGNING;
+				for(int i=0;i<userTodeNew.size();i++){
+					userTodeNew.get(i).setSignIn(SignInType.TODO_SIGN_IN);
+				}
 			}
 			
 			// 且如果是【多人顺序办理】【多人顺序可结束】则对待办人员进行编号
@@ -753,7 +773,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		NWfNode nodeInfo = new NWfNode();
 		BeanUtils.copyProperties(nextNodeInfo, nodeInfo);
 		nodeInfo.setInstanceId(instanceId);
-		nodeInfo.setNodeState(nodeState);
+		nodeInfo.setNodeState(NodeState.RUN);
 		nodeInfo.setOrgId(orgId);
 		nodeInfo.setLastNodeId(currentNodeInfo.getNodeId());
 		nodeInfo.setLastNodeName(currentNodeInfo.getNodeName());
@@ -915,6 +935,94 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			users = Arrays.asList(usersT);
 		}
 		return users;
+	}
+
+	@Override
+	public ResultWFMessageDto signIn(String instanceId, String nodeId, String userId) {
+		ResultWFMessageDto re = new ResultWFMessageDto();
+		if(log.isDebugEnabled()){
+			log.debug("流程签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]");
+		}
+		if(isNullOrEmpty(instanceId)||isNullOrEmpty(nodeId)||isNullOrEmpty(userId)){
+			re.setCode("1");
+			re.setTip(Cons.ERROR_MSG1);
+			return re;
+		}
+		
+		ResultInstanceDto instanceInfo = getInstanceInfo(instanceId, nodeId,null);
+		if(null==instanceInfo){// 流程已经办结
+			re.setCode("1");
+			re.setTip(Cons.ERROR_MSG2);
+			return re;
+		}
+		
+		//判断提交者是否是当前流程提交人
+		List<String> users = getCurrentNodeUsers(instanceId, nodeId);
+		if(!isPartOf( users,userId)){
+			re.setCode("1");
+			re.setTip(Cons.ERROR_MSG3);
+			return re;
+		}
+		
+		// 先设置节点实例下所有人待办为不可见状态    【待办查询条件含 singin in (0,1,2)】
+		NWfUserTodo record = new NWfUserTodo();
+		record.setInstanceId(instanceId);
+		record.setNodeId(nodeId);
+		record.setSignIn(SignInType.EX_SIGN_IN);
+		workflowCoreService.updateUserTodoByInstanceidNodeid(record);
+		
+		// 再设置自己为签收状态
+		record.setSignIn(SignInType.HAVE_SIGN_IN);
+		record.setUserId(userId);
+		userTodoService.updateByPrimaryKeySelective(record);
+		re.setCode("0");
+		re.setTip(Cons.SUCCESS_MSG10);
+		if(log.isDebugEnabled()){
+			log.debug("流程签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]"+re);
+		}
+		return re;
+	}
+
+	@Override
+	public ResultWFMessageDto unsignIn(String instanceId, String nodeId, String userId) {
+		ResultWFMessageDto re = new ResultWFMessageDto();
+		if(log.isDebugEnabled()){
+			log.debug("流程撤销签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]");
+		}
+		if(isNullOrEmpty(instanceId)||isNullOrEmpty(nodeId)||isNullOrEmpty(userId)){
+			re.setCode("1");
+			re.setTip(Cons.ERROR_MSG1);
+			return re;
+		}
+		
+		ResultInstanceDto instanceInfo = getInstanceInfo(instanceId, nodeId,null);
+		if(null==instanceInfo){// 流程已经办结
+			re.setCode("1");
+			re.setTip(Cons.ERROR_MSG2);
+			return re;
+		}
+		
+		//判断提交者是否是当前流程提交人
+		List<String> users = getCurrentNodeUsers(instanceId, nodeId);
+		if(!isPartOf( users,userId)){
+			re.setCode("1");
+			re.setTip(Cons.ERROR_MSG3);
+			return re;
+		}
+		
+		// 先设置节点实例下所有人待办为待签收状态 【待办查询条件含 singin in (0,1,2)】
+		NWfUserTodo record = new NWfUserTodo();
+		record.setInstanceId(instanceId);
+		record.setNodeId(nodeId);
+		record.setSignIn(SignInType.TODO_SIGN_IN);
+		workflowCoreService.updateUserTodoByInstanceidNodeid(record);
+
+		re.setCode("0");
+		re.setTip(Cons.SUCCESS_MSG10);
+		if(log.isDebugEnabled()){
+			log.debug("流程撤销签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]"+re);
+		}
+		return re;
 	}
 
 }

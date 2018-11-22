@@ -51,5 +51,31 @@
   
   <select id="getNodeUsers" parameterType="string" resultType="string">
      select t.user_id from N_WF_USER_TODO t where t.instance_id = #{instanceId,jdbcType=VARCHAR} and t.node_id = #{nodeId,jdbcType=VARCHAR}
-  </select>  
+  </select>
+  
+  <update id="updateUserTodoByInstanceidNodeid" parameterType="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">
+    update N_WF_USER_TODO
+    <set>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUserId != null">
+        LAST_USER_ID = #{lastUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUserName != null">
+        LAST_USER_NAME = #{lastUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="signIn != null">
+        SIGN_IN = #{signIn,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        USER_LEVEL = #{userLevel,jdbcType=NUMERIC},
+      </if>
+    </set>
+    where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
+    and NODE_ID = #{nodeId,jdbcType=VARCHAR}
+  </update>
 </mapper>

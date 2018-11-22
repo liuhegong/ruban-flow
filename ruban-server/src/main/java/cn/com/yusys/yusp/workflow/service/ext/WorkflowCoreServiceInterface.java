@@ -54,4 +54,22 @@ public interface WorkflowCoreServiceInterface {
 	 * @return
 	 */
 	List<ResultWFMessageDto> submit(WFSubmitDto submitDto) throws WorkflowException;
+	
+	/**
+	 * 签收
+	 * @param instanceId
+	 * @param nodeId
+	 * @param userId
+	 * @return
+	 */
+	ResultWFMessageDto signIn(String instanceId,String nodeId,String userId);
+	
+	/**
+	 * 撤销签收
+	 * @param instanceId
+	 * @param nodeId
+	 * @param userId
+	 * @return
+	 */
+	ResultWFMessageDto unsignIn(String instanceId,String nodeId,String userId);
 }

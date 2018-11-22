@@ -58,7 +58,7 @@
   left join N_WF_NODE t2
     on t1.instance_id = t2.instance_id 
   left join (select u.INSTANCE_ID ,u.node_id,u.user_id,u.user_name,u.last_user_id,u.last_user_name,u.sign_in,u.start_time from n_wf_user_todo u where u.user_level in (select min(tt.user_level) from n_wf_user_todo tt)) uu
-    on uu.node_id = t2.node_id    
+    on uu.node_id = t2.node_id
     <where>
       <if test="condition.flowStarter !=null and condition.flowStarter !=''">
         <choose>

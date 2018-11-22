@@ -25,5 +25,4 @@ public class WorkflowBenchServiceImpl implements WorkflowBenchInterface{
 	public List<ResultInstanceTodoDto> getInstanceInfoTodo(QueryModel queryModel) {
 		return workflowBenchMapper.getInstanceInfoTodo(queryModel);
 	}
-	
 }

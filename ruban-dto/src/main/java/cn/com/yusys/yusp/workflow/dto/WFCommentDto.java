@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class WFCommentDto implements Serializable {
     /**
+     * 系统id
+     */
+	private String systemId;
+	
+	/**
      * 主键
      */
     private String commentId;
@@ -157,12 +162,12 @@ public class WFCommentDto implements Serializable {
 		this.orgId = orgId;
 	}
 
-	@Override
-	public String toString() {
-		return "WFCommentDto [commentId=" + commentId + ", instanceId=" + instanceId + ", nodeId=" + nodeId
-				+ ", userId=" + userId + ", orgId=" + orgId + ", commentSign=" + commentSign
-				+ ", userComment=" + userComment + "]";
+	public String getSystemId() {
+		return systemId;
 	}
 
+	public void setSystemId(String systemId) {
+		this.systemId = systemId;
+	}
 
 }

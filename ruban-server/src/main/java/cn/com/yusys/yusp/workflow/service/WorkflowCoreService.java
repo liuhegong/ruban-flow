@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.com.yusys.yusp.workflow.domain.NWfUserTodo;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.repository.mapper.WorkflowCoreMapper;
 
@@ -21,5 +22,8 @@ public class WorkflowCoreService {
 		return workflowCoreMapper.getNodeUsers( instanceId,  nodeId);
 	}
 
+	public int updateUserTodoByInstanceidNodeid(NWfUserTodo nWfUserTodo){
+		return workflowCoreMapper.updateUserTodoByInstanceidNodeid(nWfUserTodo);
+	}
 
 }

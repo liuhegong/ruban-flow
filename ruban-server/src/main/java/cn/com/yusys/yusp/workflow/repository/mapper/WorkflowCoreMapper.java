@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import cn.com.yusys.yusp.workflow.domain.NWfUserTodo;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceTodoDto;
@@ -18,4 +19,10 @@ public interface WorkflowCoreMapper {
 	 * @return
 	 */
 	List<ResultInstanceTodoDto> getInstanceInfoTodo(QueryModel queryModel);
+	/**
+	 * 根据节点id和实例id更新待办用户信息
+	 * @param nWfUserTodo
+	 * @return
+	 */
+	int updateUserTodoByInstanceidNodeid(NWfUserTodo nWfUserTodo);
 }
