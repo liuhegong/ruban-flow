@@ -3,6 +3,8 @@ package cn.com.yusys.yusp.workflow.dto;
 import java.io.Serializable;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 public class WFStratDto implements Serializable {
 	
 	private static final long serialVersionUID = -3914960001309796362L;
@@ -10,41 +12,49 @@ public class WFStratDto implements Serializable {
 	/**
      * 流程id
      */
+	@NotNull
     private String flowId;  
 
     /**
      * 系统id
      */
+	@NotNull
     private String systemId;
 
     /**
      * 机构id
      */
+	@NotNull
     private String orgId;
 
     /**
      * 业务流水号
      */
+	@NotNull
     private String bizId;
     
     /**
      * 业务类型
      */
+	@NotNull
     private String bizType;
 
     /**
      * 客户名称
      */
+	@NotNull
     private String bizUserName;
 
     /**
      * 客户id
      */
+	@NotNull
     private String bizUserId;
     
     /**
      * 发起用户id
      */
+	@NotNull
     private String userId;
     
     /**

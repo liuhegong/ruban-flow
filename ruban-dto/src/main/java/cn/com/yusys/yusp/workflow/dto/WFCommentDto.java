@@ -152,4 +152,10 @@ public class WFCommentDto implements Serializable {
         this.userComment = userComment == null ? null : userComment.trim();
     }
 
+	@Override
+	public String toString() {
+		return "WFCommentDto [commentId=" + commentId + ", instanceId=" + instanceId + ", nodeId=" + nodeId
+				+ ", userId=" + userId + ", commentSign=" + commentSign + ", userComment=" + userComment + "]";
+	}
+    
 }

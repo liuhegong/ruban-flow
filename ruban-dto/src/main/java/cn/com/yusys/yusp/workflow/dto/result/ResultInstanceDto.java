@@ -111,6 +111,16 @@ public class ResultInstanceDto  implements Serializable {
     private ResultCommentDto comment;
     
     /**
+     * 节点类型
+     */
+    private String nodeType;
+    
+    /**
+     * 办理类型
+     */
+    private String handleType;
+    
+    /**
      * 流程公共参数
      */
     private Map<String,Object> param;
@@ -432,6 +442,22 @@ public class ResultInstanceDto  implements Serializable {
 		this.flowStarterName = flowStarterName;
 	}
 
+	public String getNodeType() {
+		return nodeType;
+	}
+
+	public void setNodeType(String nodeType) {
+		this.nodeType = nodeType;
+	}
+
+	public String getHandleType() {
+		return handleType;
+	}
+
+	public void setHandleType(String handleType) {
+		this.handleType = handleType;
+	}
+
 	@Override
 	public String toString() {
 		return "ResultInstanceDto [instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
@@ -440,7 +466,10 @@ public class ResultInstanceDto  implements Serializable {
 				+ flowState + ", bizId=" + bizId + ", bizUserName=" + bizUserName + ", bizUserId=" + bizUserId
 				+ ", flowParam=" + flowParam + ", lastNodeId=" + lastNodeId + ", lastNodeName=" + lastNodeName
 				+ ", nodeId=" + nodeId + ", nodeSign=" + nodeSign + ", nodeName=" + nodeName + ", nodeState="
-				+ nodeState + ", opType=" + opType + ", comment=" + comment + ", param=" + param + "]";
+				+ nodeState + ", opType=" + opType + ", comment=" + comment + ", nodeType=" + nodeType + ", handleType="
+				+ handleType + ", param=" + param + "]";
 	}
+
+	
 	
 }

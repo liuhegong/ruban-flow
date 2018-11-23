@@ -4,14 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
 import cn.com.yusys.yusp.workflow.domain.NWfInstance;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
-import cn.com.yusys.yusp.workflow.repository.mapper.EchainBenchMapper;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 import cn.com.yusys.yusp.workflow.web.fillter.session.CurrentUser;
@@ -44,16 +42,5 @@ public class WFInstanceManagementResource {
 	@GetMapping("/end")
 	protected Object end() {
 		return EngineCache.getNodeInfoCache();
-	}
-	@Autowired
-	EchainBenchMapper echainBenchMapper;
-	
-	@GetMapping("/test/{nodeId}")
-	protected Object nodeInfo(@PathVariable String nodeId) {
-		List<String> data = echainBenchMapper.selectInstanceId(nodeId);
-		for(String instanceId:data){
-			echainBenchMapper.deleteWorkflowInfo(instanceId);
-		}
-		return "success";
 	}
 }

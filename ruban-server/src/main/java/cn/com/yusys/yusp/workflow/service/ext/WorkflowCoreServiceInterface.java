@@ -6,6 +6,7 @@ import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
 import cn.com.yusys.yusp.workflow.dto.WFCommentDto;
 import cn.com.yusys.yusp.workflow.dto.WFStratDto;
 import cn.com.yusys.yusp.workflow.dto.WFSubmitDto;
+import cn.com.yusys.yusp.workflow.dto.WFUserDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultCommentDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
@@ -57,6 +58,16 @@ public interface WorkflowCoreServiceInterface {
 	 * @return
 	 */
 	List<ResultNodeDto> getNextNodeInfos(String instanceId,String nodeId) throws WorkflowException;
+	
+	/**
+	 * 获取节点处理人
+	 * @param instanceId
+	 * @param nodeId
+	 * @param orgId
+	 * @param systemId
+	 * @return
+	 */
+	List<WFUserDto> getNodeUsers(String instanceId,String nodeId,String orgId,String systemId);
 	
 	/**
 	 * 流程提交

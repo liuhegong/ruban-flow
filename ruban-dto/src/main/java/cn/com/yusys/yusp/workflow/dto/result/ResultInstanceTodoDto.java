@@ -1,7 +1,6 @@
 package cn.com.yusys.yusp.workflow.dto.result;
 
 import java.io.Serializable;
-import java.util.Map;
 /**
  * 待办实例信息包含办理人员
  * @author figue
@@ -439,6 +438,32 @@ public class ResultInstanceTodoDto  implements Serializable {
 		this.signIn = signIn;
 	}
 
+	/**
+     * 节点类型
+     */
+    private String nodeType;
+    
+    /**
+     * 办理类型
+     */
+    private String handleType;
+
+	public String getNodeType() {
+		return nodeType;
+	}
+
+	public void setNodeType(String nodeType) {
+		this.nodeType = nodeType;
+	}
+
+	public String getHandleType() {
+		return handleType;
+	}
+
+	public void setHandleType(String handleType) {
+		this.handleType = handleType;
+	}
+
 	@Override
 	public String toString() {
 		return "ResultInstanceTodoDto [instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
@@ -448,7 +473,7 @@ public class ResultInstanceTodoDto  implements Serializable {
 				+ flowParam + ", lastNodeId=" + lastNodeId + ", lastNodeName=" + lastNodeName + ", nodeId=" + nodeId
 				+ ", nodeSign=" + nodeSign + ", nodeName=" + nodeName + ", nodeState=" + nodeState + ", userId="
 				+ userId + ", userName=" + userName + ", lastUserId=" + lastUserId + ", lastUserName=" + lastUserName
-				+ ", signIn=" + signIn + "]";
+				+ ", signIn=" + signIn + ", nodeType=" + nodeType + ", handleType=" + handleType + "]";
 	}
-	
+    
 }
