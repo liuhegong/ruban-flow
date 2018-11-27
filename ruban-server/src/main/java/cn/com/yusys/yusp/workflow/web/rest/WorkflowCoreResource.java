@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
+import cn.com.yusys.yusp.workflow.domain.NWfInstance;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.dto.WFCommentDto;
 import cn.com.yusys.yusp.workflow.dto.WFStratDto;
@@ -21,6 +22,7 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultCommentDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
+import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreServiceInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 
@@ -29,6 +31,9 @@ import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 public class WorkflowCoreResource {
 	@Autowired
 	private WorkflowCoreServiceInterface workflowCoreService;
+	
+	@Autowired
+	private NWfInstanceService instanceService;
 	
 	/**
 	 * 用户待办实例信息获取
@@ -133,9 +138,9 @@ public class WorkflowCoreResource {
 	public ResultDto<List<WFUserDto>> getNodeUsers(QueryModel queryModel) throws WorkflowException{		
 		String instanceId = queryModel.getCondition().get("instanceId").toString();
 		String nodeId = queryModel.getCondition().get("nodeId").toString();;
-		ResultDto<List<WFUserDto>> data = new ResultDto<List<WFUserDto>>();		
-		ResultInstanceDto instanceInfo = workflowCoreService.getInstanceInfo(instanceId, nodeId, null);		
-		data.setData(workflowCoreService.getNodeUsers(instanceInfo.getInstanceId(),instanceInfo.getNodeId(),instanceInfo.getOrgId(),instanceInfo.getSystemId()));
+		ResultDto<List<WFUserDto>> data = new ResultDto<List<WFUserDto>>();	
+		NWfInstance instanceInfo = instanceService.selectByPrimaryKey(instanceId);
+		data.setData(workflowCoreService.getNodeUsers(instanceInfo.getInstanceId(),nodeId,instanceInfo.getOrgId(),instanceInfo.getSystemId()));
 		return data;
 	}
 }

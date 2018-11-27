@@ -42,7 +42,7 @@ public class NWfFlowResource {
     private NWfFlowHisService nWfFlowHisService;
     
     @GetMapping("/")
-    protected ResultDto<List<NWfFlow>> index(String systemId,String userId) {
+    public ResultDto<List<NWfFlow>> index(String systemId,String userId) {
         QueryModel queryModel = new QueryModel();
         queryModel.getCondition().put("systemId", systemId);
         queryModel.getCondition().put("flowAdmin", userId);
@@ -52,7 +52,7 @@ public class NWfFlowResource {
     }
 
     @PostMapping("/")
-    protected ResultDto<NWfFlow> create(@RequestBody NWfFlow nWfFlow) {
+    public ResultDto<NWfFlow> create(@RequestBody NWfFlow nWfFlow) {
     	nWfFlow.setStartTime(TimeUtil.getDateyyyyMMddHHmmss());
     	nWfFlow.setFlowState(FlowState.RUN);
     	nWfFlow.setFlowVersion(0l);
@@ -81,7 +81,7 @@ public class NWfFlowResource {
 
     @PostMapping("/update")
     @Transactional
-    protected ResultDto<Integer> update(@RequestBody NWfFlow nWfFlow) throws IOException {
+    public ResultDto<Integer> update(@RequestBody NWfFlow nWfFlow) throws IOException {
         
     	NWfFlow currentFlow = nWfFlowService.selectByPrimaryKey(nWfFlow.getFlowId());
     	    	
@@ -112,7 +112,7 @@ public class NWfFlowResource {
     }
 
     @PostMapping("/delete/{flowId}")
-    protected ResultDto<Integer> delete(@PathVariable Long flowId) {
+    public ResultDto<Integer> delete(@PathVariable Long flowId) {
         int result = nWfFlowService.deleteByPrimaryKey(flowId);
         FileUtil.deleteFile(new File(flowPath+File.separator+Cons.DEV+File.separator+flowId+".xml"));
         FileUtil.deleteFile(new File(flowPath+File.separator+Cons.PROD+File.separator+flowId+".xml"));

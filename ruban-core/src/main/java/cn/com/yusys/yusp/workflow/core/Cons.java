@@ -4,7 +4,7 @@ public class Cons {
 	/**
 	 * 系统指定人员
 	 */
-	public final static String SYSTEM_USER_ID = "system_user_";
+	public final static String SYSTEM_USER_ID = "system_user";
 	
 	public final static String SYSTEM_USER_NAME = "系统指定";
 	
