@@ -39,4 +39,10 @@
     insert into n_wf_comment_his (select * from n_wf_comment t where t.instance_id = #{instanceId,jdbcType=VARCHAR})
    </insert>
   
+  <delete id="deleteAllUserTodo" parameterType="string">
+  	delete from N_WF_USER_TODO t where t.instance_id = #{instanceId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteAllNode" parameterType="string">
+  	delete from N_WF_NODE t where t.instance_id = #{instanceId,jdbcType=VARCHAR}
+  </delete>
 </mapper>

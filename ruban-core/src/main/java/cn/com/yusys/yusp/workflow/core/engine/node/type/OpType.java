@@ -59,4 +59,9 @@ public class OpType {
 	 */
 	public final static String RUN = "O-12";
 	
+	/**
+	 * 自动提交
+	 */
+	public final static String AUTO = "O-13";
+	
 }

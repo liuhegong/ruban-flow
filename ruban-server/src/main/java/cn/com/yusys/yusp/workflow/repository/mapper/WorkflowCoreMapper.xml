@@ -80,4 +80,12 @@
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
     and NODE_ID = #{nodeId,jdbcType=VARCHAR}
   </update>
+  
+  <select id="getMaxLevelNodeId" parameterType="string" resultType="string">
+	select t.node_id from N_WF_NODE t where t.INSTANCE_ID = #{instanceId,jdbcType=VARCHAR} and t.node_level_total = (select max(t1.node_level_total) from N_WF_NODE t1 where t1.INSTANCE_ID = #{instanceId,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="getNodeDoneCount" parameterType="string" resultType="int">
+     select count(t.node_id)  from N_WF_NODE_HIS t where t.instance_id = #{instanceId,jdbcType=VARCHAR} and t.node_id = #{nodeId,jdbcType=VARCHAR} 
+  </select>
 </mapper>

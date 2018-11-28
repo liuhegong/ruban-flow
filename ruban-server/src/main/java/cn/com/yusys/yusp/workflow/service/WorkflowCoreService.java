@@ -2,6 +2,7 @@ package cn.com.yusys.yusp.workflow.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,14 @@ public class WorkflowCoreService {
 
 	public int updateUserTodoByInstanceidNodeid(NWfUserTodo nWfUserTodo){
 		return workflowCoreMapper.updateUserTodoByInstanceidNodeid(nWfUserTodo);
+	}
+	
+	public List<String> getMaxLevelNodeId(String instanceId){
+		return workflowCoreMapper.getMaxLevelNodeId(instanceId);
+	}
+
+	public int getNodeDoneCount(String instanceId, String nodeId){
+		return workflowCoreMapper.getNodeDoneCount(instanceId,nodeId);
 	}
 
 }

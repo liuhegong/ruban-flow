@@ -25,4 +25,20 @@ public interface WorkflowCoreMapper {
 	 * @return
 	 */
 	int updateUserTodoByInstanceidNodeid(NWfUserTodo nWfUserTodo);
+	
+	/**
+	 * 获取实例id下节点等级做大的节点id
+	 * @param instanceId
+	 * @return
+	 */
+	List<String> getMaxLevelNodeId(@Param("instanceId") String instanceId);
+	
+	/**
+	 * 获取实例下节点被处理次数
+	 * @param instanceId
+	 * @param nodeId
+	 * @return
+	 */
+	int getNodeDoneCount(@Param("instanceId") String instanceId, @Param("nodeId") String nodeId);
+
 }

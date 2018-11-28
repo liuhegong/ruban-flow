@@ -14,4 +14,6 @@ public interface WorkflowBackUpMapper {
     int deleteAllUserDone(@Param("instanceId") String instanceId);
     int deleteAllUserComment(@Param("instanceId") String instanceId);
     
+    int deleteAllUserTodo(@Param("instanceId") String instanceId);
+    int deleteAllNode(@Param("instanceId") String instanceId);
 }

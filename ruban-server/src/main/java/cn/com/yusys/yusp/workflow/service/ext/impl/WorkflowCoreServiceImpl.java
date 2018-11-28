@@ -672,8 +672,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		}else{// 不是最后办理人，节点内流转
 			 inNodeFlow(instanceInfo, submitDto.getNextNodeInfos(),re,userId,orgId,systemId);
 		}
-		return re;
-		
+		return re;		
 	}
 	
 	/**
@@ -748,6 +747,17 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 				submitNextOneNode(instanceInfo, nextNodeDto, msg,currentUserId,orgId,systemId);
 			}
 		}
+		
+		String completeTime = TimeUtil.getDateyyyyMMddHHmmss();				
+		// 用户待办信息迁移为已办
+		userTodoBackup2Done(instanceInfo.getInstanceId(), instanceInfo.getNodeId(),currentUserId, completeTime);
+		// 删除用户待办
+		userTodoService.deleteByPrimaryKey(instanceInfo.getInstanceId(), instanceInfo.getNodeId(),currentUserId);
+		
+		// 节点实例并迁移到节点结束表
+		nodeBackup( instanceInfo.getInstanceId(), instanceInfo.getNodeId(), completeTime);
+		// 删除节点实例信息
+		nodeRemove(instanceInfo.getInstanceId(), instanceInfo.getNodeId());
 	}
 	
 	/**
@@ -763,13 +773,17 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	private void inNodeFlow(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
 		// 用户待办信息迁移为已办
 		userTodoBackup2Done(instanceInfo.getInstanceId(), instanceInfo.getNodeId(),currentUserId, TimeUtil.getDateyyyyMMddHHmmss());		
+		// 删除用户待办
+		userTodoService.deleteByPrimaryKey(instanceInfo.getInstanceId(), instanceInfo.getNodeId(),currentUserId);
 		ResultWFMessageDto re = new ResultWFMessageDto();
 		re.setTip(Cons.SUCCESS_MSG9);
 		re.setCode(FlowState.RUN);
 	}
 	
 	private void submitNextOneNode(ResultInstanceDto instanceInfo,NextNodeInfoDto nodeInfoDtos,List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException{
+		String instanceId = instanceInfo.getInstanceId();
 		String nextNodeId = nodeInfoDtos.getNextNodeId();
+		String nodeId = instanceInfo.getNodeId();
 		if(nextNodeId.contains(Cons.END_SIGN)){// 流程结束标识
 			msg.add(end(instanceInfo,currentUserId,orgId));
 		}
@@ -786,25 +800,63 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			List<String> users = nodeInfoDtos.getNextNodeUserIds();	
 			users = removeSame(users);
 			if(null==users||users.isEmpty()){// 提交请求未指定办理人，从流程图中获取
-				nextNodeUsers = getNodeUsers(instanceInfo.getInstanceId(),instanceInfo.getNodeId(),instanceInfo.getOrgId(),systemId);
+				nextNodeUsers = getNodeUsers(instanceId,nodeId,instanceInfo.getOrgId(),systemId);
 			}else{
 				if(users.size()==1&&users.get(0).equals(Cons.SYSTEM_USER_ID)){// 如果指定了节点处理人，并且是系统指定人员，需要重新进行人员计算
-					nextNodeUsers = getNodeUsers(instanceInfo.getInstanceId(),instanceInfo.getNodeId(),instanceInfo.getOrgId(),systemId);
+					nextNodeUsers = getNodeUsers(instanceId,nodeId,instanceInfo.getOrgId(),systemId);
 				}else{// 指定了节点处理人并且不是系统指定人员，直接进行人员翻译
 					for(String user:users){
 						nextNodeUsers.add(userService.getUserInfo(systemId, user));
 					}
 				}
-			}
-			
+			}			
 			if(NodeType.AUTO_NODE.equals(nodeType)){// 自动节点
-				
+				//直接向自动节点的后面节点提交
 			}else if(NodeType.TOGETHER_NODE.equals(nodeType)){// 汇总节点
-				
+				// 当前提交节点的节点等级是最大的，且汇总节点没有被走过
+				List<String> nodeIds = workflowCoreService.getMaxLevelNodeId(instanceInfo.getInstanceId());
+				int count = workflowCoreService.getNodeDoneCount(instanceInfo.getInstanceId(), nextNodeId);				
+				if(nodeIds.contains(nodeId)&&count==0){// 获取汇总节点后面的节点，往下提交
+					// 获取汇总节点的下一节点
+					NodeInfo togetherNode = EngineCache.getInstance().getNodeInfo(nextNodeId);
+					List<String> nextNodeIds = togetherNode.getNextNodes();
+					// 新增汇总节点历史实例
+					addTogetherNodeHis(instanceId, nodeId,nextNodeId);
+					// 向汇总节点的下一节点提交，一般认为汇总节点的后面节点不会是汇总节点
+					msg.add(complete(instanceInfo, nextNodeIds.get(0),nextNodeUsers,currentUserId,orgId));
+				}else{// 就此中断，不在往下提交，前面会对此节点做历史数据迁移
+					NodeInfo togetherNode = EngineCache.getInstance().getNodeInfo(nextNodeId);
+					ResultWFMessageDto re = new ResultWFMessageDto();
+					re.setCode("0");
+					re.setTip("汇总节点提交完成");
+					re.setNodeName(togetherNode.getNodeName());
+					msg.add(re);
+				}				
 			}else {// 非以上节点
 				msg.add(complete(instanceInfo, nextNodeId,nextNodeUsers,currentUserId,orgId));
 			}
 		}
+	}
+
+	/**
+	 * 添加汇总节点处理历史
+	 * @param instanceId
+	 * @param nodeId
+	 * @param togetherNodeId
+	 * @throws WorkflowException
+	 */
+	private void addTogetherNodeHis(String instanceId,String nodeId,String togetherNodeId) throws WorkflowException{
+		NWfNode currentNodeInfo = nodeService.selectByPrimaryKey(instanceId,nodeId);		
+		NWfNodeHis nodeInfoHis = new NWfNodeHis();
+		BeanUtils.copyProperties(currentNodeInfo,nodeInfoHis);	
+		String completeTime = TimeUtil.getDateyyyyMMddHHmmss();
+		nodeInfoHis.setLastNodeId(togetherNodeId);
+		nodeInfoHis.setLastNodeName("[汇总节点]");
+		nodeInfoHis.setNodeId(togetherNodeId);
+		nodeInfoHis.setNodeName("[汇总节点]");
+		nodeInfoHis.setNodeState(OpType.AUTO);
+		nodeInfoHis.setEndTime(completeTime);		
+		nodeHisService.insertSelective(nodeInfoHis);
 	}
 	
 	private List<String> removeSame(List<String> users){
@@ -847,12 +899,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		}
 		
 		String completeTime = TimeUtil.getDateyyyyMMddHHmmss();		
-		NodeInfo nextNodeInfo = EngineCache.getInstance().getNodeInfo(nextNodeId);
-		
-		
-		// 用户待办信息迁移为已办
-		userTodoBackup2Done( instanceId, nodeId,currentUserId, completeTime);
-
+		NodeInfo nextNodeInfo = EngineCache.getInstance().getNodeInfo(nextNodeId);		
+	
 		// 新增用户待办信息
 		List<NWfUserTodo> userTodeNew = new ArrayList<NWfUserTodo>();
 		for(WFUserDto wFUserDto:nextNodeUsers){
@@ -889,8 +937,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		workflowBackUpService.deleteUserTodo(instanceId,nextNodeId);// 删除下一节点存在的待办【如打回后重新回到的未处理的节点】
 		workflowBackUpService.insertUserTodoBatch(userTodeNew);// 批量插入待办人员
 		
-		// 节点历史信息迁移
-		NWfNode currentNodeInfo = nodeBackup( instanceId, nodeId,completeTime);
+		// 节点实例信息新增
+		NWfNode currentNodeInfo = nodeService.selectByPrimaryKey(instanceId,nodeId);
 		NWfNode nodeInfo = new NWfNode();
 		BeanUtils.copyProperties(nextNodeInfo, nodeInfo);
 		nodeInfo.setInstanceId(instanceId);
@@ -899,7 +947,12 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		nodeInfo.setLastNodeId(currentNodeInfo.getNodeId());
 		nodeInfo.setLastNodeName(currentNodeInfo.getNodeName());
 		nodeInfo.setStartTime(completeTime);
-		
+		nodeInfo.setNodeLevelTotal((currentNodeInfo.getNodeLevelTotal()==null?0:currentNodeInfo.getNodeLevelTotal())+getNodeLevel(nextNodeInfo.getNodeId()));// 节点等级加上
+		// 提交节点是【多选节点】或【条件多选节点】，节点等级再加1，便于汇总操作
+		NodeInfo currentNode = EngineCache.getInstance().getNodeInfo(currentNodeInfo.getNodeId());		
+		if(currentNode.getNodeType().equals(NodeType.MULTI_NODE)||currentNode.getNodeType().equals(NodeType.CONDITION_RADIO_NODE)){
+			nodeInfo.setNodeLevelTotal(nodeInfo.getNodeLevelTotal()+1);
+		}		
 		re.setNodeName(nextNodeInfo.getNodeName());// 设置返回节点名称
 		re.setNodeId(nextNodeInfo.getNodeId());// 设置返回节点id
 		NWfNode nextNodeInfoT = nodeService.selectByPrimaryKey(instanceId, nextNodeId);
@@ -919,6 +972,23 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	}
 	
 	/**
+	 * 获取节点等级
+	 * @param nodeId
+	 * @return
+	 */
+	private long getNodeLevel(String nodeId){
+		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);		
+		try {
+			log.debug("节点等级["+nodeId+"]["+nodeInfo.getNodeLevel()+"]");
+			long nodeLevel = Long.parseLong(nodeInfo.getNodeLevel());
+			return nodeLevel;
+		} catch (NumberFormatException e) {
+			log.error("节点等级配置不是数字："+nodeId);
+		}
+		return 0;
+	}
+	
+	/**
 	 * 迁移用户待办到已办
 	 * @param instanceId
 	 * @param nodeId
@@ -926,29 +996,38 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 	 * @param endTime
 	 */
 	private void userTodoBackup2Done(String instanceId,String nodeId,String userId,String endTime){
-		NWfUserTodo userTodo = userTodoService.selectByPrimaryKey(instanceId, nodeId, userId);
-		workflowBackUpService.deleteUserTodo(instanceId,nodeId);// 删除节点下所有待办人
-		NWfUserDone userDone = new NWfUserDone();
-		BeanUtils.copyProperties(userTodo,userDone);// 当前待办用户迁移到历史表
-		userDone.setEndTime(endTime);
-		userDoneService.insert(userDone);
+		NWfUserTodo userTodo = userTodoService.selectByPrimaryKey(instanceId, nodeId, userId);		
+		if(null!=userTodo){
+			NWfUserDone userDone = new NWfUserDone();
+			BeanUtils.copyProperties(userTodo,userDone);// 当前待办用户迁移到历史表
+			userDone.setEndTime(endTime);
+			userDoneService.insert(userDone);
+		}
 	}
 	
 	/**
-	 * 删除节点实例并迁移到历史表
+	 * 节点实例并迁移到历史表
 	 * @param instanceId
 	 * @param nodeId
 	 * @param endTime
 	 */
-	private NWfNode nodeBackup(String instanceId,String nodeId,String endTime){		
-		NWfNode currentNodeInfo = nodeService.selectByPrimaryKey(instanceId,nodeId);		
-		NWfNodeHis nodeInfoHis = new NWfNodeHis();
-		BeanUtils.copyProperties(currentNodeInfo,nodeInfoHis);	
-		nodeInfoHis.setEndTime(endTime);
-		
-		nodeHisService.insertSelective(nodeInfoHis);
+	private void nodeBackup(String instanceId,String nodeId,String endTime){		
+		NWfNode currentNodeInfo = nodeService.selectByPrimaryKey(instanceId,nodeId);
+		if(null!=currentNodeInfo){
+			NWfNodeHis nodeInfoHis = new NWfNodeHis();
+			BeanUtils.copyProperties(currentNodeInfo,nodeInfoHis);	
+			nodeInfoHis.setEndTime(endTime);		
+			nodeHisService.insertSelective(nodeInfoHis);
+		}
+	}
+	
+	/**
+	 * 删除节点实例信息
+	 * @param instanceId
+	 * @param nodeId
+	 */
+	private void nodeRemove(String instanceId,String nodeId){				
 		nodeService.deleteByPrimaryKey(instanceId, nodeId);		
-		return currentNodeInfo;
 	}
 	
 	/**
@@ -978,15 +1057,20 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		// 删除流程实例并迁移到历史表
 		instanceBackup(instanceId, endTime);
 		
-		// 删除节点实例并迁移到节点结束表
+		// 节点实例迁移到节点结束表
 		nodeBackup( instanceId, nodeId, endTime);
+		// 删除所有节点实例
+		workflowBackUpService.deleteAllNode(instanceId);
 		
-		// 删除某个用户待办信息并迁移到已办表
-		userTodoBackup2Done(instanceId,nodeId, userId, endTime);
+		// 用户待办信息迁移到已办表
+		userTodoBackup2Done(instanceId,nodeId, userId, endTime);	
 		
-		// 删除流程实例下所有已办到办结
+		// 迁移流程实例下所有已办到办结
 		workflowBackUpService.transUSerDone2End(instanceId);
+		// 删除所有已办
 		workflowBackUpService.deleteAllUserDone(instanceId);
+		// 删除所有待办
+		workflowBackUpService.deleteAllUserTodo(instanceId);
 		
 		// 删除当前实例下的所有评论,并备份到end表
 		workflowBackUpService.transUSerComment2End(instanceId);

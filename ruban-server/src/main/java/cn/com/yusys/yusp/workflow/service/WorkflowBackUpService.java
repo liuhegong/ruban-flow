@@ -31,4 +31,12 @@ public class WorkflowBackUpService {
 	public int deleteAllUserComment(String instanceId){
 		return workflowBackUpMapper.deleteAllUserComment(instanceId);
 	}
+	
+	public int deleteAllUserTodo(String instanceId){
+		return workflowBackUpMapper.deleteAllUserTodo(instanceId);
+	}
+	
+	public int deleteAllNode(String instanceId){
+		return workflowBackUpMapper.deleteAllNode(instanceId);
+	}
 }
