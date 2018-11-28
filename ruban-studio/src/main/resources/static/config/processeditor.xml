@@ -96,7 +96,7 @@
 			</node>
 		</add>
 		<add as="node-5">
-			<node label="自动运行节点" nodeType="5" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage">
+			<node label="自动运行节点" nodeType="5" bizBeanId="" action="actionDelage">
 				<mxCell vertex="1" style="rounded">		
 					<mxGeometry as="geometry" width="80" height="30"/>
 				</mxCell>

@@ -1,0 +1,75 @@
+<mxGraphModel>
+  <root>
+    <Workflow label="MyWorkflow" description="" href="" id="0">
+      <mxCell/>
+    </Workflow>
+    <Layer label="Default Layer" id="1">
+      <mxCell parent="0"/>
+    </Layer>
+    <node label="开始节点" nodeType="S" action="actionDelage" id="3">
+      <mxCell style="symbol;image=images/symbols/event.png" vertex="1" parent="1">
+        <mxGeometry x="140" y="160" width="32" height="32" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="U.admin" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="4">
+      <mxCell style="rounded" vertex="1" parent="1">
+        <mxGeometry x="250" y="165" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="U.admin" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="5">
+      <mxCell style="rounded" vertex="1" parent="1">
+        <mxGeometry x="380" y="160" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="自动运行节点" nodeType="5" bizBeanId="" action="actionDelage" id="6">
+      <mxCell style="rounded" vertex="1" parent="1">
+        <mxGeometry x="510" y="160" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="自动运行节点" nodeType="5" bizBeanId="" action="actionDelage" id="7">
+      <mxCell style="rounded" vertex="1" parent="1">
+        <mxGeometry x="630" y="162" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="自动运行节点" nodeType="5" bizBeanId="" action="actionDelage" id="8">
+      <mxCell style="rounded" vertex="1" parent="1">
+        <mxGeometry x="750" y="161" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="结束节点" nodeType="E" action="actionDelage" id="9">
+      <mxCell style="symbol;image=images/symbols/event_end.png" vertex="1" parent="1">
+        <mxGeometry x="918" y="159" width="32" height="32" as="geometry"/>
+      </mxCell>
+    </node>
+    <route label="" isContinueBeanId="" action="actionDelage" id="10">
+      <mxCell edge="1" parent="1" source="3" target="4">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="11">
+      <mxCell edge="1" parent="1" source="4" target="5">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="12">
+      <mxCell edge="1" parent="1" source="5" target="6">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="13">
+      <mxCell edge="1" parent="1" source="6" target="7">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="14">
+      <mxCell edge="1" parent="1" source="7" target="8">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="15">
+      <mxCell edge="1" parent="1" source="8" target="9">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+  </root>
+</mxGraphModel>

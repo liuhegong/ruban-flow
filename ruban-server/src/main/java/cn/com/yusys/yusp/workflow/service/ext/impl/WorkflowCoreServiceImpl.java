@@ -800,10 +800,10 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			List<String> users = nodeInfoDtos.getNextNodeUserIds();	
 			users = removeSame(users);
 			if(null==users||users.isEmpty()){// 提交请求未指定办理人，从流程图中获取
-				nextNodeUsers = getNodeUsers(instanceId,nodeId,instanceInfo.getOrgId(),systemId);
+				nextNodeUsers = getNodeUsers(instanceId,nextNodeId,instanceInfo.getOrgId(),systemId);
 			}else{
 				if(users.size()==1&&users.get(0).equals(Cons.SYSTEM_USER_ID)){// 如果指定了节点处理人，并且是系统指定人员，需要重新进行人员计算
-					nextNodeUsers = getNodeUsers(instanceId,nodeId,instanceInfo.getOrgId(),systemId);
+					nextNodeUsers = getNodeUsers(instanceId,nextNodeId,instanceInfo.getOrgId(),systemId);
 				}else{// 指定了节点处理人并且不是系统指定人员，直接进行人员翻译
 					for(String user:users){
 						nextNodeUsers.add(userService.getUserInfo(systemId, user));
@@ -812,6 +812,9 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			}			
 			if(NodeType.AUTO_NODE.equals(nodeType)){// 自动节点
 				//直接向自动节点的后面节点提交
+				List<String> nextNodeIds = nodeInfoT.getNextNodes();
+				nodeInfoDtos.setNextNodeId(nextNodeIds.get(0));
+				submitNextOneNode( instanceInfo, nodeInfoDtos, msg, currentUserId, orgId, systemId);
 			}else if(NodeType.TOGETHER_NODE.equals(nodeType)){// 汇总节点
 				// 当前提交节点的节点等级是最大的，且汇总节点没有被走过
 				List<String> nodeIds = workflowCoreService.getMaxLevelNodeId(instanceInfo.getInstanceId());
