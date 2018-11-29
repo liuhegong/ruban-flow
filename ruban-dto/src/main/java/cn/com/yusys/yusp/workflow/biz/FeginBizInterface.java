@@ -3,7 +3,11 @@ package cn.com.yusys.yusp.workflow.biz;
 import java.util.Map;
 
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
-
+/**
+ * fegin方式调用后业务处理
+ * @author figue
+ *
+ */
 public interface FeginBizInterface {
 	/**
 	 * 流程初始化

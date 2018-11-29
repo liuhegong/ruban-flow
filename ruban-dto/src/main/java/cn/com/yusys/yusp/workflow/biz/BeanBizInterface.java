@@ -3,7 +3,11 @@ package cn.com.yusys.yusp.workflow.biz;
 import java.util.Map;
 
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
-
+/**
+ * spring bean 方式调用后业务处理
+ * @author figue
+ *
+ */
 public interface BeanBizInterface {
 	/**
 	 * 流程初始化

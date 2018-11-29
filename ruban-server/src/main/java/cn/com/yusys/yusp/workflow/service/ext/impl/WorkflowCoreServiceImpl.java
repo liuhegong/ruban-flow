@@ -501,8 +501,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	 * @param nextNodeId
 	 * @return
 	 */
-	private boolean runRoute(ResultInstanceDto instanceInfo,String nextNodeId){
-		return routeService.run(instanceInfo,nextNodeId);
+	private boolean runRoute(ResultInstanceDto instanceInfo,String nextNodeId,String isContinueBeanId){
+		return routeService.run(instanceInfo,nextNodeId,isContinueBeanId);
 	}
 	
 	/**
@@ -525,14 +525,14 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		if(log.isDebugEnabled()){
 			log.debug("获取节点条数:"+nodeInfos.size());
 		}
-		// 条件单选或者条件多选，需要运行脚本决定是否返回
+		// 【条件单选】或者【条件多选】，需要运行脚本决定是否返回
 		if(NodeType.CONDITION_MULTI_NODE.equals(nodeInfo.getNodeType())
 				||NodeType.CONDITION_RADIO_NODE.equals(nodeInfo.getNodeType())){
 			List<RouteInfo> routes = nodeInfo.getRouteInfos();
 			for(RouteInfo route:routes){
-				if(null!=route.getIsContinueBeanId()&&!"".equals(route.getIsContinueBeanId())){
+				if(!isNullOrEmpty(route.getIsContinueBeanId())){
 					String nextNodeId = route.getNextNodeId();
-					if(!runRoute(instanceInfo,nextNodeId)){
+					if(!runRoute(instanceInfo,nextNodeId,route.getIsContinueBeanId())){
 						NodeInfo nodeInfoT = EngineCache.getInstance().getNodeInfo(nextNodeId);						
 						nodeInfos.remove(nodeInfoT);
 						if(log.isDebugEnabled()){
@@ -930,7 +930,10 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		}
 		
 		String completeTime = TimeUtil.getDateyyyyMMddHHmmss();		
-		NodeInfo nextNodeInfo = EngineCache.getInstance().getNodeInfo(nextNodeId);		
+		NodeInfo nextNodeInfo = EngineCache.getInstance().getNodeInfo(nextNodeId);	
+		if(NodeType.END_NODE.equals(nextNodeInfo.getNodeType())){// 结束节点,则直接结束
+			return end(instanceInfo,currentUserId,orgId);
+		}
 	
 		// 新增用户待办信息
 		List<NWfUserTodo> userTodeNew = new ArrayList<NWfUserTodo>();
