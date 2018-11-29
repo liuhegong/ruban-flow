@@ -16,19 +16,19 @@ public interface WorkflowBizInterface {
 	 * @param instanceInfo
 	 * @return
 	 */
-	Map<String,Object> afterInit(ResultInstanceDto instanceInfo);
+	Map<String,Object> afterInit(String bizBeanId,ResultInstanceDto instanceInfo);
 	
 	/**
 	 * 流程提交后处理
 	 * @param instanceInfo
 	 * @return
 	 */
-	Map<String,Object> afterSubmit(ResultInstanceDto instanceInfo);
+	Map<String,Object> afterSubmit(String bizBeanId,ResultInstanceDto instanceInfo);
 	
 	/**
 	 * 流程结束后处理
 	 * @param instanceInfo
 	 * @return
 	 */
-	Map<String,Object> afterEnd(ResultInstanceDto instanceInfo);
+	Map<String,Object> afterEnd(String bizBeanId,ResultInstanceDto instanceInfo);
 }

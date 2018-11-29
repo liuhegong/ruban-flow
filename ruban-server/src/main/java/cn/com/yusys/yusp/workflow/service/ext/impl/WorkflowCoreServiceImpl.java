@@ -34,6 +34,7 @@ import cn.com.yusys.yusp.workflow.core.engine.node.type.SignInType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.UserType;
 import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
 import cn.com.yusys.yusp.workflow.core.org.OrgCache;
+import cn.com.yusys.yusp.workflow.core.org.WFUser;
 import cn.com.yusys.yusp.workflow.core.util.TimeUtil;
 import cn.com.yusys.yusp.workflow.core.util.UUIDUtil;
 import cn.com.yusys.yusp.workflow.domain.NWfComment;
@@ -200,10 +201,12 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		ResultInstanceDto instanceInfo = getInstanceInfo(record.getInstanceId(), firstNodeId,null);
 		
 		//流程初始化
-		afterInit(instanceInfo);
+		afterInit(stratNodeInfo,instanceInfo);
 		
 		// 发送消息
-		sendMessage(instanceInfo);
+		List<NWfUserTodo> users = new ArrayList<NWfUserTodo>();
+		users.add(userTodo);
+		sendMessage(users,firstNode,instanceInfo);
 		
 		if(log.isDebugEnabled()){
 			log.debug("流程发起成功:"+instanceInfo);
@@ -216,46 +219,67 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	 * @param instanceInfo
 	 * @throws WorkflowException
 	 */
-	private void afterSubmit(ResultInstanceDto instanceInfo) throws WorkflowException{
+	private void afterSubmit(NodeInfo nodeInfo,ResultInstanceDto instanceInfo) throws WorkflowException{
 		String paramStr = instanceInfo.getFlowParam();
 		if(!isNullOrEmpty(paramStr)){
 			Map<String,Object> param = strToMap(paramStr);
 			instanceInfo.setParam(param);
-		}		
-		bizService.afterSubmit(instanceInfo);
+		}
+		if(null!=nodeInfo&&!isNullOrEmpty(nodeInfo.getBizBeanId())){// 配置了后业务处理才进行业务处理
+			log.debug("引擎将进行流程提交后业务处理：["+nodeInfo+"]");
+			bizService.afterSubmit(nodeInfo.getBizBeanId(),instanceInfo);
+		}else{
+			log.debug("节点未配置后业务处理：["+nodeInfo.getNodeId()+"]");
+		}
 	}
 	/**
 	 * 流程初始化时回调
 	 * @param instanceInfo
 	 * @throws WorkflowException
 	 */
-	private void afterInit(ResultInstanceDto instanceInfo) throws WorkflowException{
+	private void afterInit(NodeInfo nodeInfo,ResultInstanceDto instanceInfo) throws WorkflowException{
 		String paramStr = instanceInfo.getFlowParam();
 		if(!isNullOrEmpty(paramStr)){
 			Map<String,Object> param = strToMap(paramStr);
 			instanceInfo.setParam(param);
-		}		
-		bizService.afterInit(instanceInfo);
+		}	
+		if(null!=nodeInfo&&!isNullOrEmpty(nodeInfo.getBizBeanId())){// 配置了后业务处理才进行业务处理
+			log.debug("引擎将进行流程发起后业务处理：["+nodeInfo+"]");
+			bizService.afterInit(nodeInfo.getBizBeanId(),instanceInfo);
+		}else{
+			log.debug("节点未配置后业务处理：["+nodeInfo.getNodeId()+"]");
+		}
 	}
 	
-	private void afterEnd(ResultInstanceDto instanceInfo) throws WorkflowException{
+	private void afterEnd(NodeInfo nodeInfo,ResultInstanceDto instanceInfo) throws WorkflowException{
 		String paramStr = instanceInfo.getFlowParam();
 		if(!isNullOrEmpty(paramStr)){
 			Map<String,Object> param = strToMap(paramStr);
 			instanceInfo.setParam(param);
-		}		
-		bizService.afterEnd(instanceInfo);
+		}
+		if(null!=nodeInfo&&!isNullOrEmpty(nodeInfo.getBizBeanId())){// 配置了后业务处理才进行业务处理
+			log.debug("引擎将进行流程结束后业务处理：["+nodeInfo+"]");
+			bizService.afterEnd(nodeInfo.getBizBeanId(),instanceInfo);
+		}else{
+			log.debug("节点未配置后业务处理：["+nodeInfo.getNodeId()+"]");
+		}
 	}
 	
 	/**
 	 * 发送消息
 	 * @param instanceInfo
 	 */
-	private void sendMessage(ResultInstanceDto instanceInfo){
+	private void sendMessage(List<NWfUserTodo> users,NodeInfo nodeInfo,ResultInstanceDto instanceInfo){
 		try {
-			messageService.sendMessage(instanceInfo);
+			String noticeType = nodeInfo.getNoticeType();
+			for(NWfUserTodo user:users){
+				if(!isNullOrEmpty(noticeType)){
+					WFUser  userT = new WFUser();
+					BeanUtils.copyProperties(user, userT);
+					messageService.sendMessage(noticeType, userT, instanceInfo);
+				}
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			log.warn("消息发送失败"+instanceInfo);
 		}
@@ -972,9 +996,10 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		re.setCode(FlowState.RUN);
 		
 		// 后业务处理
-		afterSubmit(instanceInfo);
+		NodeInfo currentNodeInfoT = EngineCache.getInstance().getNodeInfo(nodeId);		
+		afterSubmit(currentNodeInfoT,instanceInfo);
 		// 发送消息
-		sendMessage(instanceInfo);
+		sendMessage(userTodeNew,nextNodeInfo,instanceInfo);
 		return re;
 	}
 	
@@ -1084,10 +1109,10 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		workflowBackUpService.deleteAllUserComment(instanceId);
 		
 		// 后业务处理
-		afterSubmit(instanceInfo);
-		afterEnd(instanceInfo);
-		// 发送消息
-		sendMessage(instanceInfo);
+		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		afterSubmit(nodeInfo,instanceInfo);
+		afterEnd(nodeInfo,instanceInfo);
+		
 		ResultWFMessageDto re = new ResultWFMessageDto();
 		re.setTip(Cons.SUCCESS_MSG5);
 		re.setCode(FlowState.END);

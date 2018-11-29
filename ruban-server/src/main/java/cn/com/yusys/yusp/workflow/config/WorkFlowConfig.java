@@ -10,6 +10,8 @@ import org.springframework.web.filter.CorsFilter;
 
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
 import cn.com.yusys.yusp.workflow.core.org.OrgCache;
+import cn.com.yusys.yusp.workflow.demo.BeanBizDemoImpl;
+import cn.com.yusys.yusp.workflow.util.ApplicationContextUtil;
 import cn.com.yusys.yusp.workflow.web.fillter.UserSessionRequestFilter;
 
 @Configuration
@@ -38,6 +40,11 @@ public class WorkFlowConfig{
 	}
 	
 	@Bean
+	public ApplicationContextUtil applicationContextUtil(){
+		return new ApplicationContextUtil();
+	}
+	
+	@Bean
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
@@ -50,6 +57,11 @@ public class WorkFlowConfig{
 		FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
 		bean.setOrder(Integer.MIN_VALUE);
 		return bean;
+	}
+	
+	@Bean("demo")
+	public BeanBizDemoImpl BeanBizDemoImpl(){
+		return new BeanBizDemoImpl();
 	}
 
 }

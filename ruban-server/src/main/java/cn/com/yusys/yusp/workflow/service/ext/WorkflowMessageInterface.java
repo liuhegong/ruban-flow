@@ -1,5 +1,6 @@
 package cn.com.yusys.yusp.workflow.service.ext;
 
+import cn.com.yusys.yusp.workflow.core.org.WFUser;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 
 /**
@@ -9,5 +10,5 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
  */
 public interface WorkflowMessageInterface {
 	
-	void sendMessage(ResultInstanceDto instanceInfo);
+	void sendMessage(String noticeType,WFUser user,ResultInstanceDto instanceInfo);
 }
