@@ -1,0 +1,95 @@
+<mxGraphModel>
+  <root>
+    <Workflow label="工作流" id="0">
+      <mxCell/>
+    </Workflow>
+    <Layer label="Default Layer" id="1">
+      <mxCell parent="0"/>
+    </Layer>
+    <node label="开始节点" nodeType="S" bizBeanId="" action="actionDelage" id="27">
+      <mxCell style="symbol;image=images/symbols/event.png" parent="1" vertex="1">
+        <mxGeometry x="84" y="175" width="32" height="32" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="O.2;R.2;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="28">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="200" y="175" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="单人签收节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="O.2;R.2;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="29">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="340" y="175" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="单人竞争节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="O.2;R.2;" computeType="2" handleType="1" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="30">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="460" y="175" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="多人顺序节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="O.2;R.2;" computeType="2" handleType="2" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="31">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="580" y="175" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="多人并行节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="O.2;R.2;" computeType="2" handleType="3" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="32">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="700" y="173" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="多人顺序可结束节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="O.2;R.2;" computeType="2" handleType="5" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="33">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="830" y="173" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <node label="结束节点" nodeType="E" bizBeanId="" action="actionDelage" id="34">
+      <mxCell style="symbol;image=images/symbols/event_end.png" parent="1" vertex="1">
+        <mxGeometry x="1066" y="171" width="32" height="32" as="geometry"/>
+      </mxCell>
+    </node>
+    <route label="" isContinueBeanId="" action="actionDelage" id="35">
+      <mxCell parent="1" source="27" target="28" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="36">
+      <mxCell parent="1" source="28" target="29" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="37">
+      <mxCell parent="1" source="29" target="30" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="38">
+      <mxCell parent="1" source="30" target="31" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="40">
+      <mxCell parent="1" source="31" target="32" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="41">
+      <mxCell parent="1" source="32" target="33" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <node label="多人并行可结束" nodeType="0" nodeSign="" opUsersType="0" nodeUser="O.2;R.2;" computeType="2" handleType="6" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="43">
+      <mxCell style="rounded" parent="1" vertex="1">
+        <mxGeometry x="950" y="173" width="80" height="30" as="geometry"/>
+      </mxCell>
+    </node>
+    <route label="" isContinueBeanId="" action="actionDelage" id="44">
+      <mxCell parent="1" source="33" target="43" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+    <route label="" isContinueBeanId="" action="actionDelage" id="45">
+      <mxCell parent="1" source="43" target="34" edge="1">
+        <mxGeometry isRelative="1" as="geometry"/>
+      </mxCell>
+    </route>
+  </root>
+</mxGraphModel>

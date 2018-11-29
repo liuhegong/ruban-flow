@@ -74,6 +74,17 @@ public interface WorkflowCoreInterface {
 	List<WFUserDto> getNodeUsers(String instanceId,String nodeId,String orgId,String systemId);
 	
 	/**
+	 * 获取节点真正处理人【不会含有系统指定】
+	 * @param instanceId
+	 * @param nodeId
+	 * @param orgId
+	 * @param systemId
+	 * @return
+	 */
+	List<WFUserDto> getNodeRealUsers(String instanceId,String nodeId,String orgId,String systemId);
+
+	
+	/**
 	 * 流程提交
 	 * @param stratDto
 	 * @return

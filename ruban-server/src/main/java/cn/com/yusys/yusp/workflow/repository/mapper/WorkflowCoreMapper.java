@@ -13,6 +13,15 @@ public interface WorkflowCoreMapper {
 	ResultInstanceDto getInstanceInfo(@Param("instanceId") String instanceId, @Param("nodeId") String nodeId);
 	
 	List<String> getNodeUsers(@Param("instanceId") String instanceId, @Param("nodeId") String nodeId);
+	
+	/**
+	 * 获取最小用户等级的用户待办
+	 * @param instanceId
+	 * @param nodeId
+	 * @return
+	 */
+	List<NWfUserTodo> getUserByMinUserlevel(@Param("instanceId") String instanceId, @Param("nodeId") String nodeId);
+
 	/**
 	 * 用户待办实例查询
 	 * @param queryModel
