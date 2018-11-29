@@ -10,7 +10,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.2.RELEASE</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,5 +50,6 @@
     <module>ruban-studio</module>
     <module>ruban-server</module>
     <module>ruban-dto</module>
+    <module>ruban-starter</module>
   </modules>
 </project>
