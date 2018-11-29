@@ -6,25 +6,30 @@ import org.springframework.stereotype.Service;
 
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowBizInterface;
+/**
+ * 节点流转业务处理
+ * @author figue
+ *
+ */
 @Service
-public class FeginWorkflowBizImpl implements WorkflowBizInterface {
+public class WorkflowBizImpl implements WorkflowBizInterface {
 
 	@Override
 	public Map<String, Object> afterInit(ResultInstanceDto instanceInfo) {
-		// TODO Auto-generated method stub
+		System.out.println("流程发起后处理:"+instanceInfo);
 		return null;
 	}
 
 	
 	@Override
 	public Map<String, Object> afterSubmit(ResultInstanceDto instanceInfo) {
-		// TODO Auto-generated method stub
+		System.out.println("流程提交后处理:"+instanceInfo);
 		return null;
 	}
 
 	@Override
 	public Map<String, Object> afterEnd(ResultInstanceDto instanceInfo) {
-		// TODO Auto-generated method stub
+		System.out.println("流程结束后处理:"+instanceInfo);
 		return null;
 	}
 	

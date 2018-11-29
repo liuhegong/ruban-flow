@@ -4,6 +4,11 @@ import org.springframework.stereotype.Service;
 
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowMessageInterface;
+/**
+ * 消息发送实现
+ * @author figue
+ *
+ */
 @Service
 public class WorkflowMessageImpl implements WorkflowMessageInterface {
 

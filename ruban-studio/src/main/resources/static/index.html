@@ -50,7 +50,7 @@
         <el-container>
           <el-aside class="menu">
             <el-menu @select="menuItemSelect">
-              <el-menu-item :index="flow.flowId" v-for="(flow,id) in flows">{{flow.flowId}}-{{flow.flowName}}</el-menu-item>
+              <el-menu-item :index="flow.flowId + ''" v-for="(flow,id) in flows">{{flow.flowId}}-{{flow.flowName}}</el-menu-item>
             </el-menu>
           </el-aside>
           <el-main class="content">        

@@ -11,8 +11,12 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultCommentDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
-
-public interface WorkflowCoreServiceInterface {
+/**
+ * 节点流转核心接口
+ * @author figue
+ *
+ */
+public interface WorkflowCoreInterface {
 	
 	/**
 	 * 发起流程

@@ -19,14 +19,14 @@ import cn.com.yusys.yusp.workflow.dto.WFUserDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreServiceInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 import cn.com.yusys.yusp.workflow.web.fillter.session.CurrentUser;
 
 @RestController
 public class WorkflowTestResource {
 	@Autowired
-	private WorkflowCoreServiceInterface WorkflowCoreServicee;
+	private WorkflowCoreInterface WorkflowCoreServicee;
 	
 	@GetMapping("/")
 	public ResultDto index(){

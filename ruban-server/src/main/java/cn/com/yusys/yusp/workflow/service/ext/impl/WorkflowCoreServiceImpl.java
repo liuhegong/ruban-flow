@@ -64,12 +64,17 @@ import cn.com.yusys.yusp.workflow.service.NWfUserTodoService;
 import cn.com.yusys.yusp.workflow.service.WorkflowBackUpService;
 import cn.com.yusys.yusp.workflow.service.WorkflowCoreService;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowBizInterface;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreServiceInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowMessageInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowRouteInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserInterface;
+/**
+ * 流转核心实现
+ * @author figue
+ *
+ */
 @Service
-public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
+public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 
 	private static final Log log = LogFactory.getLog(WorkflowCoreServiceImpl.class);
 	
@@ -196,8 +201,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 		
 		//流程初始化
 		afterInit(instanceInfo);
-		// 后业务处理
-		afterSubmit(instanceInfo);
+		
 		// 发送消息
 		sendMessage(instanceInfo);
 		
@@ -231,7 +235,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreServiceInterface {
 			Map<String,Object> param = strToMap(paramStr);
 			instanceInfo.setParam(param);
 		}		
-		bizService.afterSubmit(instanceInfo);
+		bizService.afterInit(instanceInfo);
 	}
 	
 	private void afterEnd(ResultInstanceDto instanceInfo) throws WorkflowException{

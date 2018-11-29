@@ -27,7 +27,11 @@ import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.service.NWfFlowHisService;
 import cn.com.yusys.yusp.workflow.service.NWfFlowService;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
-
+/**
+ * 流程图操作
+ * @author figue
+ *
+ */
 @RestController
 @RequestMapping("/api/nwfflow")
 public class NWfFlowResource {
@@ -41,6 +45,12 @@ public class NWfFlowResource {
     @Autowired
     private NWfFlowHisService nWfFlowHisService;
     
+    /**
+     * 流程图列表
+     * @param systemId
+     * @param userId
+     * @return
+     */
     @GetMapping("/")
     public ResultDto<List<NWfFlow>> index(String systemId,String userId) {
         QueryModel queryModel = new QueryModel();
@@ -51,6 +61,11 @@ public class NWfFlowResource {
         return new ResultDto<List<NWfFlow>>(list);
     }
 
+    /**
+     * 新增流程图
+     * @param nWfFlow
+     * @return
+     */
     @PostMapping("/")
     public ResultDto<NWfFlow> create(@RequestBody NWfFlow nWfFlow) {
     	nWfFlow.setStartTime(TimeUtil.getDateyyyyMMddHHmmss());
@@ -78,7 +93,12 @@ public class NWfFlowResource {
         return new ResultDto<NWfFlow>(nWfFlow);
     }
 
-
+    /**
+     * 更新流程图
+     * @param nWfFlow
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/update")
     @Transactional
     public ResultDto<Integer> update(@RequestBody NWfFlow nWfFlow) throws IOException {
@@ -111,6 +131,11 @@ public class NWfFlowResource {
         return new ResultDto<Integer>(0);
     }
 
+    /**
+     * 删除流程图
+     * @param flowId
+     * @return
+     */
     @PostMapping("/delete/{flowId}")
     public ResultDto<Integer> delete(@PathVariable Long flowId) {
         int result = nWfFlowService.deleteByPrimaryKey(flowId);

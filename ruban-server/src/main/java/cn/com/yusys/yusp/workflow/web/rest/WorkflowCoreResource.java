@@ -23,14 +23,14 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreServiceInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 
 @RestController
 @RequestMapping("/api/core")
 public class WorkflowCoreResource {
 	@Autowired
-	private WorkflowCoreServiceInterface workflowCoreService;
+	private WorkflowCoreInterface workflowCoreService;
 	
 	@Autowired
 	private NWfInstanceService instanceService;
