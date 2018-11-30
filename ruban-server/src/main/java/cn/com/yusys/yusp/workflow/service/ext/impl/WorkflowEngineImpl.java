@@ -721,6 +721,11 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		if(HandleType.ONE_SIGN.equals(nodeInfo.getHandleType())||HandleType.ONE.equals(nodeInfo.getHandleType())){// 【办理类型】是【单人签收办里】或【单人竞争】时,无论待办有多少人，强行提交
 			isLast = true;
 		}
+		
+		if(submitDto.isLastOne()){// 前端指定强行提交，一般【办理类型】是[多人顺序可结束]或[多人并行可结束]时生效，前端可以选择true和false;
+			isLast = true;
+		}
+		
 		// TODO 按条件转移操作操作
 		if(isLast){// 是最后办理人,直接提交流程
 			submitNextNodeMulti(instanceInfo, submitDto.getNextNodeInfos(),re,userId,orgId,systemId);
