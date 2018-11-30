@@ -42,11 +42,11 @@ var studio = {
         name:"办理类型",
         key:"handleType",
         type:"select",
-        value:{0:"单人签收办理",1:"单人竞争办理",2:"多人顺序办理",3:"多人并行办理",4:"多人时按转移条件",5:"多人顺序可结束",6:"多人并行可结束"},
+        value:{0:"单人签收办理",1:"单人竞争办理",2:"多人顺序办理",3:"多人并行办理",4:"多人并行按条件转移",5:"多人顺序可结束",6:"多人并行可结束"},
         readOnly:false
     },
     isEndBeanId:{
-        name:"结束条件",
+        name:"转移条件",
         key:"isEndBeanId",
         type:"text",
         readOnly:false
