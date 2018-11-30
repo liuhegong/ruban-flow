@@ -24,9 +24,9 @@ import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserInterface;
  *
  */
 @Service
-public class WorkflowUserServiceImpl implements WorkflowUserInterface {
+public class WorkflowUserImpl implements WorkflowUserInterface {
 
-	private static final Log log = LogFactory.getLog(WorkflowUserServiceImpl.class);
+	private static final Log log = LogFactory.getLog(WorkflowUserImpl.class);
 	@Override
 	public WFUserDto getUserInfo(String systemId,String userId) {
 		if(Cons.SYSTEM_USER_ID.equalsIgnoreCase(userId)){// 系统指定用户

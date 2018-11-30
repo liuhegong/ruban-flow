@@ -13,6 +13,8 @@ import cn.com.yusys.yusp.workflow.core.org.OrgCache;
 import cn.com.yusys.yusp.workflow.demo.BeanBizDemoImpl;
 import cn.com.yusys.yusp.workflow.demo.BeanRoute1DemoImpl;
 import cn.com.yusys.yusp.workflow.demo.BeanRoute2DemoImpl;
+import cn.com.yusys.yusp.workflow.demo.BeanUserFilter1DemoImpl;
+import cn.com.yusys.yusp.workflow.demo.BeanUserFilter2DemoImpl;
 import cn.com.yusys.yusp.workflow.util.ApplicationContextUtil;
 import cn.com.yusys.yusp.workflow.web.fillter.UserSessionRequestFilter;
 
@@ -61,19 +63,4 @@ public class WorkFlowConfig{
 		return bean;
 	}
 	
-	@Bean("demo")
-	public BeanBizDemoImpl BeanBizDemoImpl(){
-		return new BeanBizDemoImpl();
-	}
-	
-	@Bean("route1")
-	public BeanRoute1DemoImpl beanRoute1DemoImpl(){
-		return new BeanRoute1DemoImpl();
-	}
-	
-	@Bean("route2")
-	public BeanRoute2DemoImpl beanRoute2DemoImpl(){
-		return new BeanRoute2DemoImpl();
-	}
-
 }

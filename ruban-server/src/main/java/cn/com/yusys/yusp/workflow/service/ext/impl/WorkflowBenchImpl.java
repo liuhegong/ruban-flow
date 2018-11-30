@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 
-import cn.com.yusys.yusp.workflow.domain.NWfUserHis;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceTodoDto;
 import cn.com.yusys.yusp.workflow.repository.mapper.WorkflowBenchMapper;
@@ -19,7 +18,7 @@ import cn.com.yusys.yusp.workflow.service.ext.WorkflowBenchInterface;
  *
  */
 @Service
-public class WorkflowBenchServiceImpl implements WorkflowBenchInterface{
+public class WorkflowBenchImpl implements WorkflowBenchInterface{
 
 	@Autowired
 	private WorkflowBenchMapper workflowBenchMapper;

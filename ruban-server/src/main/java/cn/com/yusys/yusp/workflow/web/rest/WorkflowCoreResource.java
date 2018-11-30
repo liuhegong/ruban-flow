@@ -20,17 +20,17 @@ import cn.com.yusys.yusp.workflow.dto.WFSubmitDto;
 import cn.com.yusys.yusp.workflow.dto.WFUserDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultCommentDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
+import cn.com.yusys.yusp.workflow.dto.result.ResultMessageDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
-import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowEngineInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 
 @RestController
 @RequestMapping("/api/core")
 public class WorkflowCoreResource {
 	@Autowired
-	private WorkflowCoreInterface workflowCoreService;
+	private WorkflowEngineInterface workflowCoreService;
 	
 	@Autowired
 	private NWfInstanceService instanceService;
@@ -78,8 +78,8 @@ public class WorkflowCoreResource {
 	 * @return
 	 */
 	@GetMapping("/signIn")
-	protected ResultDto<ResultWFMessageDto> signIn(String instanceId,String nodeId,String userId) {
-		return new ResultDto<ResultWFMessageDto>(workflowCoreService.signIn(instanceId, nodeId, userId));
+	protected ResultDto<ResultMessageDto> signIn(String instanceId,String nodeId,String userId) {
+		return new ResultDto<ResultMessageDto>(workflowCoreService.signIn(instanceId, nodeId, userId));
 	}
 	
 	/**
@@ -90,8 +90,8 @@ public class WorkflowCoreResource {
 	 * @return
 	 */
 	@GetMapping("/unSignIn")
-	protected ResultDto<ResultWFMessageDto> unSignIn(String instanceId,String nodeId,String userId) {
-		return new ResultDto<ResultWFMessageDto>(workflowCoreService.unSignIn(instanceId, nodeId, userId));
+	protected ResultDto<ResultMessageDto> unSignIn(String instanceId,String nodeId,String userId) {
+		return new ResultDto<ResultMessageDto>(workflowCoreService.unSignIn(instanceId, nodeId, userId));
 	}
 	
 	/**
@@ -112,8 +112,8 @@ public class WorkflowCoreResource {
 	 * @throws WorkflowException
 	 */
 	@PostMapping("/submit")
-	public ResultDto<List<ResultWFMessageDto>> submit(@Valid @RequestBody WFSubmitDto submitDto) throws WorkflowException{
-		return new ResultDto<List<ResultWFMessageDto>>(workflowCoreService.submit(submitDto));
+	public ResultDto<List<ResultMessageDto>> submit(@Valid @RequestBody WFSubmitDto submitDto) throws WorkflowException{
+		return new ResultDto<List<ResultMessageDto>>(workflowCoreService.submit(submitDto));
 	}
 	
 	/**

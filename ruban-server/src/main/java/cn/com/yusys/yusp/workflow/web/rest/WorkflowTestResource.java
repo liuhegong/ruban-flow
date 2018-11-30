@@ -18,15 +18,15 @@ import cn.com.yusys.yusp.workflow.dto.WFSubmitDto;
 import cn.com.yusys.yusp.workflow.dto.WFUserDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
-import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreInterface;
+import cn.com.yusys.yusp.workflow.dto.result.ResultMessageDto;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowEngineInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 import cn.com.yusys.yusp.workflow.web.fillter.session.CurrentUser;
 
 @RestController
 public class WorkflowTestResource {
 	@Autowired
-	private WorkflowCoreInterface WorkflowCoreServicee;
+	private WorkflowEngineInterface WorkflowCoreServicee;
 	
 	@GetMapping("/")
 	public ResultDto index(){
@@ -71,7 +71,7 @@ public class WorkflowTestResource {
 	@GetMapping("/1-1")
 	public ResultDto submit() throws WorkflowException{	
 		ResultDto resultDto = new ResultDto();
-		List<ResultWFMessageDto> data1 = new ArrayList();
+		List<ResultMessageDto> data1 = new ArrayList();
 		for(String nodeId:nodeIdsTTT){
 			List<ResultNodeDto> data = WorkflowCoreServicee.getNextNodeInfos(instanceIdTTT,nodeId);
 			for(ResultNodeDto node:data){
@@ -146,7 +146,7 @@ public class WorkflowTestResource {
 	@GetMapping("/2-1")
 	public ResultDto submit2() throws WorkflowException{	
 		ResultDto resultDto = new ResultDto();
-		List<ResultWFMessageDto> data1 = new ArrayList();
+		List<ResultMessageDto> data1 = new ArrayList();
 		for(String nodeId:nodeIdsTTT){
 			List<ResultNodeDto> data = WorkflowCoreServicee.getNextNodeInfos(instanceIdTTT,nodeId);
 			for(ResultNodeDto node:data){

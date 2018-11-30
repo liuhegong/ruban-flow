@@ -4,7 +4,11 @@ import java.util.Map;
 
 import cn.com.yusys.yusp.workflow.biz.BeanBizInterface;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
-
+/**
+ * [业务处理]示例
+ * @author figue
+ *
+ */
 public class BeanBizDemoImpl implements BeanBizInterface {
 
 	@Override

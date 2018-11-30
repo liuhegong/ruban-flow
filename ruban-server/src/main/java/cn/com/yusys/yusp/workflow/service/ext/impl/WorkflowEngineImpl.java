@@ -54,7 +54,7 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultCommentDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultOpTypeDto;
-import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
+import cn.com.yusys.yusp.workflow.dto.result.ResultMessageDto;
 import cn.com.yusys.yusp.workflow.service.NWfCommentService;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceHisService;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
@@ -65,9 +65,10 @@ import cn.com.yusys.yusp.workflow.service.NWfUserTodoService;
 import cn.com.yusys.yusp.workflow.service.WorkflowBackUpService;
 import cn.com.yusys.yusp.workflow.service.WorkflowCoreService;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowBizInterface;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowCoreInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowEngineInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowMessageInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowRouteInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserFilterInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserInterface;
 /**
  * 流转核心实现
@@ -75,9 +76,9 @@ import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserInterface;
  *
  */
 @Service
-public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
+public class WorkflowEngineImpl implements WorkflowEngineInterface {
 
-	private static final Log log = LogFactory.getLog(WorkflowCoreServiceImpl.class);
+	private static final Log log = LogFactory.getLog(WorkflowEngineImpl.class);
 	
 	ObjectMapper jsonObj = new ObjectMapper();
 	
@@ -108,6 +109,11 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	@Autowired
 	private NWfCommentService commentService;
 	
+	/**
+	 * [分配策略]
+	 */
+	@Autowired
+	private WorkflowUserFilterInterface userFilterInterface;
 	
 	/**
 	 * 业务后处理
@@ -515,6 +521,14 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		if(users.isEmpty()){ // 其他节点未办理过，依然走人员计算
 			users = calculateUser(splitNodeUser(nodeInfo.getNodeUser()),nodeId,orgId,systemId);
 		}
+		
+		// 判断节点是否配置了人员分配策略
+		String strategyBeanName = nodeInfo.getStrategyBeanId();
+		if (!isNullOrEmpty(strategyBeanName)) {
+			// 执行人员[分配策略]
+			return userFilterInterface.selectUser(strategyBeanName, users, instanceId, nodeId, orgId, systemId);
+		}
+		
 		return users;
 	}
 	
@@ -642,8 +656,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 
 	@Override
 	@Transactional
-	public List<ResultWFMessageDto> submit(WFSubmitDto submitDto) {
-		List<ResultWFMessageDto> re = new ArrayList<ResultWFMessageDto>();
+	public List<ResultMessageDto> submit(WFSubmitDto submitDto) {
+		List<ResultMessageDto> re = new ArrayList<ResultMessageDto>();
 		// 保存评论
 		saveComment(submitDto.getComment());
 		String instanceId = submitDto.getComment().getInstanceId();
@@ -654,7 +668,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 			log.debug("流程提交:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"] to "+submitDto.getNextNodeInfos());
 		}
 		if(isNullOrEmpty(instanceId)||isNullOrEmpty(nodeId)||isNullOrEmpty(userId)||isNullOrEmpty(orgId)){
-			ResultWFMessageDto m1 = new ResultWFMessageDto();
+			ResultMessageDto m1 = new ResultMessageDto();
 			m1.setCode("1");
 			m1.setTip(Cons.ERROR_MSG1);
 			re.add(m1);
@@ -662,7 +676,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		}
 		
 		if (!checkNode(nodeId)){//校验节点是否有后续节点
-			ResultWFMessageDto m1 = new ResultWFMessageDto();
+			ResultMessageDto m1 = new ResultMessageDto();
 			m1.setCode("1");
 			m1.setTip(Cons.ERROR_MSG4);
 			re.add(m1);
@@ -671,7 +685,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		
 		ResultInstanceDto instanceInfo = getInstanceInfo(instanceId, nodeId,null);
 		if(null==instanceInfo){// 流程已经办结
-			ResultWFMessageDto m1 = new ResultWFMessageDto();
+			ResultMessageDto m1 = new ResultMessageDto();
 			m1.setCode("1");
 			m1.setTip(Cons.ERROR_MSG2);
 			re.add(m1);
@@ -681,7 +695,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		//判断提交者是否是当前流程提交人
 		List<String> users = getCurrentNodeUsers(instanceId, nodeId);
 		if(!isPartOf( users,userId)){
-			ResultWFMessageDto m1 = new ResultWFMessageDto();
+			ResultMessageDto m1 = new ResultMessageDto();
 			m1.setCode("1");
 			m1.setTip(Cons.ERROR_MSG3);
 			re.add(m1);
@@ -693,11 +707,12 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 			updateInstanceParam(instanceId, submitDto.getParam());
 		} catch (Exception e) {
 			e.printStackTrace();
-			ResultWFMessageDto m1 = new ResultWFMessageDto();
+			ResultMessageDto m1 = new ResultMessageDto();
 			m1.setCode("1");
-			m1.setTip(Cons.ERROR_MSG4);
+			m1.setTip(Cons.ERROR_MSG12);
 			re.add(m1);
-			return re;
+			throw new WorkflowException(Cons.ERROR_MSG12);
+			//return re;
 		}
 		
 		//是否是最后一个处理人
@@ -776,7 +791,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	 * @param nodeInfoDtos
 	 * @param msg
 	 */
-	private void submitNextNodeMulti(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
+	private void submitNextNodeMulti(ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
 		if (null == nodeInfoDtos || nodeInfoDtos.isEmpty()) {// 未指定节点从内存获取
 			List<NextNodeInfoDto> nextNodes = getWFNextNodeInfos(instanceInfo,instanceInfo.getNodeId());
 			for (NextNodeInfoDto nextNode : nextNodes) {			
@@ -812,7 +827,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	 * @param systemId
 	 * @throws WorkflowException
 	 */
-	private void inNodeFlow(String handleType,ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
+	private void inNodeFlow(String handleType,ResultInstanceDto instanceInfo, List<NextNodeInfoDto> nodeInfoDtos, List<ResultMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException {
 		// 用户待办信息迁移为已办
 		String instanceId = instanceInfo.getInstanceId();
 		String nodeId = instanceInfo.getNodeId();
@@ -830,13 +845,13 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 			}
 		}
 		
-		ResultWFMessageDto re = new ResultWFMessageDto();
+		ResultMessageDto re = new ResultMessageDto();
 		re.setTip(Cons.SUCCESS_MSG9);
 		re.setCode(FlowState.RUN);
 		msg.add(re);
 	}
 	
-	private void submitNextOneNode(ResultInstanceDto instanceInfo,NextNodeInfoDto nodeInfoDtos,List<ResultWFMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException{
+	private void submitNextOneNode(ResultInstanceDto instanceInfo,NextNodeInfoDto nodeInfoDtos,List<ResultMessageDto> msg,String currentUserId,String orgId,String systemId) throws WorkflowException{
 		String instanceId = instanceInfo.getInstanceId();
 		String nextNodeId = nodeInfoDtos.getNextNodeId();
 		String nodeId = instanceInfo.getNodeId();
@@ -865,7 +880,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 						nextNodeUsers.add(userService.getUserInfo(systemId, user));
 					}
 				}
-			}			
+			}
+			
 			if(NodeType.AUTO_NODE.equals(nodeType)){// 自动节点
 				//直接向自动节点的后面节点提交
 				List<String> nextNodeIds = nodeInfoT.getNextNodes();
@@ -890,7 +906,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 					submitNextOneNode( instanceInfo, nextNodeInfoDto, msg, currentUserId, orgId, systemId);
 				}else{// 就此中断，不在往下提交，前面会对此节点做历史数据迁移
 					NodeInfo togetherNode = EngineCache.getInstance().getNodeInfo(nextNodeId);
-					ResultWFMessageDto re = new ResultWFMessageDto();
+					ResultMessageDto re = new ResultMessageDto();
 					re.setCode("0");
 					re.setTip("汇总节点提交完成");
 					re.setNodeName(togetherNode.getNodeName());
@@ -943,8 +959,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	 * @param nextNodeUsers
 	 * @return
 	 */
-	public ResultWFMessageDto complete(ResultInstanceDto instanceInfo,String nextNodeId,List<WFUserDto> nextNodeUsers,String currentUserId,String orgId) throws WorkflowException{
-		ResultWFMessageDto re = new ResultWFMessageDto();
+	public ResultMessageDto complete(ResultInstanceDto instanceInfo,String nextNodeId,List<WFUserDto> nextNodeUsers,String currentUserId,String orgId) throws WorkflowException{
+		ResultMessageDto re = new ResultMessageDto();
 		
 		String instanceId = instanceInfo.getInstanceId();
 		String nodeId = instanceInfo.getNodeId();
@@ -952,14 +968,16 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 			log.debug("流程最终提交:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+currentUserId+"] to "+nextNodeUsers);
 		}
 		if(isNullOrEmpty(instanceId)||isNullOrEmpty(nodeId)||isNullOrEmpty(currentUserId)||isNullOrEmpty(orgId)){
-			ResultWFMessageDto m1 = new ResultWFMessageDto();
+			ResultMessageDto m1 = new ResultMessageDto();
 			m1.setCode("1");
 			m1.setTip(Cons.ERROR_MSG1);
-			return re;
+			throw new WorkflowException(Cons.ERROR_MSG1);
+			//return re;
 		}
 		if(nextNodeUsers.isEmpty()){
 			re.setTip(Cons.ERROR_MSG6);
-			return re;
+			throw new WorkflowException(Cons.ERROR_MSG6);
+			//return re;
 		}
 		
 		String completeTime = TimeUtil.getDateyyyyMMddHHmmss();		
@@ -1117,7 +1135,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	 * @param instanceInfo
 	 * @return
 	 */
-	private ResultWFMessageDto end(ResultInstanceDto instanceInfo,String currentUserId,String orgId) throws WorkflowException{
+	private ResultMessageDto end(ResultInstanceDto instanceInfo,String currentUserId,String orgId) throws WorkflowException{
 		String instanceId = instanceInfo.getInstanceId();
 		String nodeId = instanceInfo.getNodeId();
 		String userId = currentUserId;
@@ -1149,7 +1167,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 		afterSubmit(nodeInfo,instanceInfo);
 		afterEnd(nodeInfo,instanceInfo);
 		
-		ResultWFMessageDto re = new ResultWFMessageDto();
+		ResultMessageDto re = new ResultMessageDto();
 		re.setTip(Cons.SUCCESS_MSG5);
 		re.setCode(FlowState.END);
 		return re;
@@ -1188,7 +1206,7 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	 * @return 0-有，1-无
 	 */
 	private boolean checkNode(String nodeId){
-		ResultWFMessageDto re = new ResultWFMessageDto();
+		ResultMessageDto re = new ResultMessageDto();
 		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
 		if(nodeInfo.getNextNodes().isEmpty()){
 			return false;
@@ -1211,8 +1229,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	}
 
 	@Override
-	public ResultWFMessageDto signIn(String instanceId, String nodeId, String userId) {
-		ResultWFMessageDto re = new ResultWFMessageDto();
+	public ResultMessageDto signIn(String instanceId, String nodeId, String userId) {
+		ResultMessageDto re = new ResultMessageDto();
 		if(log.isDebugEnabled()){
 			log.debug("流程签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]");
 		}
@@ -1257,8 +1275,8 @@ public class WorkflowCoreServiceImpl implements WorkflowCoreInterface {
 	}
 
 	@Override
-	public ResultWFMessageDto unSignIn(String instanceId, String nodeId, String userId) {
-		ResultWFMessageDto re = new ResultWFMessageDto();
+	public ResultMessageDto unSignIn(String instanceId, String nodeId, String userId) {
+		ResultMessageDto re = new ResultMessageDto();
 		if(log.isDebugEnabled()){
 			log.debug("流程撤销签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]");
 		}

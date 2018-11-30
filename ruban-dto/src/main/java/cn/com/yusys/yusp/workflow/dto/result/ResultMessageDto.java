@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultWFMessageDto  implements Serializable {
+public class ResultMessageDto  implements Serializable {
    
 	private static final long serialVersionUID = -4268768078065559363L;
 	

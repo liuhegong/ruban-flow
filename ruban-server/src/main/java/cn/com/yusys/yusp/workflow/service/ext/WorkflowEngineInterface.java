@@ -10,13 +10,13 @@ import cn.com.yusys.yusp.workflow.dto.WFUserDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultCommentDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
-import cn.com.yusys.yusp.workflow.dto.result.ResultWFMessageDto;
+import cn.com.yusys.yusp.workflow.dto.result.ResultMessageDto;
 /**
  * 节点流转核心接口
  * @author figue
  *
  */
-public interface WorkflowCoreInterface {
+public interface WorkflowEngineInterface {
 	
 	/**
 	 * 发起流程
@@ -89,7 +89,7 @@ public interface WorkflowCoreInterface {
 	 * @param stratDto
 	 * @return
 	 */
-	List<ResultWFMessageDto> submit(WFSubmitDto submitDto) throws WorkflowException;
+	List<ResultMessageDto> submit(WFSubmitDto submitDto) throws WorkflowException;
 	
 	/**
 	 * 签收
@@ -98,7 +98,7 @@ public interface WorkflowCoreInterface {
 	 * @param userId
 	 * @return
 	 */
-	ResultWFMessageDto signIn(String instanceId,String nodeId,String userId);
+	ResultMessageDto signIn(String instanceId,String nodeId,String userId);
 	
 	/**
 	 * 撤销签收
@@ -107,5 +107,5 @@ public interface WorkflowCoreInterface {
 	 * @param userId
 	 * @return
 	 */
-	ResultWFMessageDto unSignIn(String instanceId,String nodeId,String userId);
+	ResultMessageDto unSignIn(String instanceId,String nodeId,String userId);
 }
