@@ -1,5 +1,5 @@
 askZoom=Enter zoom (%)
 properties=Properties
-outline=Outline
+outline=鹰眼
 tasks=Tasks
-help=Help
+help=帮助
