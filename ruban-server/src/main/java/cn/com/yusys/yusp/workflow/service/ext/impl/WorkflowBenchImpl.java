@@ -30,4 +30,20 @@ public class WorkflowBenchImpl implements WorkflowBenchInterface{
 		PageHelper.clearPage();
 		return list;
 	}
+	
+	@Override
+	public List<ResultInstanceTodoDto> getInstanceInfoUserDone(QueryModel model) {
+		PageHelper.startPage(model.getPage(), model.getSize());
+		List<ResultInstanceTodoDto> list = workflowBenchMapper.getInstanceInfoUserDone(model);
+		PageHelper.clearPage();
+		return list;
+	}
+
+	@Override
+	public List<ResultInstanceTodoDto> getInstanceInfoUserHis(QueryModel model) {
+		PageHelper.startPage(model.getPage(), model.getSize());
+		List<ResultInstanceTodoDto> list = workflowBenchMapper.getInstanceInfoUserHis(model);
+		PageHelper.clearPage();
+		return list;
+	}
 }

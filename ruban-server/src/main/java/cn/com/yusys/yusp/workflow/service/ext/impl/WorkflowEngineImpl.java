@@ -155,7 +155,8 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 			throw new WorkflowException(Cons.ERROR_MSG1);
 		}
 		
-		FlowInfo flowInfo = EngineCache.getInstance().getFlowInfo(flowId, systemId);
+		EngineCache.getInstance();
+		FlowInfo flowInfo = EngineCache.getFlowInfo(flowId, systemId);
 		NodeInfo stratNodeInfo = flowInfo.getStartNode();
 		List<String> firstNodeIds = stratNodeInfo.getNextNodes();
 		String firstNodeId = firstNodeIds.get(0);
@@ -308,8 +309,9 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		instanceInfo.setParam(param);
 		
 		
-		FlowInfo flowInfo = EngineCache.getInstance().getFlowInfo(instanceInfo.getFlowId(), instanceInfo.getSystemId());
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		EngineCache.getInstance();
+		FlowInfo flowInfo = EngineCache.getFlowInfo(instanceInfo.getFlowId(), instanceInfo.getSystemId());
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		instanceInfo.setNodeType(nodeInfo.getNodeType());// 设置节点类型
 		instanceInfo.setHandleType(nodeInfo.getHandleType());// 设置办理类型
 		ResultOpTypeDto opTypeDto = new ResultOpTypeDto();
@@ -367,7 +369,8 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		BeanUtils.copyProperties(comment,record);
 		
 		record.setUserName(OrgCache.getUserInfo(instanceInfo.getSystemId(), comment.getUserId()).getUserName());
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(comment.getNodeId());
+		EngineCache.getInstance();
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(comment.getNodeId());
 		String nodeLevel = nodeInfo.getNodeLevel();
 		record.setNodeName(nodeInfo.getNodeName());
 		if(null!=nodeLevel){// 设置节点等级，根据节点等级排序可以控制打回等选择范围
@@ -445,7 +448,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		// 数据转换
 		List<ResultNodeDto> data = new ArrayList<ResultNodeDto>();
 		for(NextNodeInfoDto nextNode:nextNodes){
-			NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nextNode.getNextNodeId());
+			NodeInfo nodeInfo = EngineCache.getNodeInfo(nextNode.getNextNodeId());
 			ResultNodeDto resultNodeDto = new ResultNodeDto();
 			BeanUtils.copyProperties(nodeInfo, resultNodeDto);
 			// 开始人员计算
@@ -461,7 +464,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	@Override
 	public List<WFUserDto> getNodeUsers(String instanceId,String nodeId,String orgId,String systemId){
 		
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		List<WFUserDto> users = new ArrayList<WFUserDto>();
 		String nodeType = nodeInfo.getNodeType();
 		if (NodeType.AUTO_NODE.equals(nodeType)// 自动节点，结束节点，汇总节点用户写死
@@ -507,7 +510,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	public List<WFUserDto> getNodeRealUsers(String instanceId, String nodeId, String orgId, String systemId) {
 		List<WFUserDto> users = new ArrayList<WFUserDto>();
 		
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		String reDoUserSelect = nodeInfo.getReDoUserSelect();		
 		if(ReDoUserSelect.HIS_USER.equals(reDoUserSelect)){// 重办人员选择配置了【上次办理人】，需要先获取节点已办历史，直接将节点办理人员设置为已办人员
 			QueryModel model = new QueryModel();
@@ -550,15 +553,13 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	 * @param nodeId
 	 * @return
 	 */
-	private List<NextNodeInfoDto> getWFNextNodeInfos(ResultInstanceDto instanceInfo,String nodeId){
-		String orgId = instanceInfo.getOrgId();// 人员计算是上一办理人指定时，根据机构相对关系获取节点处理人员
-		
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+	private List<NextNodeInfoDto> getWFNextNodeInfos(ResultInstanceDto instanceInfo,String nodeId){		
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		
 		// 路由到的节点放入返回的list中
 		List<NodeInfo> nodeInfos = new ArrayList<NodeInfo>();
 		for(String nodeIdT:nodeInfo.getNextNodes()){
-			NodeInfo nodeInfoT = EngineCache.getInstance().getNodeInfo(nodeIdT);											
+			NodeInfo nodeInfoT = EngineCache.getNodeInfo(nodeIdT);											
 			nodeInfos.add(nodeInfoT);
 		}
 		if(log.isDebugEnabled()){
@@ -572,7 +573,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 				if(!isNullOrEmpty(route.getIsContinueBeanId())){
 					String nextNodeId = route.getNextNodeId();
 					if(!runRoute(instanceInfo,nextNodeId,route.getIsContinueBeanId())){
-						NodeInfo nodeInfoT = EngineCache.getInstance().getNodeInfo(nextNodeId);						
+						NodeInfo nodeInfoT = EngineCache.getNodeInfo(nextNodeId);						
 						nodeInfos.remove(nodeInfoT);
 						if(log.isDebugEnabled()){
 							log.debug("节点路由返回false,去除此节点:"+nextNodeId);
@@ -605,7 +606,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	private List<WFUserDto> calculateUser(List<String> user, String nodeId, String orgId, String systemId) {
 		List<WFUserDto> users = new ArrayList<WFUserDto>();
 
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		String userComputeType = nodeInfo.getComputeType();// 获取节点配置的人员计算模式
 		if(ComputeType.NOTALL.equals(userComputeType)){// 交集
 			List<WFUserDto> usersT = new ArrayList<WFUserDto>();
@@ -737,7 +738,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		
 		//是否是最后一个处理人
 		boolean isLast = (users.size()==1);	
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		if(HandleType.ONE_SIGN.equals(nodeInfo.getHandleType())||HandleType.ONE.equals(nodeInfo.getHandleType())){// 【办理类型】是【单人签收办里】或【单人竞争】时,无论待办有多少人，强行提交
 			isLast = true;
 		}
@@ -885,7 +886,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		}
 		
 		// 判断节点类型
-		NodeInfo nodeInfoT = EngineCache.getInstance().getNodeInfo(nextNodeId);
+		NodeInfo nodeInfoT = EngineCache.getNodeInfo(nextNodeId);
 		String nodeType = nodeInfoT.getNodeType();
 		if(NodeType.END_NODE.equals(nodeType)){// 结束节点
 			msg.add(end(instanceInfo,currentUserId,orgId));
@@ -921,7 +922,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 				int count = workflowCoreService.getNodeDoneCount(instanceInfo.getInstanceId(), nextNodeId);				
 				if(nodeIds.contains(nodeId)&&count==0){// 获取汇总节点后面的节点，往下提交
 					// 获取汇总节点的下一节点
-					NodeInfo togetherNode = EngineCache.getInstance().getNodeInfo(nextNodeId);
+					NodeInfo togetherNode = EngineCache.getNodeInfo(nextNodeId);
 					List<String> nextNodeIds = togetherNode.getNextNodes();
 					// 新增汇总节点历史实例
 					addTogetherNodeHis(instanceId, nodeId,nextNodeId);
@@ -930,7 +931,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 					nextNodeInfoDto.setNextNodeId(nextNodeIds.get(0));
 					submitNextOneNode( instanceInfo, nextNodeInfoDto, msg, currentUserId, orgId, systemId);
 				}else{// 就此中断，不在往下提交，前面会对此节点做历史数据迁移
-					NodeInfo togetherNode = EngineCache.getInstance().getNodeInfo(nextNodeId);
+					NodeInfo togetherNode = EngineCache.getNodeInfo(nextNodeId);
 					ResultMessageDto re = new ResultMessageDto();
 					re.setCode("0");
 					re.setTip("汇总节点提交完成");
@@ -1006,7 +1007,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		}
 		
 		String completeTime = TimeUtil.getDateyyyyMMddHHmmss();		
-		NodeInfo nextNodeInfo = EngineCache.getInstance().getNodeInfo(nextNodeId);	
+		NodeInfo nextNodeInfo = EngineCache.getNodeInfo(nextNodeId);	
 		if(NodeType.END_NODE.equals(nextNodeInfo.getNodeType())){// 结束节点,提前结束
 			return end(instanceInfo,currentUserId,orgId);
 		}
@@ -1059,7 +1060,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		nodeInfo.setStartTime(completeTime);
 		nodeInfo.setNodeLevelTotal((currentNodeInfo.getNodeLevelTotal()==null?0:currentNodeInfo.getNodeLevelTotal())+getNodeLevel(nextNodeInfo.getNodeId()));// 节点等级加上
 		// 提交节点是【多选节点】或【条件多选节点】，节点等级再加1，便于汇总操作
-		NodeInfo currentNode = EngineCache.getInstance().getNodeInfo(currentNodeInfo.getNodeId());		
+		NodeInfo currentNode = EngineCache.getNodeInfo(currentNodeInfo.getNodeId());		
 		if(currentNode.getNodeType().equals(NodeType.MULTI_NODE)||currentNode.getNodeType().equals(NodeType.CONDITION_RADIO_NODE)){
 			nodeInfo.setNodeLevelTotal(nodeInfo.getNodeLevelTotal()+1);
 		}		
@@ -1075,7 +1076,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		re.setCode(FlowState.RUN);
 		
 		// 后业务处理
-		NodeInfo currentNodeInfoT = EngineCache.getInstance().getNodeInfo(nodeId);		
+		NodeInfo currentNodeInfoT = EngineCache.getNodeInfo(nodeId);		
 		afterSubmit(currentNodeInfoT,instanceInfo);
 		// 发送消息
 		sendMessage(userTodeNew,nextNodeInfo,instanceInfo);
@@ -1088,7 +1089,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	 * @return
 	 */
 	private long getNodeLevel(String nodeId){
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);		
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);		
 		try {
 			log.debug("节点等级["+nodeId+"]["+nodeInfo.getNodeLevel()+"]");
 			long nodeLevel = Long.parseLong(nodeInfo.getNodeLevel());
@@ -1188,7 +1189,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		workflowBackUpService.deleteAllUserComment(instanceId);
 		
 		// 后业务处理
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		afterSubmit(nodeInfo,instanceInfo);
 		afterEnd(nodeInfo,instanceInfo);
 		
@@ -1231,8 +1232,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	 * @return 0-有，1-无
 	 */
 	private boolean checkNode(String nodeId){
-		ResultMessageDto re = new ResultMessageDto();
-		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
+		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
 		if(nodeInfo.getNextNodes().isEmpty()){
 			return false;
 		}

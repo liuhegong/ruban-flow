@@ -17,4 +17,9 @@ public interface WorkflowBenchInterface {
 	 * @return
 	 */
 	List<ResultInstanceTodoDto> getInstanceInfoUserTodo(QueryModel queryModel);
+	
+	List<ResultInstanceTodoDto> getInstanceInfoUserDone(QueryModel queryModel);
+	
+	List<ResultInstanceTodoDto> getInstanceInfoUserHis(QueryModel queryModel);
+
 }

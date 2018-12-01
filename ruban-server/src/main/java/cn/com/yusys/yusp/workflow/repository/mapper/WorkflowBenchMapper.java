@@ -13,4 +13,19 @@ public interface WorkflowBenchMapper {
 	 * @return
 	 */
 	List<ResultInstanceTodoDto> getInstanceInfoUserTodo(QueryModel queryModel);
+	
+	/**
+	 * 用户已办查询
+	 * @param queryModel
+	 * @return
+	 */
+	List<ResultInstanceTodoDto> getInstanceInfoUserDone(QueryModel queryModel);
+	
+	/**
+	 * 用户办结查询
+	 * @param queryModel
+	 * @return
+	 */
+	List<ResultInstanceTodoDto> getInstanceInfoUserHis(QueryModel queryModel);
+
 }

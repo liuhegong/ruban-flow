@@ -60,6 +60,252 @@
     left join N_WF_INSTANCE i
         on u.instance_id = i.instance_id
     <where>
+      <if test="condition.flowName !=null and condition.flowName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowName)">
+             AND i.FLOW_NAME LIKE #{condition.flowName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND i.FLOW_NAME = #{condition.flowName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.instanceId !=null and condition.instanceId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
+             AND i.INSTANCE_ID LIKE #{condition.instanceId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND i.INSTANCE_ID = #{condition.instanceId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeId !=null and condition.nodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeId)">
+             AND n.NODE_ID LIKE #{condition.nodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND n.NODE_ID = #{condition.nodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userId !=null and condition.userId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userId)">
+             AND u.USER_ID LIKE #{condition.userId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.USER_ID = #{condition.userId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND u.START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userName !=null and condition.userName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userName)">
+             AND u.USER_NAME LIKE #{condition.userName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.USER_NAME = #{condition.userName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserId !=null and condition.lastUserId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserId)">
+             AND u.LAST_USER_ID LIKE #{condition.lastUserId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.LAST_USER_ID = #{condition.lastUserId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserName !=null and condition.lastUserName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserName)">
+             AND u.LAST_USER_NAME LIKE #{condition.lastUserName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.LAST_USER_NAME = #{condition.lastUserName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+    </select>
+    
+    <select id="getInstanceInfoUserDone" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="InstanceInfoTodoMap">
+   select i.INSTANCE_ID,
+       i.FLOW_NAME,
+       i.FLOW_ID,
+       i.FLOW_ADMIN,
+       i.FLOW_STARTER,
+       i.SYSTEM_ID,
+       i.FLOW_STATE,
+       i.BIZ_ID,
+       i.BIZ_USER_NAME,
+       i.BIZ_USER_ID,
+       i.FLOW_PARAM,
+       n.node_id,
+       n.node_sign,
+       n.node_name,
+       n.last_node_id,
+       n.last_node_name,
+       n.node_state,
+       n.org_id,
+       u.user_id,
+       u.user_name,
+       u.last_user_id,
+       u.last_user_name,
+       u.sign_in,
+       u.start_time
+    from (select * from n_wf_user_done u2) u
+    left join N_WF_NODE_HIS n
+        on u.instance_id = n.instance_id and u.node_id = n.node_id
+    left join N_WF_INSTANCE i
+        on u.instance_id = i.instance_id
+    <where>
+     <if test="condition.flowName !=null and condition.flowName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowName)">
+             AND i.FLOW_NAME LIKE #{condition.flowName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND i.FLOW_NAME = #{condition.flowName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.instanceId !=null and condition.instanceId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
+             AND i.INSTANCE_ID LIKE #{condition.instanceId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND i.INSTANCE_ID = #{condition.instanceId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nodeId !=null and condition.nodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeId)">
+             AND n.NODE_ID LIKE #{condition.nodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND n.NODE_ID = #{condition.nodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userId !=null and condition.userId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userId)">
+             AND u.USER_ID LIKE #{condition.userId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.USER_ID = #{condition.userId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.startTime !=null and condition.startTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.startTime)">
+             AND u.START_TIME LIKE #{condition.startTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.START_TIME = #{condition.startTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.userName !=null and condition.userName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.userName)">
+             AND u.USER_NAME LIKE #{condition.userName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.USER_NAME = #{condition.userName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserId !=null and condition.lastUserId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserId)">
+             AND u.LAST_USER_ID LIKE #{condition.lastUserId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.LAST_USER_ID = #{condition.lastUserId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.lastUserName !=null and condition.lastUserName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.lastUserName)">
+             AND u.LAST_USER_NAME LIKE #{condition.lastUserName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND u.LAST_USER_NAME = #{condition.lastUserName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      ${dataAuth}
+    </where>
+    <if test="sort != null">
+      order by ${sort}
+    </if>
+    </select>
+    
+   <select id="getInstanceInfoUserHis" parameterType="cn.com.yusys.yusp.workflow.domain.dto.QueryModel" resultMap="InstanceInfoTodoMap">
+    select i.INSTANCE_ID,
+       i.FLOW_NAME,
+       i.FLOW_ID,
+       i.FLOW_ADMIN,
+       i.FLOW_STARTER,
+       i.SYSTEM_ID,
+       i.FLOW_STATE,
+       i.BIZ_ID,
+       i.BIZ_USER_NAME,
+       i.BIZ_USER_ID,
+       i.FLOW_PARAM,
+       n.node_id,
+       n.node_sign,
+       n.node_name,
+       n.last_node_id,
+       n.last_node_name,
+       n.node_state,
+       n.org_id,
+       u.user_id,
+       u.user_name,
+       u.last_user_id,
+       u.last_user_name,
+       u.sign_in,
+       u.start_time
+    from (select * from n_wf_user_his u2) u
+    left join N_WF_NODE_HIS n
+        on u.instance_id = n.instance_id and u.node_id = n.node_id
+    left join N_WF_INSTANCE_HIS i
+        on u.instance_id = i.instance_id
+    <where>
+     <if test="condition.flowName !=null and condition.flowName !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.flowName)">
+             AND i.FLOW_NAME LIKE #{condition.flowName,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND i.FLOW_NAME = #{condition.flowName,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
       <if test="condition.instanceId !=null and condition.instanceId !=''">
         <choose>
           <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.instanceId)">
