@@ -1,7 +1,7 @@
 <mxDefaultToolbar>
 	<add as="show" action="showXml" icon="images/preview.gif"/>
-	<add as="save" action="save" icon="images/save.gif"/>
-	<!-- <add as="readonly" action="readOnly" icon="images/bold.gif"/>
+<!-- 	<add as="save" action="save" icon="images/save.gif"/>
+ -->	<!-- <add as="readonly" action="readOnly" icon="images/bold.gif"/>
 	<add as="editable" action="editable" icon="images/block_end.gif"/> -->
 	<add as="exportImage" action="exportImage" icon="images/image.gif"/>
 	<br/><hr/>
@@ -37,7 +37,7 @@
 	<add as="actualSize" action="actualSize" icon="images/zoomactual.gif"/>
 	<br/><hr/>
 	<add as="outline" action="toggleOutline" icon="images/outline.gif"/>
-	<add as="tasks" action="toggleTasks" icon="images/tasks.gif"/>
-	<add as="help" action="toggleHelp" icon="images/help.gif"/>
-	<add as="console" action="toggleConsole" icon="images/console.gif"/>
-</mxDefaultToolbar>
+<!-- 	<add as="tasks" action="toggleTasks" icon="images/tasks.gif"/>
+ -->	<add as="help" action="toggleHelp" icon="images/help.gif"/>
+<!-- 	<add as="console" action="toggleConsole" icon="images/console.gif"/>
+ --></mxDefaultToolbar>
