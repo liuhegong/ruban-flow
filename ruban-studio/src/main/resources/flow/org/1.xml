@@ -39,6 +39,7 @@
 <role id="2" name="角色1">
 	<user id="55" name="王亚飞55" email="2273976335@qq.com" mobile="17186281150"></user>
 	<user id="85" name="王亚飞85" email="2273976335@qq.com" mobile="17186281150"></user>
+	<user id="2" name="王亚飞2" email="2273976336@qq.com" mobile="17186281152"></user>
 	<role id="2-1" name="角色1-1" >
 		<user id="75" name="王亚飞75" email="2273976335@qq.com" mobile="17186281150"></user>
 		<user id="65" name="王亚飞65" email="2273976335@qq.com" mobile="17186281150"></user>

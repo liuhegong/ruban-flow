@@ -3,6 +3,7 @@ package cn.com.yusys.yusp.workflow.service.ext.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import cn.com.yusys.yusp.workflow.core.engine.flow.FlowInfo;
 import cn.com.yusys.yusp.workflow.core.engine.init.EngineCache;
 import cn.com.yusys.yusp.workflow.core.engine.node.NodeInfo;
 import cn.com.yusys.yusp.workflow.core.engine.node.RouteInfo;
+import cn.com.yusys.yusp.workflow.core.engine.node.type.ComputeType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.FlowState;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.HandleType;
 import cn.com.yusys.yusp.workflow.core.engine.node.type.NodeType;
@@ -604,56 +606,74 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		List<WFUserDto> users = new ArrayList<WFUserDto>();
 
 		NodeInfo nodeInfo = EngineCache.getInstance().getNodeInfo(nodeId);
-
-		Map<String, WFUserDto> usersTT = new HashMap();
-		for (String ry : user) {
-			Map<String, WFUserDto> usersT = new HashMap();
-			if (ry.startsWith(UserType.DEPT)) {// 部门
-				String deptId = ry.substring(2);
-				List<WFUserDto> datas = userService.getUsersByDeptId(systemId, deptId);
-				if (null != datas) {
-					for (WFUserDto userT : datas) {
-						usersT.put(userT.getUserId(), userT);
-					}
+		String userComputeType = nodeInfo.getComputeType();// 获取节点配置的人员计算模式
+		if(ComputeType.NOTALL.equals(userComputeType)){// 交集
+			List<WFUserDto> usersT = new ArrayList<WFUserDto>();
+			for (String key : user) {
+				Collection<WFUserDto> usersTT = calculateUser(key,orgId,systemId);
+				if(usersT.isEmpty()){
+					usersT.addAll(usersTT);
+				}else{
+					usersT.retainAll(usersTT);
 				}
-			} else if (ry.startsWith(UserType.ORG)) {// 机构
-				String orgIdT = ry.substring(2);
-				List<WFUserDto> datas = userService.getUsersByOrgId(systemId, orgIdT);
-				if (null != datas) {
-					for (WFUserDto userT : datas) {
-						usersT.put(userT.getUserId(), userT);
-					}
-				}
-			} else if (ry.startsWith(UserType.GW)) {// 岗位
-				String dutyId = ry.substring(2);
-				List<WFUserDto> datas = userService.getUsersByDutyId(systemId, dutyId);
-				if (null != datas) {
-					for (WFUserDto userT : datas) {
-						usersT.put(userT.getUserId(), userT);
-					}
-				}
-			} else if (ry.startsWith(UserType.ROLE)) {// 角色
-				String roleId = ry.substring(2);
-				List<WFUserDto> datas = userService.getUsersByRoleId(systemId, roleId);
-				if (null != datas) {
-					for (WFUserDto userT : datas) {
-						usersT.put(userT.getUserId(), userT);
-					}
-				}
-			} else if (ry.startsWith(UserType.USER)) {// 用户
-				String userId = ry.substring(2);
-				usersT.put(userId, userService.getUserInfo(systemId, userId));
-			} else {
-				log.warn("用户来源未知" + ry);
-				//usersT.put(ry, userService.getUserInfo(systemId, ry));
 			}
-			usersTT.putAll(usersT);
+			users.addAll(usersT);
+		}else{// 并集
+			List<WFUserDto> usersT = new ArrayList<WFUserDto>();
+			for (String key : user) {
+				Collection<WFUserDto> usersTT = calculateUser(key,orgId,systemId);
+				usersT.addAll(usersTT);
+			}
+			users.addAll(usersT);
 		}
-		users.addAll(usersTT.values());
-
+		log.debug("人员计算汇总结果:"+users);
 		return users;
 	}
 
+	private Collection<WFUserDto> calculateUser(String key,String orgId,String systemId){
+		Map<String, WFUserDto> usersT = new HashMap<String, WFUserDto>();
+		if (key.startsWith(UserType.DEPT)) {// 部门
+			String deptId = key.substring(2);
+			List<WFUserDto> datas = userService.getUsersByDeptId(systemId, deptId);
+			if (null != datas) {
+				for (WFUserDto userT : datas) {
+					usersT.put(userT.getUserId(), userT);
+				}
+			}
+		} else if (key.startsWith(UserType.ORG)) {// 机构
+			String orgIdT = key.substring(2);
+			List<WFUserDto> datas = userService.getUsersByOrgId(systemId, orgIdT);
+			if (null != datas) {
+				for (WFUserDto userT : datas) {
+					usersT.put(userT.getUserId(), userT);
+				}
+			}
+		} else if (key.startsWith(UserType.GW)) {// 岗位
+			String dutyId = key.substring(2);
+			List<WFUserDto> datas = userService.getUsersByDutyId(systemId, dutyId);
+			if (null != datas) {
+				for (WFUserDto userT : datas) {
+					usersT.put(userT.getUserId(), userT);
+				}
+			}
+		} else if (key.startsWith(UserType.ROLE)) {// 角色
+			String roleId = key.substring(2);
+			List<WFUserDto> datas = userService.getUsersByRoleId(systemId, roleId);
+			if (null != datas) {
+				for (WFUserDto userT : datas) {
+					usersT.put(userT.getUserId(), userT);
+				}
+			}
+		} else if (key.startsWith(UserType.USER)) {// 用户
+			String userId = key.substring(2);
+			usersT.put(userId, userService.getUserInfo(systemId, userId));
+		} else {
+			log.warn("用户来源未知" + key);
+		}
+		log.debug("人员计算[" + key+"]:"+usersT.values());
+		return usersT.values();
+	}
+	
 	@Override
 	@Transactional
 	public List<ResultMessageDto> submit(WFSubmitDto submitDto) {
@@ -1321,4 +1341,28 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		return re;
 	}
 
+	public static void main(String[] args) {
+		List<WFUserDto> users1 = new ArrayList<WFUserDto>();
+		WFUserDto user = new WFUserDto();
+		user.setUserId("1");
+		users1.add(user);
+		
+		List<WFUserDto> users2 = new ArrayList<WFUserDto>();
+		WFUserDto user2 = new WFUserDto();
+		user2.setUserId("1");
+		users2.add(user2);
+		
+		WFUserDto user3 = new WFUserDto();
+		user3.setUserId("3");		
+		users2.add(user3);
+		
+		users2.removeAll(users1);// 并集
+		users2.addAll(users1);
+		
+		
+		users2.retainAll(users1);// 交集
+		System.out.println(users2.size());
+
+
+	}
 }
