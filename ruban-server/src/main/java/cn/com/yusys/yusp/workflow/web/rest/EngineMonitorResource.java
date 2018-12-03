@@ -20,8 +20,8 @@ public class EngineMonitorResource {
 	 * @return
 	 */
 	@GetMapping("/flow")
-	protected Object flowsInfo() {
-		return EngineCache.getEngineInfo();
+	protected ResultDto flowsInfo() {
+		return new ResultDto(EngineCache.getEngineInfo());
 	}
 	/**
 	 * 获取所有节点信息
