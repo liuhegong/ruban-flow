@@ -2,6 +2,7 @@ package cn.com.yusys.yusp.workflow.core.org;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,5 +94,9 @@ public class OrgCache{
 	
 	public static WFUser getUserInfo(String systemId,String userId){
 		return userCaches.get(systemId).get(userId);
+	}
+	
+	public static Collection<WFUser> getUserAllUsers(String systemId){
+		return userCaches.get(systemId).values();
 	}
 }

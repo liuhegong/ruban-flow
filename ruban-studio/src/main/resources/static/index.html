@@ -47,33 +47,30 @@
 			<el-button type="danger" size="small" @click="deleteFlow">删除</el-button>
 			<el-button type="warning" size="small" @click="updateFlow">保存</el-button>
 	    </div>
-        <el-container>
+		<el-container>
           <el-aside class="menu">
             <el-menu @select="menuItemSelect">
               <el-menu-item :index="flow.flowId + ''" v-for="(flow,id) in flows">{{flow.flowId}}-{{flow.flowName}}</el-menu-item>
             </el-menu>
           </el-aside>
           <el-main class="content">        
-<div v-show="showIndex">
-	<table id="splash" width="100%" height="100%"
-		style="background:white;position:absolute;top:75px;left:0px;z-index:4;">
-		<tr>
-			<td align="center" valign="middle">
-				<img src="images/loading.gif">
-			</td>
-		</tr>
-	</table>
-	<div id="graph" class="base">
-		<!-- Graph Here -->
-	</div>
-	<!-- <div id="status" class="base" align="right" style="white-space:nowrap;">
-		Status Here
-	</div>  -->
-</div>
-          </el-main>
-        </el-container>
+			<div v-show="showIndex">
+				<table id="splash" width="100%" height="100%"
+					style="background:white;position:absolute;top:75px;left:0px;z-index:4;">
+					<tr>
+						<td align="center" valign="middle">
+							<img src="images/loading.gif">
+						</td>
+					</tr>
+				</table>
+				<div id="graph" class="base">
+				<!-- Graph Here -->
+				</div>
+			</div>
+		  </el-main>
+		</el-container>
     </el-container>
-		<el-dialog title="流程信息" :visible.sync="dialogFormVisible">
+	<el-dialog title="流程信息" :visible.sync="dialogFormVisible">
 			<el-form :model="form" :rules="rules" ref="ruleForm">
 				<el-form-item
 					label="流程名称" label-width="100px" prop="flowName"> 
@@ -85,8 +82,53 @@
 				<el-button @click="dialogFormVisible = false">取 消</el-button>
 				<el-button type="primary" @click="submit">确 定</el-button>
 			</div>
-		</el-dialog>
-	</div>
+	</el-dialog>
+
+	<el-dialog title="人员选择" :visible.sync="userSelectVisible">
+		<el-card class="box-card">
+            <el-tag v-for="tag in haveSelected" :key="tag.code" :type="tag.type" closable @close="tagClose(tag)">
+                {{tag.name}}
+            </el-tag>
+        </el-card>
+		<el-tabs v-model="activeTabName" type="card" @tab-click="tableClick"> 
+			<el-tab-pane label="用户" name="0">
+				<el-table :data="userData" max-height="300" @row-dblclick="userDbClick">
+			      <el-table-column prop="userName" label="名称"></el-table-column>
+			      <el-table-column prop="userId" label="编号"></el-table-column>
+			    </el-table>
+			</el-tab-pane>
+			<el-tab-pane label="角色" name="1">
+				<el-table :data="userData"  max-height="300" @row-dblclick="roleDbClick">
+			      <el-table-column prop="roleName" label="名称"></el-table-column>
+			      <el-table-column prop="roleId" label="编号"></el-table-column>
+			    </el-table>
+			</el-tab-pane>
+			<el-tab-pane label="机构" name="2">
+				<el-table :data="userData"  max-height="300" @row-dblclick="orgDbClick">
+			      <el-table-column prop="orgName" label="名称"></el-table-column>
+			      <el-table-column prop="orgId" label="编号"></el-table-column>
+			    </el-table>
+			</el-tab-pane>
+			<el-tab-pane label="岗位" name="3">
+				<el-table :data="userData" max-height="300" @row-dblclick="dutyDbClick">
+			      <el-table-column prop="dutyName" label="名称"></el-table-column>
+			      <el-table-column prop="dutyId" label="编号"></el-table-column>
+			    </el-table>
+			</el-tab-pane>
+			<el-tab-pane label="部门" name="4">
+				<el-table :data="userData" max-height="300" @row-dblclick="deptDbClick">
+			      <el-table-column prop="deptName" label="名称"></el-table-column>
+			      <el-table-column prop="deptId" label="编号"></el-table-column>
+			    </el-table>
+			</el-tab-pane>
+			<el-tab-pane label="自定义" name="5">自定义</el-tab-pane> 
+		</el-tabs>
+		<div slot="footer" class="dialog-footer">
+		    <el-button @click="userSelectVisible = false">取 消</el-button>
+		    <el-button type="primary" @click="userSelected">确 定</el-button>
+		 </div>
+	</el-dialog>
+</div>
 </body>
   	<script src="./lib/vue.js"></script>
   	<script src="./element/index.js"></script>
@@ -122,7 +164,7 @@
 	}
 	</script>
 	<script>
-    new Vue({
+    var vue = new Vue({
       el: '#app',
       data: function() {
         return { 
@@ -143,7 +185,13 @@
             	flowName: [ { required: true, message: '请输入流程中文名称' }]
             },
             selectedFlowId:'',
-            currentFlowContent:''
+            currentFlowContent:'',
+            userSelectVisible: false,
+            activeTabName: '0',
+            currentInput: null,
+            userData:[],
+            userPage: 0,
+            haveSelected: []
         }
       },
       methods: { 
@@ -260,7 +308,113 @@
     	       var dec = new mxCodec(doc);
     	       dec.decode(doc.documentElement, window.editor.graph.getModel());
     	    }
-    	}
+    	},
+    	tableClick: function(tab, event){// 人员选择tab点击事件
+    		_this = this;
+    		if(tab.index==0){
+    			$.ajax({ url:'/api/org/users/?page='+_this.userPage+'&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    				_this.userData=data.data;          		
+            	},error:function(xhr,textStatus){
+            		_this.$message({  type: 'warn', message: '获取用户信息失败' });
+            	}});
+    		}else if(tab.index==1){
+    			$.ajax({ url:'/api/org/roles/?page='+_this.userPage+'&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    				_this.userData=data.data;          		
+            	},error:function(xhr,textStatus){
+            		_this.$message({  type: 'warn', message: '获取用户信息失败' });
+            	}});
+    		}else if(tab.index==2){
+    			$.ajax({ url:'/api/org/orgs/?page='+_this.userPage+'&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    				_this.userData=data.data;          		
+            	},error:function(xhr,textStatus){
+            		_this.$message({  type: 'warn', message: '获取用户信息失败' });
+            	}});
+    		}else if(tab.index==3){
+    			$.ajax({ url:'/api/org/dutys/?page='+_this.userPage+'&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    				_this.userData=data.data;          		
+            	},error:function(xhr,textStatus){
+            		_this.$message({  type: 'warn', message: '获取用户信息失败' });
+            	}});
+    		}else if(tab.index==4){
+    			$.ajax({ url:'/api/org/depts/?page='+_this.userPage+'&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    				_this.userData=data.data;          		
+            	},error:function(xhr,textStatus){
+            		_this.$message({  type: 'warn', message: '获取用户信息失败' });
+            	}});
+    		}
+    	},
+    	userDbClick: function(row, event){
+    		var tag = {};
+    		tag.code = 'U.'+row.userId;
+    		tag.name = row.userName;
+    		tag.type = 'success';
+    		for (var i = 0; i <this.haveSelected.length; i++) {// 去重
+            	if (this.haveSelected[i].code == tag.code) {
+                	return;
+                }
+            }
+    		this.haveSelected.push(tag);
+    	},
+    	roleDbClick: function(row, event){
+    		var tag = {};
+    		tag.code = 'R.'+row.roleId;
+    		tag.name = row.roleName;
+    		tag.type = 'info';
+    		for (var i = 0; i <this.haveSelected.length; i++) {// 去重
+            	if (this.haveSelected[i].code == tag.code) {
+                	return;
+                }
+            }
+    		this.haveSelected.push(tag);
+    	},
+    	orgDbClick: function(row, event){
+    		var tag = {};
+    		tag.code = 'O.'+row.orgId;
+    		tag.name = row.orgName;
+    		tag.type = 'warning';
+    		for (var i = 0; i <this.haveSelected.length; i++) {// 去重
+            	if (this.haveSelected[i].code == tag.code) {
+                	return;
+                }
+            }
+    		this.haveSelected.push(tag);
+    	},
+    	deptDbClick: function(row, event){
+    		var tag = {};
+    		tag.code = 'D.'+row.deptId;
+    		tag.name = row.deptName;
+    		tag.type = 'danger';
+    		for (var i = 0; i <this.haveSelected.length; i++) {// 去重
+            	if (this.haveSelected[i].code == tag.code) {
+                	return;
+                }
+            }
+    		this.haveSelected.push(tag);
+    	},
+    	dutyDbClick: function(row, event){
+    		var tag = {};
+    		tag.code = 'G.'+row.dutyId;
+    		tag.name = row.dutyName;
+    		tag.type = '';
+    		for (var i = 0; i <this.haveSelected.length; i++) {// 去重
+            	if (this.haveSelected[i].code == tag.code) {
+                	return;
+                }
+            }
+    		this.haveSelected.push(tag);
+    	},
+    	tagClose: function (tag) {
+            this.haveSelected.splice(this.haveSelected.indexOf(tag), 1);
+        },
+        userSelected: function(){
+        	var userIds = '';
+        	for (var i = 0; i <this.haveSelected.length; i++) {
+            	var id = this.haveSelected[i].code;
+            	userIds = userIds + id + ';'
+            }
+        	this.currentInput.value = userIds;
+        	this.userSelectVisible = false;
+        }
       },
       mounted: function(){
       	this.loadFlowData();
@@ -269,9 +423,7 @@
     
     // 节点编辑处理
     function actionDelage(graph,form,attr){
-    	console.info(studio);
     	console.log(arguments);
-    	debugger
     	if(studio[attr.name]){
     		var node = null;
     		if(studio[attr.name].type == "select"){
@@ -287,13 +439,42 @@
     				node.setAttribute("disabled", "disabled");
 	    		}
     		}else{
-    			node = form.addText(studio[attr.name].name, attr.value,studio[attr.name].type);
-    			if(studio[attr.name].readOnly){
-        			node.setAttribute("readonly", "true");
-        		}
+    			if(attr.name==='nodeUser'){
+    				node = form.addTextWithButton(studio[attr.name].name, attr.value,studio[attr.name].type,selectUser);
+    			}else{
+    				node = form.addText(studio[attr.name].name, attr.value,studio[attr.name].type);
+	    			if(studio[attr.name].readOnly){
+	        			node.setAttribute("readonly", "true");
+	        		}
+    			}
     		}   		
     		return node;
     	}
+    }
+    
+    function selectUser(input){
+    	vue.userSelectVisible = true;
+    	vue.haveSelected = [];
+    	vue.currentInput = input;
+    	if(input.value!=undefined && input.value!=''){
+    		var userIds = input.value.split(";");
+    		for(var i=0;i<userIds.length;i++){
+    			if(''==userIds[i]){
+    				continue;
+    			}
+    			$.ajax({ url:'/api/org/info/?condition='+JSON.stringify({systemId:vue.systemId,code:userIds[i]}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    				vue.haveSelected.push(data.data);          		
+    	    	},error:function(xhr,textStatus){
+    	    		vue.$message({  type: 'warn', message: '获取用户信息失败' });
+    	    	}});
+    		}
+    	}
+    	
+    	$.ajax({ url:'/api/org/users/?page=1&condition='+JSON.stringify({systemId:vue.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    		vue.userData=data.data;          		
+    	},error:function(xhr,textStatus){
+    		vue.$message({  type: 'warn', message: '获取用户信息失败' });
+    	}});
     }
   	</script>
 </html>

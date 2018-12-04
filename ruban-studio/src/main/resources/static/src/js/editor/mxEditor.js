@@ -878,9 +878,9 @@ mxEditor.prototype.helpHeight = 260;
  * Variable: propertiesWidth
  * 
  * Specifies the width of the properties window in pixels.
- * Default is 240.
+ * Default is 240. modify by wangyf10
  */
-mxEditor.prototype.propertiesWidth = 240;
+mxEditor.prototype.propertiesWidth = 300;
 		
 /**
  * Variable: propertiesHeight

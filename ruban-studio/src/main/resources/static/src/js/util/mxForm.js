@@ -200,3 +200,40 @@ mxForm.prototype.addField = function(name, input)
 	
 	return input;
 };
+// add by wangyf10 添加含有按钮的文本
+mxForm.prototype.addFieldWithButton = function(name, input ,select)
+{
+	var tr = document.createElement('tr');
+	var td = document.createElement('td');
+	mxUtils.write(td, name);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	td.appendChild(input);
+	tr.appendChild(td);
+	
+	var td2 = document.createElement('td');
+	var button = document.createElement('button');
+	mxUtils.write(button, mxResources.get('select') || 'select');
+	td2.appendChild(button);
+	tr.appendChild(td2);
+	
+	mxEvent.addListener(button, 'click', function()
+	{
+		select(input);
+	});
+	
+	this.body.appendChild(tr);
+	
+	return input;
+};
+// add by wangyf10 添加含有按钮的文本
+mxForm.prototype.addTextWithButton = function(name, value, type, funName)
+{
+	var input = document.createElement('input');
+	
+	input.setAttribute('type', type || 'text');
+	input.value = value;
+	
+	return this.addFieldWithButton(name, input,funName);
+};

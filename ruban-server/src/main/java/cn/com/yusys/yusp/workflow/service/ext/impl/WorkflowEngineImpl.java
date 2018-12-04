@@ -685,8 +685,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	@Transactional
 	public List<ResultMessageDto> submit(WFSubmitDto submitDto) {
 		List<ResultMessageDto> re = new ArrayList<ResultMessageDto>();
-		// 保存评论
-		saveComment(submitDto.getComment());
+
 		String instanceId = submitDto.getComment().getInstanceId();
 		String nodeId = submitDto.getComment().getNodeId();
 		String orgId = submitDto.getOrgId();
@@ -728,6 +727,8 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 			re.add(m1);
 			return re;
 		}
+		// 保存评论
+		saveComment(submitDto.getComment());
 		
 		// 更新流程实例的参数
 		try {
@@ -754,6 +755,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		}
 		
 		// TODO 按条件转移操作操作
+		
 		if(isLast){// 是最后办理人,直接提交流程
 			submitNextNodeMulti(instanceInfo, submitDto.getNextNodeInfos(),re,userId,orgId,systemId);
 		}else{// 不是最后办理人，节点内流转
