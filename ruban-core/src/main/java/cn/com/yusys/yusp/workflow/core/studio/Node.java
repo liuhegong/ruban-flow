@@ -41,6 +41,12 @@ public class Node implements Serializable{
 	private String bizBeanId;
 	
 	/**
+	 *  运行到此节点业务后处理
+	 */
+	@XmlPath(valueAttr="@bizPage")
+	private String bizPage;
+	
+	/**
 	 * 节点处理人
 	 */
 	@XmlPath(valueAttr="@nodeUser")
@@ -358,6 +364,25 @@ public class Node implements Serializable{
 	public void setStrategyBeanId(String strategyBeanId) {
 		this.strategyBeanId = strategyBeanId;
 	}
-	
+
+	public String getBizPage() {
+		return bizPage;
+	}
+
+	public void setBizPage(String bizPage) {
+		this.bizPage = bizPage;
+	}
+
+	@Override
+	public String toString() {
+		return "Node [nodeId=" + nodeId + ", nodeName=" + nodeName + ", nodeType=" + nodeType + ", nodeSign=" + nodeSign
+				+ ", handleType=" + handleType + ", isEndBeanId=" + isEndBeanId + ", bizBeanId=" + bizBeanId
+				+ ", bizPage=" + bizPage + ", nodeUser=" + nodeUser + ", opUsersType=" + opUsersType + ", computeType="
+				+ computeType + ", reDoUserSelect=" + reDoUserSelect + ", tackBack=" + tackBack + ", callBack="
+				+ callBack + ", returnBack=" + returnBack + ", urged=" + urged + ", change=" + change + ", assist="
+				+ assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust + ", entrustUsers="
+				+ entrustUsers + ", copy=" + copy + ", copyUsers=" + copyUsers + ", noticeType=" + noticeType
+				+ ", nodeLevel=" + nodeLevel + ", strategyBeanId=" + strategyBeanId + "]";
+	}
 	
 }

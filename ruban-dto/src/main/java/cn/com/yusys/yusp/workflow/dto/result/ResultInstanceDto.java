@@ -63,6 +63,11 @@ public class ResultInstanceDto  implements Serializable {
      * 业务流水号
      */
     private String bizId;
+    
+    /**
+     * 业务页面
+     */
+    private String bizPage;
 
     /**
      * 客户名称
@@ -458,18 +463,24 @@ public class ResultInstanceDto  implements Serializable {
 		this.handleType = handleType;
 	}
 
+	public String getBizPage() {
+		return bizPage;
+	}
+
+	public void setBizPage(String bizPage) {
+		this.bizPage = bizPage;
+	}
+
 	@Override
 	public String toString() {
 		return "ResultInstanceDto [instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
 				+ ", flowAdmin=" + flowAdmin + ", flowStarter=" + flowStarter + ", flowStarterName=" + flowStarterName
 				+ ", startTime=" + startTime + ", systemId=" + systemId + ", orgId=" + orgId + ", flowState="
-				+ flowState + ", bizId=" + bizId + ", bizUserName=" + bizUserName + ", bizUserId=" + bizUserId
-				+ ", flowParam=" + flowParam + ", lastNodeId=" + lastNodeId + ", lastNodeName=" + lastNodeName
-				+ ", nodeId=" + nodeId + ", nodeSign=" + nodeSign + ", nodeName=" + nodeName + ", nodeState="
-				+ nodeState + ", opType=" + opType + ", comment=" + comment + ", nodeType=" + nodeType + ", handleType="
-				+ handleType + ", param=" + param + "]";
+				+ flowState + ", bizId=" + bizId + ", bizPage=" + bizPage + ", bizUserName=" + bizUserName
+				+ ", bizUserId=" + bizUserId + ", flowParam=" + flowParam + ", lastNodeId=" + lastNodeId
+				+ ", lastNodeName=" + lastNodeName + ", nodeId=" + nodeId + ", nodeSign=" + nodeSign + ", nodeName="
+				+ nodeName + ", nodeState=" + nodeState + ", opType=" + opType + ", comment=" + comment + ", nodeType="
+				+ nodeType + ", handleType=" + handleType + ", param=" + param + "]";
 	}
 
-	
-	
 }

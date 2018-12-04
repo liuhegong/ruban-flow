@@ -164,5 +164,11 @@ var studio = {
         type:"select",
         value:{0:"不通知",1:"消息通知",2:"邮件通知",3:"短信通知",4:"所有方式通知"},
         readOnly:false
+    },
+    bizPage:{
+    	name:"业务页面",
+        key:"bizPage",
+        type:"text",
+        readOnly:false
     }
 }

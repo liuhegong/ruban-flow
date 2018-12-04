@@ -9,247 +9,271 @@ import javax.persistence.Table;
 @Table(name = "N_WF_NODE")
 public class NWfNode implements Serializable {
     /**
-     * 实例id
+     * ʵ��id
      */
     @Id
     @Column(name = "INSTANCE_ID")
     private String instanceId;
 
     /**
-     * 节点id
+     * �ڵ�id
      */
     @Id
     @Column(name = "NODE_ID")
     private String nodeId;
 
     /**
-     * 节点标识
+     * �ڵ��ʶ
      */
     @Column(name = "NODE_SIGN")
     private String nodeSign;
 
     /**
-     * 节点名称
+     * �ڵ�����
      */
     @Column(name = "NODE_NAME")
     private String nodeName;
 
     /**
-     * 节点状态
+     * �ڵ�״̬
      */
     @Column(name = "NODE_STATE")
     private String nodeState;
 
     /**
-     * 节点开始时间
+     * �ڵ㿪ʼʱ��
      */
     @Column(name = "START_TIME")
     private String startTime;
 
     /**
-     * 提交人机构id
+     * �ύ�˻���id
      */
     @Column(name = "ORG_ID")
     private String orgId;
 
     /**
-     * 上一节点id
+     * ��һ�ڵ�id
      */
     @Column(name = "LAST_NODE_ID")
     private String lastNodeId;
 
     /**
-     * 上一节点名称
+     * ��һ�ڵ�����
      */
     @Column(name = "LAST_NODE_NAME")
     private String lastNodeName;
 
     /**
-     * 流经的节点等级之和
+     * �����Ľڵ�ȼ�֮��
      */
     @Column(name = "NODE_LEVEL_TOTAL")
     private Long nodeLevelTotal;
 
+    /**
+     * �ڵ�����
+     */
+    @Column(name = "NODE_TYPE")
+    private String nodeType;
+
     private static final long serialVersionUID = 1L;
 
     /**
-     * 获取实例id
+     * ��ȡʵ��id
      *
-     * @return INSTANCE_ID - 实例id
+     * @return INSTANCE_ID - ʵ��id
      */
     public String getInstanceId() {
         return instanceId;
     }
 
     /**
-     * 设置实例id
+     * ����ʵ��id
      *
-     * @param instanceId 实例id
+     * @param instanceId ʵ��id
      */
     public void setInstanceId(String instanceId) {
         this.instanceId = instanceId == null ? null : instanceId.trim();
     }
 
     /**
-     * 获取节点id
+     * ��ȡ�ڵ�id
      *
-     * @return NODE_ID - 节点id
+     * @return NODE_ID - �ڵ�id
      */
     public String getNodeId() {
         return nodeId;
     }
 
     /**
-     * 设置节点id
+     * ���ýڵ�id
      *
-     * @param nodeId 节点id
+     * @param nodeId �ڵ�id
      */
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId == null ? null : nodeId.trim();
     }
 
     /**
-     * 获取节点标识
+     * ��ȡ�ڵ��ʶ
      *
-     * @return NODE_SIGN - 节点标识
+     * @return NODE_SIGN - �ڵ��ʶ
      */
     public String getNodeSign() {
         return nodeSign;
     }
 
     /**
-     * 设置节点标识
+     * ���ýڵ��ʶ
      *
-     * @param nodeSign 节点标识
+     * @param nodeSign �ڵ��ʶ
      */
     public void setNodeSign(String nodeSign) {
         this.nodeSign = nodeSign == null ? null : nodeSign.trim();
     }
 
     /**
-     * 获取节点名称
+     * ��ȡ�ڵ�����
      *
-     * @return NODE_NAME - 节点名称
+     * @return NODE_NAME - �ڵ�����
      */
     public String getNodeName() {
         return nodeName;
     }
 
     /**
-     * 设置节点名称
+     * ���ýڵ�����
      *
-     * @param nodeName 节点名称
+     * @param nodeName �ڵ�����
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName == null ? null : nodeName.trim();
     }
 
     /**
-     * 获取节点状态
+     * ��ȡ�ڵ�״̬
      *
-     * @return NODE_STATE - 节点状态
+     * @return NODE_STATE - �ڵ�״̬
      */
     public String getNodeState() {
         return nodeState;
     }
 
     /**
-     * 设置节点状态
+     * ���ýڵ�״̬
      *
-     * @param nodeState 节点状态
+     * @param nodeState �ڵ�״̬
      */
     public void setNodeState(String nodeState) {
         this.nodeState = nodeState == null ? null : nodeState.trim();
     }
 
     /**
-     * 获取节点开始时间
+     * ��ȡ�ڵ㿪ʼʱ��
      *
-     * @return START_TIME - 节点开始时间
+     * @return START_TIME - �ڵ㿪ʼʱ��
      */
     public String getStartTime() {
         return startTime;
     }
 
     /**
-     * 设置节点开始时间
+     * ���ýڵ㿪ʼʱ��
      *
-     * @param startTime 节点开始时间
+     * @param startTime �ڵ㿪ʼʱ��
      */
     public void setStartTime(String startTime) {
         this.startTime = startTime == null ? null : startTime.trim();
     }
 
     /**
-     * 获取提交人机构id
+     * ��ȡ�ύ�˻���id
      *
-     * @return ORG_ID - 提交人机构id
+     * @return ORG_ID - �ύ�˻���id
      */
     public String getOrgId() {
         return orgId;
     }
 
     /**
-     * 设置提交人机构id
+     * �����ύ�˻���id
      *
-     * @param orgId 提交人机构id
+     * @param orgId �ύ�˻���id
      */
     public void setOrgId(String orgId) {
         this.orgId = orgId == null ? null : orgId.trim();
     }
 
     /**
-     * 获取上一节点id
+     * ��ȡ��һ�ڵ�id
      *
-     * @return LAST_NODE_ID - 上一节点id
+     * @return LAST_NODE_ID - ��һ�ڵ�id
      */
     public String getLastNodeId() {
         return lastNodeId;
     }
 
     /**
-     * 设置上一节点id
+     * ������һ�ڵ�id
      *
-     * @param lastNodeId 上一节点id
+     * @param lastNodeId ��һ�ڵ�id
      */
     public void setLastNodeId(String lastNodeId) {
         this.lastNodeId = lastNodeId == null ? null : lastNodeId.trim();
     }
 
     /**
-     * 获取上一节点名称
+     * ��ȡ��һ�ڵ�����
      *
-     * @return LAST_NODE_NAME - 上一节点名称
+     * @return LAST_NODE_NAME - ��һ�ڵ�����
      */
     public String getLastNodeName() {
         return lastNodeName;
     }
 
     /**
-     * 设置上一节点名称
+     * ������һ�ڵ�����
      *
-     * @param lastNodeName 上一节点名称
+     * @param lastNodeName ��һ�ڵ�����
      */
     public void setLastNodeName(String lastNodeName) {
         this.lastNodeName = lastNodeName == null ? null : lastNodeName.trim();
     }
 
     /**
-     * 获取流经的节点等级之和
+     * ��ȡ�����Ľڵ�ȼ�֮��
      *
-     * @return NODE_LEVEL_TOTAL - 流经的节点等级之和
+     * @return NODE_LEVEL_TOTAL - �����Ľڵ�ȼ�֮��
      */
     public Long getNodeLevelTotal() {
         return nodeLevelTotal;
     }
 
     /**
-     * 设置流经的节点等级之和
+     * ���������Ľڵ�ȼ�֮��
      *
-     * @param nodeLevelTotal 流经的节点等级之和
+     * @param nodeLevelTotal �����Ľڵ�ȼ�֮��
      */
     public void setNodeLevelTotal(Long nodeLevelTotal) {
         this.nodeLevelTotal = nodeLevelTotal;
+    }
+
+    /**
+     * ��ȡ�ڵ�����
+     *
+     * @return NODE_TYPE - �ڵ�����
+     */
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    /**
+     * ���ýڵ�����
+     *
+     * @param nodeType �ڵ�����
+     */
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType == null ? null : nodeType.trim();
     }
 
     @Override
@@ -273,7 +297,8 @@ public class NWfNode implements Serializable {
             && (this.getOrgId() == null ? other.getOrgId() == null : this.getOrgId().equals(other.getOrgId()))
             && (this.getLastNodeId() == null ? other.getLastNodeId() == null : this.getLastNodeId().equals(other.getLastNodeId()))
             && (this.getLastNodeName() == null ? other.getLastNodeName() == null : this.getLastNodeName().equals(other.getLastNodeName()))
-            && (this.getNodeLevelTotal() == null ? other.getNodeLevelTotal() == null : this.getNodeLevelTotal().equals(other.getNodeLevelTotal()));
+            && (this.getNodeLevelTotal() == null ? other.getNodeLevelTotal() == null : this.getNodeLevelTotal().equals(other.getNodeLevelTotal()))
+            && (this.getNodeType() == null ? other.getNodeType() == null : this.getNodeType().equals(other.getNodeType()));
     }
 
     @Override
@@ -290,6 +315,7 @@ public class NWfNode implements Serializable {
         result = prime * result + ((getLastNodeId() == null) ? 0 : getLastNodeId().hashCode());
         result = prime * result + ((getLastNodeName() == null) ? 0 : getLastNodeName().hashCode());
         result = prime * result + ((getNodeLevelTotal() == null) ? 0 : getNodeLevelTotal().hashCode());
+        result = prime * result + ((getNodeType() == null) ? 0 : getNodeType().hashCode());
         return result;
     }
 
@@ -309,6 +335,7 @@ public class NWfNode implements Serializable {
         sb.append(", lastNodeId=").append(lastNodeId);
         sb.append(", lastNodeName=").append(lastNodeName);
         sb.append(", nodeLevelTotal=").append(nodeLevelTotal);
+        sb.append(", nodeType=").append(nodeType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

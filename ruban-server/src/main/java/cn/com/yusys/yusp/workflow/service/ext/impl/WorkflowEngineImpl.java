@@ -312,6 +312,12 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		EngineCache.getInstance();
 		FlowInfo flowInfo = EngineCache.getFlowInfo(instanceInfo.getFlowId(), instanceInfo.getSystemId());
 		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
+		// 获取节点配置的业务页面，如果没有则使用，开始节点配置的页面
+		String bizPage = nodeInfo.getBizPage();
+		if(isNullOrEmpty(bizPage)){// 设置节点业务页面，如果没有则使用开始节点配置的页面
+			bizPage = EngineCache.getFlowInfo(instanceInfo.getFlowId(), instanceInfo.getSystemId()).getStartNode().getBizPage();
+		}
+		instanceInfo.setBizPage(bizPage);
 		instanceInfo.setNodeType(nodeInfo.getNodeType());// 设置节点类型
 		instanceInfo.setHandleType(nodeInfo.getHandleType());// 设置办理类型
 		ResultOpTypeDto opTypeDto = new ResultOpTypeDto();
@@ -917,10 +923,9 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 				afterSubmit(nodeInfoT,instanceInfo);// 自动节点后业务处理
 				submitNextOneNode( instanceInfo, nextNodeInfoDto, msg, currentUserId, orgId, systemId);
 			}else if(NodeType.TOGETHER_NODE.equals(nodeType)){// 汇总节点
-				// 当前提交节点的节点等级是最大的，且汇总节点没有被走过
-				List<String> nodeIds = workflowCoreService.getMaxLevelNodeId(instanceInfo.getInstanceId());
+				// 汇总节点没有被走过
 				int count = workflowCoreService.getNodeDoneCount(instanceInfo.getInstanceId(), nextNodeId);				
-				if(nodeIds.contains(nodeId)&&count==0){// 获取汇总节点后面的节点，往下提交
+				if(count==0){// 获取汇总节点后面的节点，往下提交
 					// 获取汇总节点的下一节点
 					NodeInfo togetherNode = EngineCache.getNodeInfo(nextNodeId);
 					List<String> nextNodeIds = togetherNode.getNextNodes();
@@ -961,6 +966,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		nodeInfoHis.setNodeId(togetherNodeId);
 		nodeInfoHis.setNodeName("[汇总节点]");
 		nodeInfoHis.setNodeState(OpType.AUTO);
+		nodeInfoHis.setNodeType(NodeType.TOGETHER_NODE);
 		nodeInfoHis.setEndTime(completeTime);		
 		nodeHisService.insertSelective(nodeInfoHis);
 	}
@@ -1059,11 +1065,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		nodeInfo.setLastNodeName(currentNodeInfo.getNodeName());
 		nodeInfo.setStartTime(completeTime);
 		nodeInfo.setNodeLevelTotal((currentNodeInfo.getNodeLevelTotal()==null?0:currentNodeInfo.getNodeLevelTotal())+getNodeLevel(nextNodeInfo.getNodeId()));// 节点等级加上
-		// 提交节点是【多选节点】或【条件多选节点】，节点等级再加1，便于汇总操作
-		NodeInfo currentNode = EngineCache.getNodeInfo(currentNodeInfo.getNodeId());		
-		if(currentNode.getNodeType().equals(NodeType.MULTI_NODE)||currentNode.getNodeType().equals(NodeType.CONDITION_RADIO_NODE)){
-			nodeInfo.setNodeLevelTotal(nodeInfo.getNodeLevelTotal()+1);
-		}		
+		
 		re.setNodeName(nextNodeInfo.getNodeName());// 设置返回节点名称
 		re.setNodeId(nextNodeInfo.getNodeId());// 设置返回节点id
 		NWfNode nextNodeInfoT = nodeService.selectByPrimaryKey(instanceId, nextNodeId);

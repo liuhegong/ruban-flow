@@ -53,6 +53,12 @@ public class NodeInfo implements Serializable{
 	private String bizBeanId;
 	
 	/**
+	 * 业务页面
+	 */
+	@XmlPath(valueAttr="@bizPage")
+	private String bizPage;
+	
+	/**
 	 * 节点处理人
 	 */
 	@XmlPath(valueAttr="@nodeUser")
@@ -345,14 +351,20 @@ public class NodeInfo implements Serializable{
 	public void setStrategyBeanId(String strategyBeanId) {
 		this.strategyBeanId = strategyBeanId;
 	}
+	public String getBizPage() {
+		return bizPage;
+	}
+	public void setBizPage(String bizPage) {
+		this.bizPage = bizPage;
+	}
 	@Override
 	public String toString() {
 		return "NodeInfo [nodeId=" + nodeId + ", nodeName=" + nodeName + ", nodeType=" + nodeType + ", nodeSign="
 				+ nodeSign + ", handleType=" + handleType + ", isEndBeanId=" + isEndBeanId + ", bizBeanId=" + bizBeanId
-				+ ", nodeUser=" + nodeUser + ", opUsersType=" + opUsersType + ", computeType=" + computeType
-				+ ", reDoUserSelect=" + reDoUserSelect + ", routeInfos=" + routeInfos + ", tackBack=" + tackBack
-				+ ", callBack=" + callBack + ", returnBack=" + returnBack + ", urged=" + urged + ", change=" + change
-				+ ", assist=" + assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust
+				+ ", bizPage=" + bizPage + ", nodeUser=" + nodeUser + ", opUsersType=" + opUsersType + ", computeType="
+				+ computeType + ", reDoUserSelect=" + reDoUserSelect + ", routeInfos=" + routeInfos + ", tackBack="
+				+ tackBack + ", callBack=" + callBack + ", returnBack=" + returnBack + ", urged=" + urged + ", change="
+				+ change + ", assist=" + assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust
 				+ ", entrustUsers=" + entrustUsers + ", copy=" + copy + ", copyUsers=" + copyUsers + ", noticeType="
 				+ noticeType + ", nodeLevel=" + nodeLevel + ", strategyBeanId=" + strategyBeanId + "]";
 	}

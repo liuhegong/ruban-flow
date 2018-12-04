@@ -6,8 +6,8 @@
 </head>
 <body>
 说明文档
-汇总节点处理：当前实例下等级最大且，汇总节点无处理历史 则向前
-每经过多选节点时，等级加一
+汇总节点处理：汇总节点无处理历史 则向前
+退回打回时，清除汇总节点的历史记录
 
 A的业务后处理是，节点A往B提交时触发 
 
@@ -38,11 +38,14 @@ select * from N_WF_USER_DONE t;
 select * from N_WF_USER_TODO t;
 
 delete from N_WF_COMMENT t;
+delete from N_WF_COMMENT_HIS t;
 delete from N_WF_INSTANCE t;
+delete from N_WF_INSTANCE_HIS t;
 delete from N_WF_NODE t;
 delete from N_WF_NODE_HIS t;
 delete from N_WF_USER_DONE t;
 delete from N_WF_USER_TODO t;
+delete from N_WF_USER_HIS t;
 
 
 待办查询 用户签收状态非3 并且 用户等级为0

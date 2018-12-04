@@ -1,17 +1,16 @@
 package cn.com.yusys.yusp.workflow.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.github.pagehelper.PageHelper;
-
 import cn.com.yusys.yusp.workflow.domain.NWfNodeHis;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.repository.mapper.NWfNodeHisMapper;
+import com.github.pagehelper.PageHelper;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class NWfNodeHisService {
     @Autowired
     private NWfNodeHisMapper nWfNodeHisMapper;
