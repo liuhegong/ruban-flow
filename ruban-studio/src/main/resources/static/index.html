@@ -96,6 +96,13 @@
 			      <el-table-column prop="userName" label="名称"></el-table-column>
 			      <el-table-column prop="userId" label="编号"></el-table-column>
 			    </el-table>
+			    <el-pagination
+			      @current-change="handleCurrentChange"
+			      :current-page="userPage"
+			      :page-sizes="[10]"
+			      layout="total, sizes, prev, pager, next"
+			      :total="userTotal">
+			    </el-pagination>
 			</el-tab-pane>
 			<el-tab-pane label="角色" name="1">
 				<el-table :data="userData"  max-height="300" @row-dblclick="roleDbClick">
@@ -194,7 +201,8 @@
             activeTabName: '0',
             currentInput: null,
             userData:[],
-            userPage: 0,
+            userTotal:0,
+            userPage: 1,
             haveSelected: [],
             userCustom:''
         }
@@ -297,7 +305,6 @@
         getFlow: function(flowId){
         	var _self = this;
           	$.ajax({ url:'/api/nwfflow/'+flowId,headers:{'Content-Type': 'application/json;charset=UTF-8'},type:'GET', async:false, timeout:5000,success:function(data,textStatus,jqXHR){
-          			console.info(data.data.flowContent);
           			_self.currentFlowContent = data.data.flowContent;
           			_self.loadXml(_self.currentFlowContent);
             },error:function(xhr,textStatus){
@@ -317,8 +324,10 @@
     	tableClick: function(tab, event){// 人员选择tab点击事件
     		_this = this;
     		if(tab.index==0){
-    			$.ajax({ url:'/api/org/users/?page='+_this.userPage+'&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
-    				_this.userData=data.data;          		
+    			$.ajax({ url:'/api/org/users/?page=1&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+    				_this.userPage = 1;
+    				_this.userData=data.data; 
+    				_this.userTotal = data.total;
             	},error:function(xhr,textStatus){
             		_this.$message({  type: 'warn', message: '获取用户信息失败' });
             	}});
@@ -436,6 +445,16 @@
                 }
             }
     		this.haveSelected.push(tag);        	
+        },
+        handleCurrentChange(val) {// 用户分页
+        	_this = this;
+        	$.ajax({ url:'/api/org/users/?page='+val+'&condition='+JSON.stringify({systemId:_this.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
+        		_this.userPage = val;
+        		_this.userData=data.data; 
+				_this.userTotal = data.total;
+        	},error:function(xhr,textStatus){
+        		_this.$message({  type: 'warn', message: '获取用户信息失败' });
+        	}});
         }
       },
       mounted: function(){
@@ -504,7 +523,9 @@
     	}
     	
     	$.ajax({ url:'/api/org/users/?page=1&condition='+JSON.stringify({systemId:vue.systemId}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
-    		vue.userData=data.data;          		
+    		vue.userPage = 1;
+    		vue.userData=data.data; 
+    		vue.userTotal = data.total;
     	},error:function(xhr,textStatus){
     		vue.$message({  type: 'warn', message: '获取用户信息失败' });
     	}});

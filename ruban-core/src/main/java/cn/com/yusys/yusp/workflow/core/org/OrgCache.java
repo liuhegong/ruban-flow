@@ -96,7 +96,8 @@ public class OrgCache{
 		return userCaches.get(systemId).get(userId);
 	}
 	
-	public static Collection<WFUser> getUserAllUsers(String systemId){
-		return userCaches.get(systemId).values();
+	public static List<WFUser> getUserAllUsers(String systemId){
+		List<WFUser> list = new ArrayList<WFUser>(userCaches.get(systemId).values());
+		return list;
 	}
 }

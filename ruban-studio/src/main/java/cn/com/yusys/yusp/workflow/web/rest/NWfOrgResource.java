@@ -1,6 +1,7 @@
 package cn.com.yusys.yusp.workflow.web.rest;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +35,34 @@ public class NWfOrgResource {
 
     @GetMapping("/users")
     public ResultDto<Collection<WFUser>> allUsers(QueryModel queryModel) {
-    	Collection<WFUser> users = OrgCache.getUserAllUsers(queryModel.getCondition().get("systemId").toString());
-        return new ResultDto<Collection<WFUser>>(users);
+    	List<WFUser> users = OrgCache.getUserAllUsers(queryModel.getCondition().get("systemId").toString());
+    	ResultDto result = new ResultDto<Collection<WFUser>>(getPagedList( queryModel.getPage(), 10, users));
+    	result.setTotal(users.size());
+    	return result;
     }
+    
+    private Collection<WFUser> getPagedList(int page, int size, List<WFUser> data) {
+		
+		if(null==data||data.isEmpty()){
+			return Collections.emptyList();// 空数组
+		}
+		
+		if (page == 0) {
+			page = 1;
+		}
+		int fromIndex = (page - 1) * size;
+		if (fromIndex >= data.size()) {
+			return Collections.emptyList();// 空数组
+		}
+		if (fromIndex < 0) {
+			fromIndex = 0;// 空数组
+		}
+		int toIndex = page * size;
+		if (toIndex >= data.size()) {
+			toIndex = data.size();
+		}
+		return data.subList(fromIndex, toIndex);
+	}
     
     @GetMapping("/depts")
     public ResultDto<List<WFDept>> allDepts(QueryModel queryModel) {

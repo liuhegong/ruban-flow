@@ -16,7 +16,6 @@ public class BeanCustomUser1DemoImpl implements BeanCustomUserInterface {
 	public List<WFUserDto> customUser(String orgId, String systemId) {
 		WFUserDto user = new WFUserDto();
 		user.setUserId("admin");
-		user.setUserName("王亚飞");
 		List<WFUserDto> usersT = new ArrayList<WFUserDto>();
 		usersT.add(user);
 		return usersT;

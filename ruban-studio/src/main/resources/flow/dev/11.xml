@@ -11,17 +11,17 @@
         <mxGeometry x="130" y="130" width="32" height="32" as="geometry"/>
       </mxCell>
     </node>
-    <node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="E.customUser1;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage" id="3">
+    <node label="普通节点1" nodeType="0" nodeSign="" opUsersType="0" nodeUser="E.customUser1;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage" id="3">
       <mxCell style="rounded" vertex="1" parent="1">
         <mxGeometry x="280" y="120" width="80" height="30" as="geometry"/>
       </mxCell>
     </node>
-    <node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="E.customUser1;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage" id="4">
+    <node label="普通节点2" nodeType="0" nodeSign="" opUsersType="0" nodeUser="E.customUser1;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage" id="4">
       <mxCell style="rounded" vertex="1" parent="1">
         <mxGeometry x="440" y="120" width="80" height="30" as="geometry"/>
       </mxCell>
     </node>
-    <node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="E.customUser2;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage" id="5">
+    <node label="普通节点3" nodeType="0" nodeSign="" opUsersType="0" nodeUser="E.customUser2;" computeType="2" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage" id="5">
       <mxCell style="rounded" vertex="1" parent="1">
         <mxGeometry x="590" y="120" width="80" height="30" as="geometry"/>
       </mxCell>
