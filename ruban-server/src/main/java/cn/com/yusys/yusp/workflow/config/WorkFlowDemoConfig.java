@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import cn.com.yusys.yusp.workflow.demo.BeanBizDemoImpl;
+import cn.com.yusys.yusp.workflow.demo.BeanCustomUser1DemoImpl;
+import cn.com.yusys.yusp.workflow.demo.BeanCustomUser2DemoImpl;
 import cn.com.yusys.yusp.workflow.demo.BeanRoute1DemoImpl;
 import cn.com.yusys.yusp.workflow.demo.BeanRoute2DemoImpl;
 import cn.com.yusys.yusp.workflow.demo.BeanUserFilter1DemoImpl;
@@ -36,5 +38,15 @@ public class WorkFlowDemoConfig{
 	public BeanUserFilter2DemoImpl beanUserFilter2DemoImpl(){
 		return new BeanUserFilter2DemoImpl();
 	}
-
+	
+	@Bean("customUser1")
+	public BeanCustomUser1DemoImpl beanCustomUser1DemoImpl(){
+		return new BeanCustomUser1DemoImpl();
+	}
+	
+	@Bean("customUser2")
+	public BeanCustomUser2DemoImpl beanCustomUser2DemoImpl(){
+		return new BeanCustomUser2DemoImpl();
+	}
+	
 }

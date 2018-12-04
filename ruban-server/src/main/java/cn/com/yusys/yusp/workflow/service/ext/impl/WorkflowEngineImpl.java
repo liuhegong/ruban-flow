@@ -67,6 +67,7 @@ import cn.com.yusys.yusp.workflow.service.NWfUserTodoService;
 import cn.com.yusys.yusp.workflow.service.WorkflowBackUpService;
 import cn.com.yusys.yusp.workflow.service.WorkflowCoreService;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowBizInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowCustomUserInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowEngineInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowMessageInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowOrgInterface;
@@ -140,6 +141,12 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	 */
 	@Autowired
 	private WorkflowOrgInterface userService;
+	
+	/**
+	 * 自定义选人
+	 */
+	@Autowired
+	private WorkflowCustomUserInterface customUserService;
 	
 	@Override
 	@Transactional
@@ -675,8 +682,13 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 			String userId = key.substring(2);
 			usersT.put(userId, userService.getUserInfo(systemId, userId));
 		} else if (key.startsWith(UserType.EXT)) {// 自定义
-			String userId = key.substring(2);
-			usersT.put(userId, userService.getUserInfo(systemId, userId));
+			String beanName = key.substring(2);
+			List<WFUserDto> users = customUserService.customUser(beanName, orgId, systemId);
+			if(null!=users){
+				for(WFUserDto userTT:users){
+					usersT.put(userTT.getUserId(), userService.getUserInfo(systemId, userTT.getUserId()));
+				}
+			}
 		} else {
 			log.warn("用户来源未知" + key);
 		}
