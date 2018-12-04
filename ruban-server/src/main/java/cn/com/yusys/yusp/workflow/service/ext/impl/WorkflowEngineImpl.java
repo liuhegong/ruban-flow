@@ -54,9 +54,9 @@ import cn.com.yusys.yusp.workflow.dto.WFSubmitDto;
 import cn.com.yusys.yusp.workflow.dto.WFUserDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultCommentDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
+import cn.com.yusys.yusp.workflow.dto.result.ResultMessageDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultOpTypeDto;
-import cn.com.yusys.yusp.workflow.dto.result.ResultMessageDto;
 import cn.com.yusys.yusp.workflow.service.NWfCommentService;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceHisService;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
@@ -69,9 +69,9 @@ import cn.com.yusys.yusp.workflow.service.WorkflowCoreService;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowBizInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowEngineInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowMessageInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowOrgInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowRouteInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserFilterInterface;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserInterface;
 /**
  * 流转核心实现
  * @author figue
@@ -139,7 +139,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	 * 用户信息获取服务
 	 */
 	@Autowired
-	private WorkflowUserInterface userService;
+	private WorkflowOrgInterface userService;
 	
 	@Override
 	@Transactional
@@ -672,6 +672,9 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 				}
 			}
 		} else if (key.startsWith(UserType.USER)) {// 用户
+			String userId = key.substring(2);
+			usersT.put(userId, userService.getUserInfo(systemId, userId));
+		} else if (key.startsWith(UserType.EXT)) {// 自定义
 			String userId = key.substring(2);
 			usersT.put(userId, userService.getUserInfo(systemId, userId));
 		} else {

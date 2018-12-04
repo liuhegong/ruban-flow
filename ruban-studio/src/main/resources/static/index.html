@@ -121,7 +121,11 @@
 			      <el-table-column prop="deptId" label="编号"></el-table-column>
 			    </el-table>
 			</el-tab-pane>
-			<el-tab-pane label="自定义" name="5">自定义</el-tab-pane> 
+			<el-tab-pane label="自定义" name="5">
+				<el-input v-model="userCustom" placeholder="请输入内容">
+				    <el-button @click="userCustomB" slot="append" type="success" icon="el-icon-check" circle></el-button>
+				</el-input>
+			</el-tab-pane> 
 		</el-tabs>
 		<div slot="footer" class="dialog-footer">
 		    <el-button @click="userSelectVisible = false">取 消</el-button>
@@ -191,7 +195,8 @@
             currentInput: null,
             userData:[],
             userPage: 0,
-            haveSelected: []
+            haveSelected: [],
+            userCustom:''
         }
       },
       methods: { 
@@ -383,7 +388,7 @@
     		var tag = {};
     		tag.code = 'D.'+row.deptId;
     		tag.name = row.deptName;
-    		tag.type = 'danger';
+    		tag.type = '';
     		for (var i = 0; i <this.haveSelected.length; i++) {// 去重
             	if (this.haveSelected[i].code == tag.code) {
                 	return;
@@ -412,8 +417,25 @@
             	var id = this.haveSelected[i].code;
             	userIds = userIds + id + ';'
             }
-        	this.currentInput.value = userIds;
+        	if(''!=userIds){
+        		this.currentInput.value = userIds;
+        	}
         	this.userSelectVisible = false;
+        },
+        userCustomB: function(){
+        	if('' == this.userCustom){
+        		return;
+        	}
+        	var tag = {};
+    		tag.code = 'E.'+this.userCustom;
+    		tag.name = this.userCustom;
+    		tag.type = 'danger';
+    		for (var i = 0; i <this.haveSelected.length; i++) {// 去重
+            	if (this.haveSelected[i].code == tag.code) {
+                	return;
+                }
+            }
+    		this.haveSelected.push(tag);        	
         }
       },
       mounted: function(){
@@ -439,7 +461,7 @@
     				node.setAttribute("disabled", "disabled");
 	    		}
     		}else{
-    			if(attr.name==='nodeUser'){
+    			if(attr.name==='nodeUser'||attr.name==='copyUsers'){
     				node = form.addTextWithButton(studio[attr.name].name, attr.value,studio[attr.name].type,selectUser);
     			}else{
     				node = form.addText(studio[attr.name].name, attr.value,studio[attr.name].type);
@@ -455,6 +477,7 @@
     function selectUser(input){
     	vue.userSelectVisible = true;
     	vue.haveSelected = [];
+    	vue.activeTabName = '0';
     	vue.currentInput = input;
     	if(input.value!=undefined && input.value!=''){
     		var userIds = input.value.split(";");
@@ -462,6 +485,16 @@
     			if(''==userIds[i]){
     				continue;
     			}
+    			
+    			if(0==userIds[i].indexOf('E.')){
+    				var tag = {};
+    	    		tag.code = userIds[i];
+    	    		tag.name = userIds[i].substring(2);
+    	    		tag.type = 'danger';
+    				vue.haveSelected.push(tag);
+    				continue;	
+    			}
+    			
     			$.ajax({ url:'/api/org/info/?condition='+JSON.stringify({systemId:vue.systemId,code:userIds[i]}), type:'GET', async:false, timeout:5000,dataType:'json',success:function(data,textStatus,jqXHR){
     				vue.haveSelected.push(data.data);          		
     	    	},error:function(xhr,textStatus){

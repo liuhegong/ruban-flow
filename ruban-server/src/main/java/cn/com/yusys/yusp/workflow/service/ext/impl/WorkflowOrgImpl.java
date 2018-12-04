@@ -16,17 +16,17 @@ import cn.com.yusys.yusp.workflow.core.org.WFOrg;
 import cn.com.yusys.yusp.workflow.core.org.WFRole;
 import cn.com.yusys.yusp.workflow.core.org.WFUser;
 import cn.com.yusys.yusp.workflow.dto.WFUserDto;
-import cn.com.yusys.yusp.workflow.service.ext.WorkflowUserInterface;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowOrgInterface;
 
 /**
- * 节点用户获取
+ * 用户基本信息获取
  * @author figue
  *
  */
 @Service
-public class WorkflowUserImpl implements WorkflowUserInterface {
+public class WorkflowOrgImpl implements WorkflowOrgInterface {
 
-	private static final Log log = LogFactory.getLog(WorkflowUserImpl.class);
+	private static final Log log = LogFactory.getLog(WorkflowOrgImpl.class);
 	@Override
 	public WFUserDto getUserInfo(String systemId,String userId) {
 		if(Cons.SYSTEM_USER_ID.equalsIgnoreCase(userId)){// 系统指定用户
