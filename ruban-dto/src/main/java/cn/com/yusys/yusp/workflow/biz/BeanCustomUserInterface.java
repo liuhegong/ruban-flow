@@ -9,5 +9,5 @@ import cn.com.yusys.yusp.workflow.dto.WFUserDto;
  *
  */
 public interface BeanCustomUserInterface {
-	List<WFUserDto> customUser(String orgId, String systemId);	
+	List<String> customUser(String orgId, String systemId);	
 }

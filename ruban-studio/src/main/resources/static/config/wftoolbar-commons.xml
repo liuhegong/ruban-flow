@@ -22,15 +22,15 @@
 	<add as="delete" action="delete" icon="images/delete.gif"/>
 	<br/>
 	<hr/>
-	<add as="node-0" template="node-0" icon="images/rectangle.gif"/>
-	<add as="node-1" template="node-1" icon="images/rectangle.gif"/>
-	<add as="node-2" template="node-2" icon="images/rectangle.gif"/>
-	<add as="node-3" template="node-3" icon="images/rectangle.gif"/>
-	<add as="node-4" template="node-4" icon="images/rectangle.gif"/>
-	<add as="node-5" template="node-5" icon="images/rectangle.gif"/>
-	<add as="node-6" template="node-6" icon="images/rectangle.gif"/>
-	<add as="node-7" template="node-7" icon="images/symbols/small_event.gif"/>
-	<add as="node-8" template="node-8" icon="images/symbols/small_event_end.gif"/>
+	<add as="node-0" template="node-0" icon="images/my/pt.png"/>
+	<add as="node-1" template="node-1" icon="images/my/danxuan.png"/>
+	<add as="node-2" template="node-2" icon="images/my/duoxuan.png"/>
+	<add as="node-3" template="node-3" icon="images/my/tjdanxuan.png"/>
+	<add as="node-4" template="node-4" icon="images/my/tjduoxuan.png"/>
+	<add as="node-5" template="node-5" icon="images/my/zidong.png"/>
+	<add as="node-6" template="node-6" icon="images/my/guanbi.png"/>
+	<add as="node-7" template="node-7" icon="images/my/kaishi.png"/>
+	<add as="node-8" template="node-8" icon="images/my/jieshu.png"/>
 	<br/><hr/>
 	<add as="zoomIn" action="zoomIn" icon="images/zoomin.gif"/>
 	<add as="zoomOut" action="zoomOut" icon="images/zoomout.gif"/>

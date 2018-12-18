@@ -86,7 +86,7 @@
   </select>
   
   <select id="getNodeDoneCount" parameterType="string" resultType="int">
-     select count(t.node_id)  from N_WF_NODE_HIS t where t.instance_id = #{instanceId,jdbcType=VARCHAR} and t.node_id = #{nodeId,jdbcType=VARCHAR} 
+     select count(t.node_id)  from N_WF_NODE_DONE t where t.instance_id = #{instanceId,jdbcType=VARCHAR} and t.node_id = #{nodeId,jdbcType=VARCHAR} 
   </select>
   
   <resultMap id="UserToDoMap" type="cn.com.yusys.yusp.workflow.domain.NWfUserTodo">

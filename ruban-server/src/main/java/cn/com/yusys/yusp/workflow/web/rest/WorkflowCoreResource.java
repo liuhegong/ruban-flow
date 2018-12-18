@@ -15,6 +15,7 @@ import cn.com.yusys.yusp.workflow.core.exception.WorkflowException;
 import cn.com.yusys.yusp.workflow.domain.NWfInstance;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
 import cn.com.yusys.yusp.workflow.dto.WFCommentDto;
+import cn.com.yusys.yusp.workflow.dto.WFReturnDto;
 import cn.com.yusys.yusp.workflow.dto.WFStratDto;
 import cn.com.yusys.yusp.workflow.dto.WFSubmitDto;
 import cn.com.yusys.yusp.workflow.dto.WFUserDto;
@@ -23,6 +24,7 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultInstanceDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultMessageDto;
 import cn.com.yusys.yusp.workflow.dto.result.ResultNodeDto;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
+import cn.com.yusys.yusp.workflow.service.ext.WorkflowEngineExtInterface;
 import cn.com.yusys.yusp.workflow.service.ext.WorkflowEngineInterface;
 import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 
@@ -30,7 +32,10 @@ import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
 @RequestMapping("/api/core")
 public class WorkflowCoreResource {
 	@Autowired
-	private WorkflowEngineInterface workflowCoreService;
+	private WorkflowEngineInterface workflowEngineService;
+	
+	@Autowired
+	private WorkflowEngineExtInterface workflowEngineExtService;
 	
 	@Autowired
 	private NWfInstanceService instanceService;
@@ -44,7 +49,7 @@ public class WorkflowCoreResource {
 	 */
 	@GetMapping("/instanceInfo")
 	protected ResultDto<ResultInstanceDto> instanceInfo(String instanceId, String nodeId, String userId) {		
-		ResultInstanceDto instanceInfo = workflowCoreService.getInstanceInfo(instanceId, nodeId, userId);
+		ResultInstanceDto instanceInfo = workflowEngineService.getInstanceInfo(instanceId, nodeId, userId);
 		return new ResultDto<ResultInstanceDto>(instanceInfo);
 	}
 	
@@ -55,7 +60,7 @@ public class WorkflowCoreResource {
 	 */
 	@GetMapping("/getComments")
 	protected ResultDto<List<ResultCommentDto>> getComments(String instanceId) {		
-		List<ResultCommentDto> comments = workflowCoreService.getComments(instanceId);
+		List<ResultCommentDto> comments = workflowEngineService.getComments(instanceId);
 		return new ResultDto<List<ResultCommentDto>>(comments);
 	}
 	
@@ -66,7 +71,7 @@ public class WorkflowCoreResource {
 	 */
 	@PostMapping("/saveComment")
 	protected ResultDto<ResultCommentDto> saveComment(@Valid @RequestBody WFCommentDto comment) {				
-		ResultCommentDto instanceInfo = workflowCoreService.saveComment(comment);
+		ResultCommentDto instanceInfo = workflowEngineService.saveComment(comment);
 		return new ResultDto<ResultCommentDto>(instanceInfo);
 	}
 	
@@ -79,7 +84,7 @@ public class WorkflowCoreResource {
 	 */
 	@GetMapping("/signIn")
 	protected ResultDto<ResultMessageDto> signIn(String instanceId,String nodeId,String userId) {
-		return new ResultDto<ResultMessageDto>(workflowCoreService.signIn(instanceId, nodeId, userId));
+		return new ResultDto<ResultMessageDto>(workflowEngineService.signIn(instanceId, nodeId, userId));
 	}
 	
 	/**
@@ -91,7 +96,7 @@ public class WorkflowCoreResource {
 	 */
 	@GetMapping("/unSignIn")
 	protected ResultDto<ResultMessageDto> unSignIn(String instanceId,String nodeId,String userId) {
-		return new ResultDto<ResultMessageDto>(workflowCoreService.unSignIn(instanceId, nodeId, userId));
+		return new ResultDto<ResultMessageDto>(workflowEngineService.unSignIn(instanceId, nodeId, userId));
 	}
 	
 	/**
@@ -102,7 +107,7 @@ public class WorkflowCoreResource {
 	 */
 	@PostMapping("/start")
 	public ResultDto<ResultInstanceDto> start(@Valid @RequestBody WFStratDto stratDto) throws WorkflowException{
-		return new ResultDto<ResultInstanceDto>(workflowCoreService.start(stratDto));
+		return new ResultDto<ResultInstanceDto>(workflowEngineService.start(stratDto));
 	}
 	
 	/**
@@ -113,7 +118,7 @@ public class WorkflowCoreResource {
 	 */
 	@PostMapping("/submit")
 	public ResultDto<List<ResultMessageDto>> submit(@Valid @RequestBody WFSubmitDto submitDto) throws WorkflowException{
-		return new ResultDto<List<ResultMessageDto>>(workflowCoreService.submit(submitDto));
+		return new ResultDto<List<ResultMessageDto>>(workflowEngineService.submit(submitDto));
 	}
 	
 	/**
@@ -125,7 +130,7 @@ public class WorkflowCoreResource {
 	 */
 	@GetMapping("/getNextNodeInfos")
 	public ResultDto<List<ResultNodeDto>> getNextNodeInfos(String instanceId,String nodeId) throws WorkflowException{
-		return new ResultDto<List<ResultNodeDto>>(workflowCoreService.getNextNodeInfos(instanceId,nodeId));
+		return new ResultDto<List<ResultNodeDto>>(workflowEngineService.getNextNodeInfos(instanceId,nodeId));
 	}
 	
 	/**
@@ -140,7 +145,19 @@ public class WorkflowCoreResource {
 		String nodeId = queryModel.getCondition().get("nodeId").toString();;
 		ResultDto<List<WFUserDto>> data = new ResultDto<List<WFUserDto>>();	
 		NWfInstance instanceInfo = instanceService.selectByPrimaryKey(instanceId);
-		data.setData(workflowCoreService.getNodeUsers(instanceInfo.getInstanceId(),nodeId,instanceInfo.getOrgId(),instanceInfo.getSystemId()));
+		data.setData(workflowEngineService.getNodeUsers(instanceInfo.getInstanceId(),nodeId,instanceInfo.getOrgId(),instanceInfo.getSystemId()));
 		return data;
 	}
+	
+	/**
+	 * 退回
+	 * @param returnDto
+	 * @return
+	 * @throws WorkflowException
+	 */
+	@PostMapping("/returnBack")
+	public ResultDto <ResultMessageDto> returnBack(@Valid @RequestBody WFReturnDto returnDto) throws WorkflowException{
+		return new ResultDto<ResultMessageDto>(workflowEngineExtService.returnBack(returnDto));
+	}
+
 }

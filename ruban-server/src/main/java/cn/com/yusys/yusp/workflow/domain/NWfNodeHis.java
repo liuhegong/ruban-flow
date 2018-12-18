@@ -46,6 +46,9 @@ public class NWfNodeHis implements Serializable {
     @Column(name = "START_TIME")
     private String startTime;
 
+    @Column(name = "END_TIME")
+    private String endTime;
+
     /**
      * �ύ�˻���id
      */
@@ -65,12 +68,6 @@ public class NWfNodeHis implements Serializable {
     private String lastNodeName;
 
     /**
-     * ����ʱ��
-     */
-    @Column(name = "END_TIME")
-    private String endTime;
-
-    /**
      * �����Ľڵ�ȼ�֮��
      */
     @Column(name = "NODE_LEVEL_TOTAL")
@@ -81,6 +78,18 @@ public class NWfNodeHis implements Serializable {
      */
     @Column(name = "NODE_TYPE")
     private String nodeType;
+
+    /**
+     * ��һ�ڵ�id
+     */
+    @Column(name = "NEXT_NODE_ID")
+    private String nextNodeId;
+
+    /**
+     * ��һ�ڵ㴦����
+     */
+    @Column(name = "NEXT_USER_ID")
+    private String nextUserId;
 
     private static final long serialVersionUID = 1L;
 
@@ -193,6 +202,20 @@ public class NWfNodeHis implements Serializable {
     }
 
     /**
+     * @return END_TIME
+     */
+    public String getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * @param endTime
+     */
+    public void setEndTime(String endTime) {
+        this.endTime = endTime == null ? null : endTime.trim();
+    }
+
+    /**
      * ��ȡ�ύ�˻���id
      *
      * @return ORG_ID - �ύ�˻���id
@@ -247,24 +270,6 @@ public class NWfNodeHis implements Serializable {
     }
 
     /**
-     * ��ȡ����ʱ��
-     *
-     * @return END_TIME - ����ʱ��
-     */
-    public String getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * ���ý���ʱ��
-     *
-     * @param endTime ����ʱ��
-     */
-    public void setEndTime(String endTime) {
-        this.endTime = endTime == null ? null : endTime.trim();
-    }
-
-    /**
      * ��ȡ�����Ľڵ�ȼ�֮��
      *
      * @return NODE_LEVEL_TOTAL - �����Ľڵ�ȼ�֮��
@@ -300,6 +305,42 @@ public class NWfNodeHis implements Serializable {
         this.nodeType = nodeType == null ? null : nodeType.trim();
     }
 
+    /**
+     * ��ȡ��һ�ڵ�id
+     *
+     * @return NEXT_NODE_ID - ��һ�ڵ�id
+     */
+    public String getNextNodeId() {
+        return nextNodeId;
+    }
+
+    /**
+     * ������һ�ڵ�id
+     *
+     * @param nextNodeId ��һ�ڵ�id
+     */
+    public void setNextNodeId(String nextNodeId) {
+        this.nextNodeId = nextNodeId == null ? null : nextNodeId.trim();
+    }
+
+    /**
+     * ��ȡ��һ�ڵ㴦����
+     *
+     * @return NEXT_USER_ID - ��һ�ڵ㴦����
+     */
+    public String getNextUserId() {
+        return nextUserId;
+    }
+
+    /**
+     * ������һ�ڵ㴦����
+     *
+     * @param nextUserId ��һ�ڵ㴦����
+     */
+    public void setNextUserId(String nextUserId) {
+        this.nextUserId = nextUserId == null ? null : nextUserId.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -318,12 +359,14 @@ public class NWfNodeHis implements Serializable {
             && (this.getNodeName() == null ? other.getNodeName() == null : this.getNodeName().equals(other.getNodeName()))
             && (this.getNodeState() == null ? other.getNodeState() == null : this.getNodeState().equals(other.getNodeState()))
             && (this.getStartTime() == null ? other.getStartTime() == null : this.getStartTime().equals(other.getStartTime()))
+            && (this.getEndTime() == null ? other.getEndTime() == null : this.getEndTime().equals(other.getEndTime()))
             && (this.getOrgId() == null ? other.getOrgId() == null : this.getOrgId().equals(other.getOrgId()))
             && (this.getLastNodeId() == null ? other.getLastNodeId() == null : this.getLastNodeId().equals(other.getLastNodeId()))
             && (this.getLastNodeName() == null ? other.getLastNodeName() == null : this.getLastNodeName().equals(other.getLastNodeName()))
-            && (this.getEndTime() == null ? other.getEndTime() == null : this.getEndTime().equals(other.getEndTime()))
             && (this.getNodeLevelTotal() == null ? other.getNodeLevelTotal() == null : this.getNodeLevelTotal().equals(other.getNodeLevelTotal()))
-            && (this.getNodeType() == null ? other.getNodeType() == null : this.getNodeType().equals(other.getNodeType()));
+            && (this.getNodeType() == null ? other.getNodeType() == null : this.getNodeType().equals(other.getNodeType()))
+            && (this.getNextNodeId() == null ? other.getNextNodeId() == null : this.getNextNodeId().equals(other.getNextNodeId()))
+            && (this.getNextUserId() == null ? other.getNextUserId() == null : this.getNextUserId().equals(other.getNextUserId()));
     }
 
     @Override
@@ -336,12 +379,14 @@ public class NWfNodeHis implements Serializable {
         result = prime * result + ((getNodeName() == null) ? 0 : getNodeName().hashCode());
         result = prime * result + ((getNodeState() == null) ? 0 : getNodeState().hashCode());
         result = prime * result + ((getStartTime() == null) ? 0 : getStartTime().hashCode());
+        result = prime * result + ((getEndTime() == null) ? 0 : getEndTime().hashCode());
         result = prime * result + ((getOrgId() == null) ? 0 : getOrgId().hashCode());
         result = prime * result + ((getLastNodeId() == null) ? 0 : getLastNodeId().hashCode());
         result = prime * result + ((getLastNodeName() == null) ? 0 : getLastNodeName().hashCode());
-        result = prime * result + ((getEndTime() == null) ? 0 : getEndTime().hashCode());
         result = prime * result + ((getNodeLevelTotal() == null) ? 0 : getNodeLevelTotal().hashCode());
         result = prime * result + ((getNodeType() == null) ? 0 : getNodeType().hashCode());
+        result = prime * result + ((getNextNodeId() == null) ? 0 : getNextNodeId().hashCode());
+        result = prime * result + ((getNextUserId() == null) ? 0 : getNextUserId().hashCode());
         return result;
     }
 
@@ -357,12 +402,14 @@ public class NWfNodeHis implements Serializable {
         sb.append(", nodeName=").append(nodeName);
         sb.append(", nodeState=").append(nodeState);
         sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
         sb.append(", orgId=").append(orgId);
         sb.append(", lastNodeId=").append(lastNodeId);
         sb.append(", lastNodeName=").append(lastNodeName);
-        sb.append(", endTime=").append(endTime);
         sb.append(", nodeLevelTotal=").append(nodeLevelTotal);
         sb.append(", nodeType=").append(nodeType);
+        sb.append(", nextNodeId=").append(nextNodeId);
+        sb.append(", nextUserId=").append(nextUserId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

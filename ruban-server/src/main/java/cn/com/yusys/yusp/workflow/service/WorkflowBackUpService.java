@@ -2,6 +2,7 @@ package cn.com.yusys.yusp.workflow.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,13 @@ public class WorkflowBackUpService {
 	
 	public int deleteAllNode(String instanceId){
 		return workflowBackUpMapper.deleteAllNode(instanceId);
+	}
+	
+	public int deleteAllNodeDone(String instanceId){
+		return workflowBackUpMapper.deleteAllNodeDone(instanceId);
+	}
+	
+	public int transNodeDone2End(String instanceId){
+		return workflowBackUpMapper.transNodeDone2End(instanceId);
 	}
 }

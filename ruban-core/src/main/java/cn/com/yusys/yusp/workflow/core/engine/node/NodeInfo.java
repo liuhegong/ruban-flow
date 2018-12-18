@@ -89,6 +89,12 @@ public class NodeInfo implements Serializable{
 	private List<RouteInfo> routeInfos;
 	
 	/**
+	 * 此节点的前一节点,只有汇总节点才会有多个，如果是汇总节点随机取一个
+	 */
+	@XmlPath(valueAttr="@lastNodeId")
+	private String lastNodeId;
+	
+	/**
 	 * 拿回
 	 */
 	@XmlPath(valueAttr="@tackBack")
@@ -357,16 +363,22 @@ public class NodeInfo implements Serializable{
 	public void setBizPage(String bizPage) {
 		this.bizPage = bizPage;
 	}
+	public String getLastNodeId() {
+		return lastNodeId;
+	}
+	public void setLastNodeId(String lastNodeId) {
+		this.lastNodeId = lastNodeId;
+	}
 	@Override
 	public String toString() {
 		return "NodeInfo [nodeId=" + nodeId + ", nodeName=" + nodeName + ", nodeType=" + nodeType + ", nodeSign="
 				+ nodeSign + ", handleType=" + handleType + ", isEndBeanId=" + isEndBeanId + ", bizBeanId=" + bizBeanId
 				+ ", bizPage=" + bizPage + ", nodeUser=" + nodeUser + ", opUsersType=" + opUsersType + ", computeType="
-				+ computeType + ", reDoUserSelect=" + reDoUserSelect + ", routeInfos=" + routeInfos + ", tackBack="
-				+ tackBack + ", callBack=" + callBack + ", returnBack=" + returnBack + ", urged=" + urged + ", change="
-				+ change + ", assist=" + assist + ", refuse=" + refuse + ", jump=" + jump + ", entrust=" + entrust
-				+ ", entrustUsers=" + entrustUsers + ", copy=" + copy + ", copyUsers=" + copyUsers + ", noticeType="
-				+ noticeType + ", nodeLevel=" + nodeLevel + ", strategyBeanId=" + strategyBeanId + "]";
+				+ computeType + ", reDoUserSelect=" + reDoUserSelect + ", routeInfos=" + routeInfos + ", lastNodeId="
+				+ lastNodeId + ", tackBack=" + tackBack + ", callBack=" + callBack + ", returnBack=" + returnBack
+				+ ", urged=" + urged + ", change=" + change + ", assist=" + assist + ", refuse=" + refuse + ", jump="
+				+ jump + ", entrust=" + entrust + ", entrustUsers=" + entrustUsers + ", copy=" + copy + ", copyUsers="
+				+ copyUsers + ", noticeType=" + noticeType + ", nodeLevel=" + nodeLevel + ", strategyBeanId="
+				+ strategyBeanId + "]";
 	}
-	
 }

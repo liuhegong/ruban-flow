@@ -11,19 +11,21 @@
     <result column="NODE_NAME" jdbcType="VARCHAR" property="nodeName" />
     <result column="NODE_STATE" jdbcType="VARCHAR" property="nodeState" />
     <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
     <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
     <result column="LAST_NODE_ID" jdbcType="VARCHAR" property="lastNodeId" />
     <result column="LAST_NODE_NAME" jdbcType="VARCHAR" property="lastNodeName" />
-    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
     <result column="NODE_LEVEL_TOTAL" jdbcType="NUMERIC" property="nodeLevelTotal" />
     <result column="NODE_TYPE" jdbcType="VARCHAR" property="nodeType" />
+    <result column="NEXT_NODE_ID" jdbcType="VARCHAR" property="nextNodeId" />
+    <result column="NEXT_USER_ID" jdbcType="VARCHAR" property="nextUserId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    INSTANCE_ID, NODE_ID, NODE_SIGN, NODE_NAME, NODE_STATE, START_TIME, ORG_ID, LAST_NODE_ID, 
-    LAST_NODE_NAME, END_TIME, NODE_LEVEL_TOTAL, NODE_TYPE
+    INSTANCE_ID, NODE_ID, NODE_SIGN, NODE_NAME, NODE_STATE, START_TIME, END_TIME, ORG_ID, 
+    LAST_NODE_ID, LAST_NODE_NAME, NODE_LEVEL_TOTAL, NODE_TYPE, NEXT_NODE_ID, NEXT_USER_ID
   </sql>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -49,14 +51,14 @@
     -->
     insert into N_WF_NODE_HIS (INSTANCE_ID, NODE_ID, NODE_SIGN, 
       NODE_NAME, NODE_STATE, START_TIME, 
-      ORG_ID, LAST_NODE_ID, LAST_NODE_NAME, 
-      END_TIME, NODE_LEVEL_TOTAL, NODE_TYPE
-      )
+      END_TIME, ORG_ID, LAST_NODE_ID, 
+      LAST_NODE_NAME, NODE_LEVEL_TOTAL, NODE_TYPE, 
+      NEXT_NODE_ID, NEXT_USER_ID)
     values (#{instanceId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{nodeSign,jdbcType=VARCHAR}, 
       #{nodeName,jdbcType=VARCHAR}, #{nodeState,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
-      #{orgId,jdbcType=VARCHAR}, #{lastNodeId,jdbcType=VARCHAR}, #{lastNodeName,jdbcType=VARCHAR}, 
-      #{endTime,jdbcType=VARCHAR}, #{nodeLevelTotal,jdbcType=NUMERIC}, #{nodeType,jdbcType=VARCHAR}
-      )
+      #{endTime,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{lastNodeId,jdbcType=VARCHAR}, 
+      #{lastNodeName,jdbcType=VARCHAR}, #{nodeLevelTotal,jdbcType=NUMERIC}, #{nodeType,jdbcType=VARCHAR}, 
+      #{nextNodeId,jdbcType=VARCHAR}, #{nextUserId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.com.yusys.yusp.workflow.domain.NWfNodeHis">
     <!--
@@ -82,6 +84,9 @@
       <if test="startTime != null">
         START_TIME,
       </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
       <if test="orgId != null">
         ORG_ID,
       </if>
@@ -91,14 +96,17 @@
       <if test="lastNodeName != null">
         LAST_NODE_NAME,
       </if>
-      <if test="endTime != null">
-        END_TIME,
-      </if>
       <if test="nodeLevelTotal != null">
         NODE_LEVEL_TOTAL,
       </if>
       <if test="nodeType != null">
         NODE_TYPE,
+      </if>
+      <if test="nextNodeId != null">
+        NEXT_NODE_ID,
+      </if>
+      <if test="nextUserId != null">
+        NEXT_USER_ID,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -120,6 +128,9 @@
       <if test="startTime != null">
         #{startTime,jdbcType=VARCHAR},
       </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
       <if test="orgId != null">
         #{orgId,jdbcType=VARCHAR},
       </if>
@@ -129,14 +140,17 @@
       <if test="lastNodeName != null">
         #{lastNodeName,jdbcType=VARCHAR},
       </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=VARCHAR},
-      </if>
       <if test="nodeLevelTotal != null">
         #{nodeLevelTotal,jdbcType=NUMERIC},
       </if>
       <if test="nodeType != null">
         #{nodeType,jdbcType=VARCHAR},
+      </if>
+      <if test="nextNodeId != null">
+        #{nextNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nextUserId != null">
+        #{nextUserId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -158,6 +172,9 @@
       <if test="startTime != null">
         START_TIME = #{startTime,jdbcType=VARCHAR},
       </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=VARCHAR},
+      </if>
       <if test="orgId != null">
         ORG_ID = #{orgId,jdbcType=VARCHAR},
       </if>
@@ -167,14 +184,17 @@
       <if test="lastNodeName != null">
         LAST_NODE_NAME = #{lastNodeName,jdbcType=VARCHAR},
       </if>
-      <if test="endTime != null">
-        END_TIME = #{endTime,jdbcType=VARCHAR},
-      </if>
       <if test="nodeLevelTotal != null">
         NODE_LEVEL_TOTAL = #{nodeLevelTotal,jdbcType=NUMERIC},
       </if>
       <if test="nodeType != null">
         NODE_TYPE = #{nodeType,jdbcType=VARCHAR},
+      </if>
+      <if test="nextNodeId != null">
+        NEXT_NODE_ID = #{nextNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nextUserId != null">
+        NEXT_USER_ID = #{nextUserId,jdbcType=VARCHAR},
       </if>
     </set>
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
@@ -189,12 +209,14 @@
       NODE_NAME = #{nodeName,jdbcType=VARCHAR},
       NODE_STATE = #{nodeState,jdbcType=VARCHAR},
       START_TIME = #{startTime,jdbcType=VARCHAR},
+      END_TIME = #{endTime,jdbcType=VARCHAR},
       ORG_ID = #{orgId,jdbcType=VARCHAR},
       LAST_NODE_ID = #{lastNodeId,jdbcType=VARCHAR},
       LAST_NODE_NAME = #{lastNodeName,jdbcType=VARCHAR},
-      END_TIME = #{endTime,jdbcType=VARCHAR},
       NODE_LEVEL_TOTAL = #{nodeLevelTotal,jdbcType=NUMERIC},
-      NODE_TYPE = #{nodeType,jdbcType=VARCHAR}
+      NODE_TYPE = #{nodeType,jdbcType=VARCHAR},
+      NEXT_NODE_ID = #{nextNodeId,jdbcType=VARCHAR},
+      NEXT_USER_ID = #{nextUserId,jdbcType=VARCHAR}
     where INSTANCE_ID = #{instanceId,jdbcType=VARCHAR}
       and NODE_ID = #{nodeId,jdbcType=VARCHAR}
   </update>
@@ -261,6 +283,16 @@
           </otherwise>
         </choose>
       </if>
+      <if test="condition.endTime !=null and condition.endTime !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.endTime)">
+             AND END_TIME LIKE #{condition.endTime,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND END_TIME = #{condition.endTime,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
       <if test="condition.orgId !=null and condition.orgId !=''">
         <choose>
           <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.orgId)">
@@ -291,16 +323,6 @@
           </otherwise>
         </choose>
       </if>
-      <if test="condition.endTime !=null and condition.endTime !=''">
-        <choose>
-          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.endTime)">
-             AND END_TIME LIKE #{condition.endTime,jdbcType=VARCHAR}
-          </when>
-          <otherwise>
-            AND END_TIME = #{condition.endTime,jdbcType=VARCHAR}
-          </otherwise>
-        </choose>
-      </if>
       <if test="condition.nodeLevelTotal !=null and condition.nodeLevelTotal !=''">
         <choose>
           <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nodeLevelTotal)">
@@ -318,6 +340,26 @@
           </when>
           <otherwise>
             AND NODE_TYPE = #{condition.nodeType,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nextNodeId !=null and condition.nextNodeId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nextNodeId)">
+             AND NEXT_NODE_ID LIKE #{condition.nextNodeId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NEXT_NODE_ID = #{condition.nextNodeId,jdbcType=VARCHAR}
+          </otherwise>
+        </choose>
+      </if>
+      <if test="condition.nextUserId !=null and condition.nextUserId !=''">
+        <choose>
+          <when test="@cn.com.yusys.yusp.workflow.util.OGNLUtil@like(condition.nextUserId)">
+             AND NEXT_USER_ID LIKE #{condition.nextUserId,jdbcType=VARCHAR}
+          </when>
+          <otherwise>
+            AND NEXT_USER_ID = #{condition.nextUserId,jdbcType=VARCHAR}
           </otherwise>
         </choose>
       </if>

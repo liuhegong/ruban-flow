@@ -8,6 +8,8 @@ public class Cons {
 	
 	public final static String SYSTEM_USER_NAME = "系统指定";
 	
+	public final static String SYSTEM_END_NODE = "E0000";
+	
 	/**
 	 * 用户分割符
 	 */
@@ -31,6 +33,9 @@ public class Cons {
 	public final static String SUCCESS_MSG10 = "签收成功";
 	public final static String SUCCESS_MSG11 = "撤销签收成功";
 	public final static String ERROR_MSG12 = "更新流程实例参数失败";
+	public final static String ERROR_MSG13 = "节点无流程过程";
+	public final static String ERROR_MSG14 = "退回节点无历史处理人";
+	public final static String SUCCESS_MSG15 = "退回成功";
 	
 	
 	

@@ -175,7 +175,7 @@
        u.sign_in,
        u.start_time
     from (select * from n_wf_user_done u2) u
-    left join N_WF_NODE_HIS n
+    left join N_WF_NODE_DONE n
         on u.instance_id = n.instance_id and u.node_id = n.node_id
     left join N_WF_INSTANCE i
         on u.instance_id = i.instance_id

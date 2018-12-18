@@ -53,64 +53,64 @@
 		</add>
 		<add as="node-0">
 			<node label="普通节点" nodeType="0" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/pt.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-1">
 			<node label="单选节点" nodeType="1" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/danxuan.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-2">
 			<node label="多选节点" nodeType="2" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/duoxuan.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-3">
 			<node label="条件单选节点" nodeType="3" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/tjdanxuan.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-4">
 			<node label="条件多选节点" nodeType="4" nodeSign="" opUsersType="0" nodeUser="" computeType="2"  handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="1" callBack="0" returnBack="" jump="" change="" assist="" urged="" refuse="" tackBack="" entrust="" copy="" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" bizPage="" action="actionDelage">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/tjduoxuan.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-5">
 			<node label="自动运行节点" nodeType="5" bizBeanId="" action="actionDelage">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/zidong.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-6">
 			<node label="汇总节点" nodeType="C"  action="actionDelage">
-				<mxCell vertex="1" style="rounded">		
-					<mxGeometry as="geometry" width="80" height="30"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/guanbi.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-7">
 			<node label="开始节点" nodeType="S" bizBeanId="" bizPage="" action="actionDelage">
-				<mxCell vertex="1" style="symbol;image=images/symbols/event.png">		
-					<mxGeometry as="geometry" width="32" height="32"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/kaishi.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>
 		<add as="node-8">
 			<node label="结束节点" nodeType="E" bizBeanId="" action="actionDelage">
-				<mxCell vertex="1" style="symbol;image=images/symbols/event_end.png">		
-					<mxGeometry as="geometry" width="32" height="32"/>
+				<mxCell vertex="1" style="symbol;image=images/my/big/jieshu.png">		
+					<mxGeometry as="geometry" width="50" height="50"/>
 				</mxCell>
 			</node>
 		</add>

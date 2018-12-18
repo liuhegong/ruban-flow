@@ -41,9 +41,9 @@ public class NWfFlowService {
     }
 
     public List<NWfFlow> selectByModel(QueryModel model) {
-        PageHelper.startPage(model.getPage(), model.getSize());
+        //PageHelper.startPage(model.getPage(), model.getSize());
         List<NWfFlow> list = nWfFlowMapper.selectByModel(model);
-        PageHelper.clearPage();
+        //PageHelper.clearPage();
         return list;
     }
 

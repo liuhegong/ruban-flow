@@ -10,6 +10,25 @@ import java.util.Map;
 public class ResultInstanceDto  implements Serializable {
     
 	/**
+	 * 提交节点id
+	 */
+	private String from;
+	
+	/**
+	 * 提交到的节点id
+	 */
+	private String to;
+	
+	/**
+	 * 提交到的节点是否是初始节点
+	 */
+	private boolean isFirst;
+	
+	/**
+	 * 当前操作类型【提交，打回，退回等】，业务后处理时设置
+	 */
+	private String currentOpType;
+	/**
      * 流程实例id
      */
     private String instanceId;
@@ -471,9 +490,42 @@ public class ResultInstanceDto  implements Serializable {
 		this.bizPage = bizPage;
 	}
 
+	public String getCurrentOpType() {
+		return currentOpType;
+	}
+
+	public void setCurrentOpType(String currentOpType) {
+		this.currentOpType = currentOpType;
+	}
+
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	public boolean isFirst() {
+		return isFirst;
+	}
+
+	public void setFirst(boolean isFirst) {
+		this.isFirst = isFirst;
+	}
+
 	@Override
 	public String toString() {
-		return "ResultInstanceDto [instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
+		return "ResultInstanceDto [from=" + from + ", to=" + to + ", isFirst=" + isFirst + ", currentOpType="
+				+ currentOpType + ", instanceId=" + instanceId + ", flowName=" + flowName + ", flowId=" + flowId
 				+ ", flowAdmin=" + flowAdmin + ", flowStarter=" + flowStarter + ", flowStarterName=" + flowStarterName
 				+ ", startTime=" + startTime + ", systemId=" + systemId + ", orgId=" + orgId + ", flowState="
 				+ flowState + ", bizId=" + bizId + ", bizPage=" + bizPage + ", bizUserName=" + bizUserName
@@ -482,5 +534,6 @@ public class ResultInstanceDto  implements Serializable {
 				+ nodeName + ", nodeState=" + nodeState + ", opType=" + opType + ", comment=" + comment + ", nodeType="
 				+ nodeType + ", handleType=" + handleType + ", param=" + param + "]";
 	}
+
 
 }

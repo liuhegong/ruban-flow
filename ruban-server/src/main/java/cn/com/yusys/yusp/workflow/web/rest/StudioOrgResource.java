@@ -29,9 +29,9 @@ import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
  */
 @RestController
 @RequestMapping("/api/org")
-public class NWfOrgResource {
+public class StudioOrgResource {
 		
-	private static final Log log = LogFactory.getLog(NWfOrgResource.class);
+	private static final Log log = LogFactory.getLog(StudioOrgResource.class);
 
     @GetMapping("/users")
     public ResultDto<Collection<WFUser>> allUsers(QueryModel queryModel) {

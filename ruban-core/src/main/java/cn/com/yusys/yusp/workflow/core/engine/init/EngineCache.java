@@ -169,12 +169,20 @@ public class EngineCache{
 				if(routeInfo.getNodeId().equals(nodeT.getNodeId())){
 					routeInfoT.add(routeInfo);
 				}
+				if(routeInfo.getNextNodeId().equals(nodeT.getNodeId())){
+					nodeT.setLastNodeId(routeInfo.getNodeId());
+				}
 			});
 		}
 		
 		// 遍历所有节点和路由，将节点id改为流程id加节点id，保证节点id全局唯一
 		for(NodeInfo nodeInfoTT:nodeInfos){
 			nodeInfoTT.setNodeId(flowT.getFlowId()+"_"+nodeInfoTT.getNodeId());
+			if(null!=nodeInfoTT.getLastNodeId()&&!"".equals(nodeInfoTT.getLastNodeId())){
+				nodeInfoTT.setLastNodeId(flowT.getFlowId()+"_"+nodeInfoTT.getLastNodeId());
+			}else{
+				nodeInfoTT.setLastNodeId("");
+			}
 			for(RouteInfo routeInfoTT:nodeInfoTT.getRouteInfos()){
 				routeInfoTT.setNodeId(flowT.getFlowId()+"_"+routeInfoTT.getNodeId());
 				routeInfoTT.setNextNodeId(flowT.getFlowId()+"_"+routeInfoTT.getNextNodeId());

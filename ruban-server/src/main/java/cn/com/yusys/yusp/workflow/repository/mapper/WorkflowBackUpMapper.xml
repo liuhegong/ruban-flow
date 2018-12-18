@@ -45,4 +45,10 @@
   <delete id="deleteAllNode" parameterType="string">
   	delete from N_WF_NODE t where t.instance_id = #{instanceId,jdbcType=VARCHAR}
   </delete>
+  <delete id="deleteAllNodeDone" parameterType="string">
+  	delete from N_WF_NODE_DONE t where t.instance_id = #{instanceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="transNodeDone2End" parameterType="string">
+    insert into N_WF_NODE_HIS (select * from N_WF_NODE_DONE t where t.instance_id = #{instanceId,jdbcType=VARCHAR})
+  </insert>
 </mapper>

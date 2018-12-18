@@ -17,7 +17,7 @@ import cn.com.yusys.yusp.workflow.util.ApplicationContextUtil;
 public class WorkflowCustomUserImpl implements WorkflowCustomUserInterface {
 
 	@Override
-	public List<WFUserDto> customUser(String beanName, String orgId, String systemId) {
+	public List<String> customUser(String beanName, String orgId, String systemId) {
 		if(beanName.startsWith("/")){// fegin方式
 			
 		}else{// bean方式

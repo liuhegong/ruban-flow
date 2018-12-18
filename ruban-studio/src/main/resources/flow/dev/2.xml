@@ -37,27 +37,27 @@
       </mxCell>
     </route>
     <node label="普通节点多人并集" nodeType="0" nodeSign="" opUsersType="0" nodeUser="U.admin;O.2;R.2;" computeType="0" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="17">
-      <mxCell style="rounded" vertex="1" parent="1">
+      <mxCell style="rounded" parent="1" vertex="1">
         <mxGeometry x="540" y="242" width="80" height="30" as="geometry"/>
       </mxCell>
     </node>
     <node label="普通节点多人交集" nodeType="0" nodeSign="" opUsersType="0" nodeUser="U.admin;O.2;R.2;" computeType="1" handleType="0" isEndBeanId="" bizBeanId="" reDoUserSelect="0" callBack="0" returnBack="0" jump="0" change="0" assist="0" urged="0" refuse="0" tackBack="0" entrust="0" copy="0" copyUsers="" nodeLevel="0" strategyBeanId="" noticeType="0" action="actionDelage" id="18">
-      <mxCell style="rounded" vertex="1" parent="1">
+      <mxCell style="rounded" parent="1" vertex="1">
         <mxGeometry x="670" y="240" width="80" height="30" as="geometry"/>
       </mxCell>
     </node>
     <route label="" isContinueBeanId="" action="actionDelage" id="19">
-      <mxCell edge="1" parent="1" source="13" target="17">
+      <mxCell parent="1" source="13" target="17" edge="1">
         <mxGeometry isRelative="1" as="geometry"/>
       </mxCell>
     </route>
     <route label="" isContinueBeanId="" action="actionDelage" id="20">
-      <mxCell edge="1" parent="1" source="17" target="18">
+      <mxCell parent="1" source="17" target="18" edge="1">
         <mxGeometry isRelative="1" as="geometry"/>
       </mxCell>
     </route>
     <route label="" isContinueBeanId="" action="actionDelage" id="21">
-      <mxCell edge="1" parent="1" source="18" target="11">
+      <mxCell parent="1" source="18" target="11" edge="1">
         <mxGeometry isRelative="1" as="geometry"/>
       </mxCell>
     </route>

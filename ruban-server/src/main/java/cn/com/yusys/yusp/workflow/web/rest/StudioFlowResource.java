@@ -34,7 +34,7 @@ import cn.com.yusys.yusp.workflow.web.dto.ResultDto;
  */
 @RestController
 @RequestMapping("/api/nwfflow")
-public class NWfFlowResource {
+public class StudioFlowResource {
 	
 	@Value("${flow.path}")
 	private String flowPath = null;

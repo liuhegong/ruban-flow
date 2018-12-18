@@ -9,271 +9,319 @@ import javax.persistence.Table;
 @Table(name = "N_WF_NODE")
 public class NWfNode implements Serializable {
     /**
-     * Êµï¿½ï¿½id
+     * ÊµÀýid
      */
     @Id
     @Column(name = "INSTANCE_ID")
     private String instanceId;
 
     /**
-     * ï¿½Úµï¿½id
+     * ½Úµãid
      */
     @Id
     @Column(name = "NODE_ID")
     private String nodeId;
 
     /**
-     * ï¿½Úµï¿½ï¿½Ê¶
+     * ½Úµã±êÊ¶
      */
     @Column(name = "NODE_SIGN")
     private String nodeSign;
 
     /**
-     * ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * ½ÚµãÃû³Æ
      */
     @Column(name = "NODE_NAME")
     private String nodeName;
 
     /**
-     * ï¿½Úµï¿½×´Ì¬
+     * ½Úµã×´Ì¬
      */
     @Column(name = "NODE_STATE")
     private String nodeState;
 
     /**
-     * ï¿½Úµã¿ªÊ¼Ê±ï¿½ï¿½
+     * ½Úµã¿ªÊ¼Ê±¼ä
      */
     @Column(name = "START_TIME")
     private String startTime;
 
     /**
-     * ï¿½á½»ï¿½Ë»ï¿½ï¿½ï¿½id
+     * Ìá½»ÈË»ú¹¹id
      */
     @Column(name = "ORG_ID")
     private String orgId;
 
     /**
-     * ï¿½ï¿½Ò»ï¿½Úµï¿½id
+     * ÉÏÒ»½Úµãid
      */
     @Column(name = "LAST_NODE_ID")
     private String lastNodeId;
 
     /**
-     * ï¿½ï¿½Ò»ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * ÉÏÒ»½ÚµãÃû³Æ
      */
     @Column(name = "LAST_NODE_NAME")
     private String lastNodeName;
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½ï¿½Ä½Úµï¿½È¼ï¿½Ö®ï¿½ï¿½
+     * Á÷¾­µÄ½ÚµãµÈ¼¶Ö®ºÍ
      */
     @Column(name = "NODE_LEVEL_TOTAL")
     private Long nodeLevelTotal;
 
     /**
-     * ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * ½ÚµãÀàÐÍ
      */
     @Column(name = "NODE_TYPE")
     private String nodeType;
 
+    /**
+     * ÏÂÒ»½Úµãid
+     */
+    @Column(name = "NEXT_NODE_ID")
+    private String nextNodeId;
+
+    /**
+     * ÏÂÒ»½Úµã´¦ÀíÈË
+     */
+    @Column(name = "NEXT_USER_ID")
+    private String nextUserId;
+
     private static final long serialVersionUID = 1L;
 
     /**
-     * ï¿½ï¿½È¡Êµï¿½ï¿½id
+     * »ñÈ¡ÊµÀýid
      *
-     * @return INSTANCE_ID - Êµï¿½ï¿½id
+     * @return INSTANCE_ID - ÊµÀýid
      */
     public String getInstanceId() {
         return instanceId;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½id
+     * ÉèÖÃÊµÀýid
      *
-     * @param instanceId Êµï¿½ï¿½id
+     * @param instanceId ÊµÀýid
      */
     public void setInstanceId(String instanceId) {
         this.instanceId = instanceId == null ? null : instanceId.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½Úµï¿½id
+     * »ñÈ¡½Úµãid
      *
-     * @return NODE_ID - ï¿½Úµï¿½id
+     * @return NODE_ID - ½Úµãid
      */
     public String getNodeId() {
         return nodeId;
     }
 
     /**
-     * ï¿½ï¿½ï¿½Ã½Úµï¿½id
+     * ÉèÖÃ½Úµãid
      *
-     * @param nodeId ï¿½Úµï¿½id
+     * @param nodeId ½Úµãid
      */
     public void setNodeId(String nodeId) {
         this.nodeId = nodeId == null ? null : nodeId.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½Úµï¿½ï¿½Ê¶
+     * »ñÈ¡½Úµã±êÊ¶
      *
-     * @return NODE_SIGN - ï¿½Úµï¿½ï¿½Ê¶
+     * @return NODE_SIGN - ½Úµã±êÊ¶
      */
     public String getNodeSign() {
         return nodeSign;
     }
 
     /**
-     * ï¿½ï¿½ï¿½Ã½Úµï¿½ï¿½Ê¶
+     * ÉèÖÃ½Úµã±êÊ¶
      *
-     * @param nodeSign ï¿½Úµï¿½ï¿½Ê¶
+     * @param nodeSign ½Úµã±êÊ¶
      */
     public void setNodeSign(String nodeSign) {
         this.nodeSign = nodeSign == null ? null : nodeSign.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * »ñÈ¡½ÚµãÃû³Æ
      *
-     * @return NODE_NAME - ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @return NODE_NAME - ½ÚµãÃû³Æ
      */
     public String getNodeName() {
         return nodeName;
     }
 
     /**
-     * ï¿½ï¿½ï¿½Ã½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * ÉèÖÃ½ÚµãÃû³Æ
      *
-     * @param nodeName ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param nodeName ½ÚµãÃû³Æ
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName == null ? null : nodeName.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½Úµï¿½×´Ì¬
+     * »ñÈ¡½Úµã×´Ì¬
      *
-     * @return NODE_STATE - ï¿½Úµï¿½×´Ì¬
+     * @return NODE_STATE - ½Úµã×´Ì¬
      */
     public String getNodeState() {
         return nodeState;
     }
 
     /**
-     * ï¿½ï¿½ï¿½Ã½Úµï¿½×´Ì¬
+     * ÉèÖÃ½Úµã×´Ì¬
      *
-     * @param nodeState ï¿½Úµï¿½×´Ì¬
+     * @param nodeState ½Úµã×´Ì¬
      */
     public void setNodeState(String nodeState) {
         this.nodeState = nodeState == null ? null : nodeState.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½Úµã¿ªÊ¼Ê±ï¿½ï¿½
+     * »ñÈ¡½Úµã¿ªÊ¼Ê±¼ä
      *
-     * @return START_TIME - ï¿½Úµã¿ªÊ¼Ê±ï¿½ï¿½
+     * @return START_TIME - ½Úµã¿ªÊ¼Ê±¼ä
      */
     public String getStartTime() {
         return startTime;
     }
 
     /**
-     * ï¿½ï¿½ï¿½Ã½Úµã¿ªÊ¼Ê±ï¿½ï¿½
+     * ÉèÖÃ½Úµã¿ªÊ¼Ê±¼ä
      *
-     * @param startTime ï¿½Úµã¿ªÊ¼Ê±ï¿½ï¿½
+     * @param startTime ½Úµã¿ªÊ¼Ê±¼ä
      */
     public void setStartTime(String startTime) {
         this.startTime = startTime == null ? null : startTime.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½á½»ï¿½Ë»ï¿½ï¿½ï¿½id
+     * »ñÈ¡Ìá½»ÈË»ú¹¹id
      *
-     * @return ORG_ID - ï¿½á½»ï¿½Ë»ï¿½ï¿½ï¿½id
+     * @return ORG_ID - Ìá½»ÈË»ú¹¹id
      */
     public String getOrgId() {
         return orgId;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½Ë»ï¿½ï¿½ï¿½id
+     * ÉèÖÃÌá½»ÈË»ú¹¹id
      *
-     * @param orgId ï¿½á½»ï¿½Ë»ï¿½ï¿½ï¿½id
+     * @param orgId Ìá½»ÈË»ú¹¹id
      */
     public void setOrgId(String orgId) {
         this.orgId = orgId == null ? null : orgId.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½Úµï¿½id
+     * »ñÈ¡ÉÏÒ»½Úµãid
      *
-     * @return LAST_NODE_ID - ï¿½ï¿½Ò»ï¿½Úµï¿½id
+     * @return LAST_NODE_ID - ÉÏÒ»½Úµãid
      */
     public String getLastNodeId() {
         return lastNodeId;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Úµï¿½id
+     * ÉèÖÃÉÏÒ»½Úµãid
      *
-     * @param lastNodeId ï¿½ï¿½Ò»ï¿½Úµï¿½id
+     * @param lastNodeId ÉÏÒ»½Úµãid
      */
     public void setLastNodeId(String lastNodeId) {
         this.lastNodeId = lastNodeId == null ? null : lastNodeId.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * »ñÈ¡ÉÏÒ»½ÚµãÃû³Æ
      *
-     * @return LAST_NODE_NAME - ï¿½ï¿½Ò»ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @return LAST_NODE_NAME - ÉÏÒ»½ÚµãÃû³Æ
      */
     public String getLastNodeName() {
         return lastNodeName;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * ÉèÖÃÉÏÒ»½ÚµãÃû³Æ
      *
-     * @param lastNodeName ï¿½ï¿½Ò»ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param lastNodeName ÉÏÒ»½ÚµãÃû³Æ
      */
     public void setLastNodeName(String lastNodeName) {
         this.lastNodeName = lastNodeName == null ? null : lastNodeName.trim();
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ä½Úµï¿½È¼ï¿½Ö®ï¿½ï¿½
+     * »ñÈ¡Á÷¾­µÄ½ÚµãµÈ¼¶Ö®ºÍ
      *
-     * @return NODE_LEVEL_TOTAL - ï¿½ï¿½ï¿½ï¿½ï¿½Ä½Úµï¿½È¼ï¿½Ö®ï¿½ï¿½
+     * @return NODE_LEVEL_TOTAL - Á÷¾­µÄ½ÚµãµÈ¼¶Ö®ºÍ
      */
     public Long getNodeLevelTotal() {
         return nodeLevelTotal;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä½Úµï¿½È¼ï¿½Ö®ï¿½ï¿½
+     * ÉèÖÃÁ÷¾­µÄ½ÚµãµÈ¼¶Ö®ºÍ
      *
-     * @param nodeLevelTotal ï¿½ï¿½ï¿½ï¿½ï¿½Ä½Úµï¿½È¼ï¿½Ö®ï¿½ï¿½
+     * @param nodeLevelTotal Á÷¾­µÄ½ÚµãµÈ¼¶Ö®ºÍ
      */
     public void setNodeLevelTotal(Long nodeLevelTotal) {
         this.nodeLevelTotal = nodeLevelTotal;
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * »ñÈ¡½ÚµãÀàÐÍ
      *
-     * @return NODE_TYPE - ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @return NODE_TYPE - ½ÚµãÀàÐÍ
      */
     public String getNodeType() {
         return nodeType;
     }
 
     /**
-     * ï¿½ï¿½ï¿½Ã½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * ÉèÖÃ½ÚµãÀàÐÍ
      *
-     * @param nodeType ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param nodeType ½ÚµãÀàÐÍ
      */
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType == null ? null : nodeType.trim();
+    }
+
+    /**
+     * »ñÈ¡ÏÂÒ»½Úµãid
+     *
+     * @return NEXT_NODE_ID - ÏÂÒ»½Úµãid
+     */
+    public String getNextNodeId() {
+        return nextNodeId;
+    }
+
+    /**
+     * ÉèÖÃÏÂÒ»½Úµãid
+     *
+     * @param nextNodeId ÏÂÒ»½Úµãid
+     */
+    public void setNextNodeId(String nextNodeId) {
+        this.nextNodeId = nextNodeId == null ? null : nextNodeId.trim();
+    }
+
+    /**
+     * »ñÈ¡ÏÂÒ»½Úµã´¦ÀíÈË
+     *
+     * @return NEXT_USER_ID - ÏÂÒ»½Úµã´¦ÀíÈË
+     */
+    public String getNextUserId() {
+        return nextUserId;
+    }
+
+    /**
+     * ÉèÖÃÏÂÒ»½Úµã´¦ÀíÈË
+     *
+     * @param nextUserId ÏÂÒ»½Úµã´¦ÀíÈË
+     */
+    public void setNextUserId(String nextUserId) {
+        this.nextUserId = nextUserId == null ? null : nextUserId.trim();
     }
 
     @Override
@@ -298,7 +346,9 @@ public class NWfNode implements Serializable {
             && (this.getLastNodeId() == null ? other.getLastNodeId() == null : this.getLastNodeId().equals(other.getLastNodeId()))
             && (this.getLastNodeName() == null ? other.getLastNodeName() == null : this.getLastNodeName().equals(other.getLastNodeName()))
             && (this.getNodeLevelTotal() == null ? other.getNodeLevelTotal() == null : this.getNodeLevelTotal().equals(other.getNodeLevelTotal()))
-            && (this.getNodeType() == null ? other.getNodeType() == null : this.getNodeType().equals(other.getNodeType()));
+            && (this.getNodeType() == null ? other.getNodeType() == null : this.getNodeType().equals(other.getNodeType()))
+            && (this.getNextNodeId() == null ? other.getNextNodeId() == null : this.getNextNodeId().equals(other.getNextNodeId()))
+            && (this.getNextUserId() == null ? other.getNextUserId() == null : this.getNextUserId().equals(other.getNextUserId()));
     }
 
     @Override
@@ -316,6 +366,8 @@ public class NWfNode implements Serializable {
         result = prime * result + ((getLastNodeName() == null) ? 0 : getLastNodeName().hashCode());
         result = prime * result + ((getNodeLevelTotal() == null) ? 0 : getNodeLevelTotal().hashCode());
         result = prime * result + ((getNodeType() == null) ? 0 : getNodeType().hashCode());
+        result = prime * result + ((getNextNodeId() == null) ? 0 : getNextNodeId().hashCode());
+        result = prime * result + ((getNextUserId() == null) ? 0 : getNextUserId().hashCode());
         return result;
     }
 
@@ -336,6 +388,8 @@ public class NWfNode implements Serializable {
         sb.append(", lastNodeName=").append(lastNodeName);
         sb.append(", nodeLevelTotal=").append(nodeLevelTotal);
         sb.append(", nodeType=").append(nodeType);
+        sb.append(", nextNodeId=").append(nextNodeId);
+        sb.append(", nextUserId=").append(nextUserId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

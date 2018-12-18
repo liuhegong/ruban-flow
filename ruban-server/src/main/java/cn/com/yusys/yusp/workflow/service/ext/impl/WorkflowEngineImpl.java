@@ -43,7 +43,8 @@ import cn.com.yusys.yusp.workflow.domain.NWfComment;
 import cn.com.yusys.yusp.workflow.domain.NWfInstance;
 import cn.com.yusys.yusp.workflow.domain.NWfInstanceHis;
 import cn.com.yusys.yusp.workflow.domain.NWfNode;
-import cn.com.yusys.yusp.workflow.domain.NWfNodeHis;
+import cn.com.yusys.yusp.workflow.domain.NWfNodeDone;
+import cn.com.yusys.yusp.workflow.domain.NWfProcess;
 import cn.com.yusys.yusp.workflow.domain.NWfUserDone;
 import cn.com.yusys.yusp.workflow.domain.NWfUserTodo;
 import cn.com.yusys.yusp.workflow.domain.dto.QueryModel;
@@ -60,8 +61,9 @@ import cn.com.yusys.yusp.workflow.dto.result.ResultOpTypeDto;
 import cn.com.yusys.yusp.workflow.service.NWfCommentService;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceHisService;
 import cn.com.yusys.yusp.workflow.service.NWfInstanceService;
-import cn.com.yusys.yusp.workflow.service.NWfNodeHisService;
+import cn.com.yusys.yusp.workflow.service.NWfNodeDoneService;
 import cn.com.yusys.yusp.workflow.service.NWfNodeService;
+import cn.com.yusys.yusp.workflow.service.NWfProcessService;
 import cn.com.yusys.yusp.workflow.service.NWfUserDoneService;
 import cn.com.yusys.yusp.workflow.service.NWfUserTodoService;
 import cn.com.yusys.yusp.workflow.service.WorkflowBackUpService;
@@ -92,7 +94,8 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	private NWfNodeService nodeService;
 	
 	@Autowired
-	private NWfNodeHisService nodeHisService;
+	private NWfNodeDoneService nodeDoneService;
+	
 	
 	@Autowired
 	private NWfUserTodoService userTodoService;
@@ -111,6 +114,12 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	
 	@Autowired
 	private NWfCommentService commentService;
+	
+	/**
+	 * 记录节点流经过程
+	 */
+	@Autowired
+	private NWfProcessService processService;
 	
 	/**
 	 * [分配策略]
@@ -162,7 +171,6 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 			throw new WorkflowException(Cons.ERROR_MSG1);
 		}
 		
-		EngineCache.getInstance();
 		FlowInfo flowInfo = EngineCache.getFlowInfo(flowId, systemId);
 		NodeInfo stratNodeInfo = flowInfo.getStartNode();
 		List<String> firstNodeIds = stratNodeInfo.getNextNodes();
@@ -389,10 +397,11 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		if(null!=nodeLevel){// 设置节点等级，根据节点等级排序可以控制打回等选择范围
 			record.setNodeLevel(Long.parseLong(nodeLevel));
 		}
-		record.setStartTime(TimeUtil.getDateyyyyMMddHHmmss());
+		
 		if(null!=comment.getCommentId()&&!"".equals(comment.getCommentId())){
 			commentService.updateByPrimaryKeySelective(record);
 		}else{
+			record.setStartTime(TimeUtil.getDateyyyyMMddHHmmss());
 			record.setCommentId(UUIDUtil.getUUID());
 			commentService.insertSelective(record);
 		}
@@ -683,10 +692,10 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 			usersT.put(userId, userService.getUserInfo(systemId, userId));
 		} else if (key.startsWith(UserType.EXT)) {// 自定义
 			String beanName = key.substring(2);
-			List<WFUserDto> users = customUserService.customUser(beanName, orgId, systemId);
+			List<String> users = customUserService.customUser(beanName, orgId, systemId);
 			if(null!=users){
-				for(WFUserDto userTT:users){
-					usersT.put(userTT.getUserId(), userService.getUserInfo(systemId, userTT.getUserId()));
+				for(String userIdT:users){
+					usersT.put(userIdT, userService.getUserInfo(systemId, userIdT));
 				}
 			}
 		} else {
@@ -860,7 +869,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		// 删除节点下所有用户待办
 		workflowBackUpService.deleteUserTodo(instanceInfo.getInstanceId(), instanceInfo.getNodeId());
 		
-		// 节点实例并迁移到节点结束表
+		// 节点实例并迁移到节点办结表
 		nodeBackup( instanceInfo.getInstanceId(), instanceInfo.getNodeId(), completeTime);
 		// 删除节点实例信息
 		nodeRemove(instanceInfo.getInstanceId(), instanceInfo.getNodeId());
@@ -936,7 +945,10 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 				List<String> nextNodeIds = nodeInfoT.getNextNodes();
 				NextNodeInfoDto nextNodeInfoDto = new NextNodeInfoDto();
 				nextNodeInfoDto.setNextNodeId(nextNodeIds.get(0));
-						
+				
+				instanceInfo.setCurrentOpType(OpType.RUN);
+				instanceInfo.setFrom(nodeInfoT.getNodeId());
+				instanceInfo.setTo(nextNodeIds.get(0));
 				afterSubmit(nodeInfoT,instanceInfo);// 自动节点后业务处理
 				submitNextOneNode( instanceInfo, nextNodeInfoDto, msg, currentUserId, orgId, systemId);
 			}else if(NodeType.TOGETHER_NODE.equals(nodeType)){// 汇总节点
@@ -947,7 +959,7 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 					NodeInfo togetherNode = EngineCache.getNodeInfo(nextNodeId);
 					List<String> nextNodeIds = togetherNode.getNextNodes();
 					// 新增汇总节点历史实例
-					addTogetherNodeHis(instanceId, nodeId,nextNodeId);
+					addTogetherNodeDone(instanceId, nodeId,nextNodeId);
 					// 向汇总节点的下一节点提交，一般认为汇总节点的后面节点不会是汇总节点
 					NextNodeInfoDto nextNodeInfoDto = new NextNodeInfoDto();
 					nextNodeInfoDto.setNextNodeId(nextNodeIds.get(0));
@@ -973,19 +985,19 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	 * @param togetherNodeId
 	 * @throws WorkflowException
 	 */
-	private void addTogetherNodeHis(String instanceId,String nodeId,String togetherNodeId) throws WorkflowException{
+	private void addTogetherNodeDone(String instanceId,String nodeId,String togetherNodeId) throws WorkflowException{
 		NWfNode currentNodeInfo = nodeService.selectByPrimaryKey(instanceId,nodeId);		
-		NWfNodeHis nodeInfoHis = new NWfNodeHis();
-		BeanUtils.copyProperties(currentNodeInfo,nodeInfoHis);	
+		NWfNodeDone nodeInfoDone = new NWfNodeDone();
+		BeanUtils.copyProperties(currentNodeInfo,nodeInfoDone);	
 		String completeTime = TimeUtil.getDateyyyyMMddHHmmss();
-		nodeInfoHis.setLastNodeId(togetherNodeId);
-		nodeInfoHis.setLastNodeName("[汇总节点]");
-		nodeInfoHis.setNodeId(togetherNodeId);
-		nodeInfoHis.setNodeName("[汇总节点]");
-		nodeInfoHis.setNodeState(OpType.AUTO);
-		nodeInfoHis.setNodeType(NodeType.TOGETHER_NODE);
-		nodeInfoHis.setEndTime(completeTime);		
-		nodeHisService.insertSelective(nodeInfoHis);
+		nodeInfoDone.setLastNodeId(togetherNodeId);
+		nodeInfoDone.setLastNodeName("[汇总节点]");
+		nodeInfoDone.setNodeId(togetherNodeId);
+		nodeInfoDone.setNodeName("[汇总节点]");
+		nodeInfoDone.setNodeState(OpType.RUN);
+		nodeInfoDone.setNodeType(NodeType.TOGETHER_NODE);
+		nodeInfoDone.setEndTime(completeTime);		
+		nodeDoneService.insertSelective(nodeInfoDone);
 	}
 	
 	private List<String> removeSame(List<String> users){
@@ -1091,11 +1103,22 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		}
 		nodeService.insertSelective(nodeInfo);
 		
+		
+		//记录节点流经过程
+		NWfProcess record = new NWfProcess();
+		BeanUtils.copyProperties(nodeInfo, record);
+		record.setPkId(UUIDUtil.getUUID());
+		record.setStartTime(completeTime);
+		processService.insertSelective(record);
+		
 		re.setTip(Cons.SUCCESS_MSG7);
 		re.setCode(FlowState.RUN);
 		
 		// 后业务处理
-		NodeInfo currentNodeInfoT = EngineCache.getNodeInfo(nodeId);		
+		NodeInfo currentNodeInfoT = EngineCache.getNodeInfo(nodeId);	
+		instanceInfo.setCurrentOpType(OpType.RUN);
+		instanceInfo.setFrom(nodeId);
+		instanceInfo.setTo(nextNodeId);
 		afterSubmit(currentNodeInfoT,instanceInfo);
 		// 发送消息
 		sendMessage(userTodeNew,nextNodeInfo,instanceInfo);
@@ -1130,14 +1153,17 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		NWfUserTodo userTodo = userTodoService.selectByPrimaryKey(instanceId, nodeId, userId);		
 		if(null!=userTodo){
 			NWfUserDone userDone = new NWfUserDone();
-			BeanUtils.copyProperties(userTodo,userDone);// 当前待办用户迁移到历史表
+			BeanUtils.copyProperties(userTodo,userDone);
 			userDone.setEndTime(endTime);
-			userDoneService.insert(userDone);
+			int result = userDoneService.updateByPrimaryKey(userDone);
+			if(0==result){// 先更新，不存在时，再插入
+				userDoneService.insert(userDone);// 当前待办用户迁移到办结表
+			}
 		}
 	}
 	
 	/**
-	 * 节点实例并迁移到历史表
+	 * 节点实例并迁移到办结表
 	 * @param instanceId
 	 * @param nodeId
 	 * @param endTime
@@ -1145,10 +1171,15 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 	private void nodeBackup(String instanceId,String nodeId,String endTime){		
 		NWfNode currentNodeInfo = nodeService.selectByPrimaryKey(instanceId,nodeId);
 		if(null!=currentNodeInfo){
-			NWfNodeHis nodeInfoHis = new NWfNodeHis();
-			BeanUtils.copyProperties(currentNodeInfo,nodeInfoHis);	
-			nodeInfoHis.setEndTime(endTime);		
-			nodeHisService.insertSelective(nodeInfoHis);
+			NWfNodeDone nodeInfoDone = new NWfNodeDone();
+			BeanUtils.copyProperties(currentNodeInfo,nodeInfoDone);	
+			nodeInfoDone.setEndTime(endTime);
+			nodeInfoDone.setNodeState(OpType.RUN);
+			// 先更新，再插入,如，退回打回时，已经存在记录了，会造成主键冲突
+			int result = nodeDoneService.updateByPrimaryKey(nodeInfoDone);
+			if(0==result){
+				nodeDoneService.insertSelective(nodeInfoDone);
+			}
 		}
 	}
 	
@@ -1188,10 +1219,13 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		// 删除流程实例并迁移到历史表
 		instanceBackup(instanceId, endTime);
 		
-		// 节点实例迁移到节点结束表
+		// 节点实例迁移到节点已办表
 		nodeBackup( instanceId, nodeId, endTime);
 		// 删除所有节点实例
 		workflowBackUpService.deleteAllNode(instanceId);
+		// 迁移到节点办结表,并删除所有节点已办
+		workflowBackUpService.transNodeDone2End(instanceId);
+		workflowBackUpService.deleteAllNodeDone(instanceId);
 		
 		// 用户待办信息迁移到已办表
 		userTodoBackup2Done(instanceId,nodeId, userId, endTime);	
@@ -1209,6 +1243,9 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		
 		// 后业务处理
 		NodeInfo nodeInfo = EngineCache.getNodeInfo(nodeId);
+		instanceInfo.setCurrentOpType(OpType.RUN);
+		instanceInfo.setFrom(nodeId);
+		instanceInfo.setTo(Cons.SYSTEM_END_NODE);
 		afterSubmit(nodeInfo,instanceInfo);
 		afterEnd(nodeInfo,instanceInfo);
 		
