@@ -339,6 +339,7 @@ public class NodeInfo implements Serializable{
 		}
 		return nodeIds;
 	}
+	
 	public String getNoticeType() {
 		return noticeType;
 	}

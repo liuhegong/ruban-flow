@@ -38,7 +38,7 @@
     </node>
     <node label="结束节点" nodeType="E" action="actionDelage" id="9">
       <mxCell style="symbol;image=images/symbols/event_end.png" parent="1" vertex="1">
-        <mxGeometry x="918" y="159" width="32" height="32" as="geometry"/>
+        <mxGeometry x="863" y="161" width="32" height="32" as="geometry"/>
       </mxCell>
     </node>
     <route label="" isContinueBeanId="" action="actionDelage" id="10">

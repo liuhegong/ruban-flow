@@ -41,13 +41,5 @@ public interface WorkflowCoreMapper {
 	 * @return
 	 */
 	List<String> getMaxLevelNodeId(@Param("instanceId") String instanceId);
-	
-	/**
-	 * 获取实例下节点被处理次数
-	 * @param instanceId
-	 * @param nodeId
-	 * @return
-	 */
-	int getNodeDoneCount(@Param("instanceId") String instanceId, @Param("nodeId") String nodeId);
 
 }

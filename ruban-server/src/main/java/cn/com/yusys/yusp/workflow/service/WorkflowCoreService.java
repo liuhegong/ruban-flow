@@ -29,10 +29,6 @@ public class WorkflowCoreService {
 	public List<String> getMaxLevelNodeId(String instanceId){
 		return workflowCoreMapper.getMaxLevelNodeId(instanceId);
 	}
-
-	public int getNodeDoneCount(String instanceId, String nodeId){
-		return workflowCoreMapper.getNodeDoneCount(instanceId,nodeId);
-	}
 	
 	public List<NWfUserTodo> getUserByMinUserlevel(String instanceId, String nodeId){
 		return workflowCoreMapper.getUserByMinUserlevel(instanceId,nodeId);

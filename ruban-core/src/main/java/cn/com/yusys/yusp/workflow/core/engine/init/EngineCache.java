@@ -74,6 +74,8 @@ public class EngineCache{
 					log.debug("成功加载流程文件:"+file.getAbsolutePath());
 				}
 			}
+		}else{
+			log.warn("文件夹不存在:"+floder.getAbsolutePath());
 		}
 		
 		// 缓存节点信息
@@ -127,6 +129,27 @@ public class EngineCache{
 			log.error("未找到节点信息[nodeId="+nodeId+"]");
 		}
 		return nodeInfo;
+	}
+	
+	/**
+	 * 获取节点的所有后续节点
+	 * @param nodeId
+	 * @param nodeIds
+	 */
+	public static void getAllNextNodeId(String nodeId,List<String> nodeIds){
+		NodeInfo nodeInfo = nodeInfoCache.get(nodeId);
+		List<RouteInfo> routeInfos = nodeInfo.getRouteInfos();
+		if(null!=routeInfos){
+			for(RouteInfo route:routeInfos){
+				String nextNodeId = route.getNextNodeId();
+				if(nodeIds.contains(nextNodeId)){
+					break;
+				}
+				nodeIds.add(nextNodeId);
+				getAllNextNodeId(nextNodeId, nodeIds);
+			}
+		}
+		
 	}
 	
 	/**

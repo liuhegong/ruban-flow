@@ -865,7 +865,6 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 		// 用户待办信息迁移为已办
 		userTodoBackup2Done(instanceInfo.getInstanceId(), instanceInfo.getNodeId(),currentUserId, completeTime);
 		
-		//userTodoService.deleteByPrimaryKey(instanceInfo.getInstanceId(), instanceInfo.getNodeId(),currentUserId);
 		// 删除节点下所有用户待办
 		workflowBackUpService.deleteUserTodo(instanceInfo.getInstanceId(), instanceInfo.getNodeId());
 		
@@ -952,10 +951,26 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 				afterSubmit(nodeInfoT,instanceInfo);// 自动节点后业务处理
 				submitNextOneNode( instanceInfo, nextNodeInfoDto, msg, currentUserId, orgId, systemId);
 			}else if(NodeType.TOGETHER_NODE.equals(nodeType)){// 汇总节点
-				// 汇总节点没有被走过
-				int count = workflowCoreService.getNodeDoneCount(instanceInfo.getInstanceId(), nextNodeId);				
-				if(count==0){// 获取汇总节点后面的节点，往下提交
-					// 获取汇总节点的下一节点
+				
+				// 汇总节点是否往下一节点提交
+				boolean isSubmit = true;
+				// 获取当前实例下所有待办节点id
+				QueryModel model = new QueryModel();
+				model.getCondition().put("instanceId", instanceId);
+				List<NWfNode> nodes = nodeService.selectByModel(model);
+			
+				// 判断汇总结点是否是这些节点的后续节点
+				for(NWfNode node:nodes){
+					if(nodeId.equals(node.getNodeId())){// 排除自己
+						continue;
+					}
+					if(checkFrontNode(node.getNodeId(),nextNodeId)){
+						isSubmit = false;
+						break;
+					}
+				}				
+				if(isSubmit){// 获取汇总节点后面的节点，往下提交
+					
 					NodeInfo togetherNode = EngineCache.getNodeInfo(nextNodeId);
 					List<String> nextNodeIds = togetherNode.getNextNodes();
 					// 新增汇总节点历史实例
@@ -1395,6 +1410,23 @@ public class WorkflowEngineImpl implements WorkflowEngineInterface {
 			log.debug("流程撤销签收:[instanceId="+instanceId+";nodeId="+nodeId+";userId="+userId+"]"+re);
 		}
 		return re;
+	}
+	
+	/**
+	 * 判断节点是否是另一个节点前面的节点
+	 * @param nodeId
+	 * @param frontNodeId
+	 * @return
+	 */
+	private boolean checkFrontNode(String nodeId,String frontNodeId){
+		List<String> nodeIds = new ArrayList<String>();;
+		EngineCache.getAllNextNodeId(nodeId, nodeIds);
+		
+		if(nodeIds.contains(frontNodeId)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	public static void main(String[] args) {
