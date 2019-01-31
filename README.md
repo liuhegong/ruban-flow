@@ -8,7 +8,7 @@
 流程图热发布，无需系统重启；   
 分布式事务一致；
  
-## 流程绘制【完成】
+## 流程图绘制
 ![Image text](https://github.com/figuewang/ruban-flow/blob/master/ruban-studio/src/main/resources/static/images/studio2.png)
 
 ## 节点类型
