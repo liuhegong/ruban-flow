@@ -12,7 +12,7 @@
 ![Image text](https://github.com/figuewang/ruban-flow/blob/master/ruban-studio/src/main/resources/static/images/studio2.png)
 
 ## 工程简介
-ruban-studio: 流程图在线绘制服务
+ruban-studio: 流程图在线绘制服务   
 ruban-starter: 流程引擎微服务
 
 ## 节点类型
