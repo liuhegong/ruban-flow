@@ -1,5 +1,5 @@
 # ruban-flow
-鲁班工作流引擎，基于springboot的分布式高效工作流引擎
+鲁班工作流引擎，基于springboot的分布式高效工作流引擎，拳打Activiti，脚踢JBPM
 
 ## 特性
 流程实例id水平分表，真正意义的分布式流程引擎；  
