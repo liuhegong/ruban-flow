@@ -6,6 +6,7 @@
 组织机构数据通过文件同步，热发布，无需系统重启，人员数据缓存在系统中；  
 后处理支持单机bean的方式和集群下fegin的方式，也可扩展成MQ；  
 流程图热发布，无需系统重启； 
+分布式事务一致；
  
 ## 流程绘制【完成】
 ![Image text](https://github.com/figuewang/ruban-flow/blob/master/ruban-studio/src/main/resources/static/images/studio2.png)
